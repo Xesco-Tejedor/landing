@@ -1,0 +1,589 @@
+/* --- Variables y Reseteo Básico --- */
+:root {
+    --color-background: #121212; /* Negro/Gris muy oscuro */
+    --color-text: #e0e0e0; /* Gris claro/Blanco roto */
+    --color-primary: #ffffff; /* Blanco para títulos/énfasis */
+    --color-secondary: #bbbbbb; /* Gris medio para subtítulos/detalles */
+    --color-accent: #9a0000; /* Rojo sangre oscuro (ajusta a tu gusto) */
+    --color-accent-hover: #c82333; /* Rojo más brillante al pasar el ratón */
+    --color-card-bg: #1f1f1f; /* Fondo ligeramente más claro para cards */
+    --font-serif: 'Lora', serif; /* Fuente con serifas (ej. literaria) */
+    --font-sans: 'Source Sans 3', sans-serif; /* Fuente sin serifas (ej. moderna) */
+    --max-width: 1100px; /* Ancho máximo del contenido */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en enlaces internos */
+    font-size: 16px; /* Base para REM */
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    color: var(--color-primary);
+    margin-bottom: 0.8em;
+    line-height: 1.3;
+    font-weight: 600; /* O un peso más adecuado para Lora */
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.2rem; text-align: center; margin-bottom: 1.5em; }
+h3 { font-size: 1.5rem; color: var(--color-secondary); font-weight: 500;}
+
+p {
+    margin-bottom: 1em;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover, a:focus {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- Header y Navegación --- */
+.main-header {
+    background-color: rgba(18, 18, 18, 0.85); /* Fondo semi-transparente */
+    padding: 1rem 0;
+    position: fixed; /* O 'sticky' si prefieres */
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(5px); /* Efecto cristal esmerilado */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Línea sutil */
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+.logo a:hover {
+    color: var(--color-accent);
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.main-nav a {
+    color: var(--color-secondary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover, .main-nav a:focus {
+    color: var(--color-primary);
+    text-decoration: none; /* Evita doble subrayado */
+}
+
+.nav-toggle { /* Para el menú móvil */
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.hamburger { /* Líneas del icono hamburguesa */
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--color-primary);
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-primary);
+    left: 0;
+    transition: transform 0.3s ease, top 0.3s ease;
+}
+.hamburger::before { top: -8px; }
+.hamburger::after { top: 8px; }
+
+/* --- Estilos Generales de Sección --- */
+section {
+    padding: 6rem 0;
+}
+
+section:nth-child(odd) { /* Alternar fondos sutilmente si se desea */
+   /* background-color: #1a1a1a; */
+}
+
+/* --- Sección Hero --- */
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding-top: 120px; /* Espacio para el header fijo */
+    /* Considera una imagen de fondo sutil aquí */
+    /* background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('path/to/subtle-gothic-bg.jpg'); */
+    /* background-size: cover; */
+    /* background-position: center; */
+}
+
+.hero-section h1 {
+    color: var(--color-primary);
+    margin-bottom: 0.3em;
+}
+
+.hero-section .subtitle {
+    font-size: 1.3rem;
+    color: var(--color-secondary);
+    margin-bottom: 1em;
+    font-weight: 300;
+}
+
+.hero-section .intro {
+    max-width: 700px;
+    margin: 0 auto 2em auto;
+    color: var(--color-text);
+}
+
+/* --- Botón CTA --- */
+.cta-button {
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: #fff;
+    padding: 0.8em 1.8em;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 2px solid var(--color-accent); /* Borde sólido */
+}
+
+.cta-button:hover, .cta-button:focus {
+    background-color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: #fff;
+    transform: translateY(-2px); /* Ligero efecto al pasar el ratón */
+    text-decoration: none;
+}
+
+.cta-button.secondary {
+    background-color: transparent;
+    color: var(--color-accent);
+    border: 2px solid var(--color-accent);
+}
+
+.cta-button.secondary:hover, .cta-button.secondary:focus {
+    background-color: var(--color-accent);
+    color: #fff;
+}
+
+
+/* --- Sección About --- */
+.about-section {
+    /* Estilos específicos si son necesarios */
+}
+.about-section .container {
+    max-width: 800px; /* Limitar ancho para mejor lectura */
+    text-align: center; /* O justificado si prefieres */
+}
+
+/* --- Sección Servicios --- */
+.services-section {
+     background-color: #1a1a1a; /* Fondo ligeramente distinto */
+}
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.service-item {
+    background-color: var(--color-card-bg);
+    padding: 2rem;
+    border-radius: 5px;
+    border-left: 4px solid var(--color-accent); /* Acento lateral */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.service-icon {
+    font-size: 2rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5em;
+}
+
+.service-item h3 {
+    margin-bottom: 0.5em;
+    color: var(--color-primary); /* Hacer títulos de servicio más prominentes */
+}
+
+.service-item .keywords {
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+    font-style: italic;
+    margin-top: 1em;
+}
+
+/* --- Sección Portfolio --- */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.portfolio-item {
+    background-color: var(--color-card-bg);
+    border-radius: 5px;
+    overflow: hidden; /* Para contener la imagen */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.portfolio-item:hover {
+     transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: 200px; /* Altura fija para imágenes */
+    object-fit: cover; /* Cubre el espacio sin distorsionar */
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.portfolio-item h3 {
+    margin: 1rem 1.5rem 0.5rem;
+    color: var(--color-primary);
+}
+.portfolio-item p {
+     margin: 0 1.5rem 1rem;
+     font-size: 0.95rem;
+}
+.portfolio-link {
+    display: inline-block;
+    margin: 0 1.5rem 1.5rem;
+    font-weight: bold;
+    color: var(--color-accent);
+}
+.portfolio-link i { margin-left: 5px; }
+
+
+/* --- Sección Blog --- */
+.blog-section {
+     background-color: #1a1a1a;
+}
+.blog-section > .container > p { /* Párrafo introductorio del blog */
+    text-align: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    color: var(--color-secondary);
+}
+
+.blog-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.blog-post-preview {
+    background-color: var(--color-card-bg);
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.blog-post-preview:hover {
+     transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.blog-post-preview img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.blog-post-preview h3 {
+    margin: 1rem 1.5rem 0.5rem;
+    font-size: 1.3rem;
+     color: var(--color-primary);
+}
+.blog-post-preview p {
+    margin: 0 1.5rem 1rem;
+    flex-grow: 1; /* Empuja el enlace "Leer más" hacia abajo */
+    font-size: 0.95rem;
+}
+.blog-post-preview a {
+    display: inline-block;
+    margin: 0 1.5rem 1.5rem;
+    font-weight: bold;
+}
+.blog-post-preview a i { margin-left: 5px; }
+
+
+/* --- Sección Recursos --- */
+.resources-section {
+    /* Estilos específicos si son necesarios */
+}
+.resources-list ul {
+    list-style: none; /* Ya está en reset, pero por si acaso */
+    padding-left: 0;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.resources-list li {
+    margin-bottom: 0.8em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separador sutil */
+    padding-bottom: 0.8em;
+}
+.resources-list a {
+    font-weight: 500;
+}
+
+
+/* --- Sección Contacto --- */
+.contact-section {
+     background-color: #1a1a1a;
+}
+.contact-section .container {
+    max-width: 700px;
+    text-align: center;
+}
+
+.contact-form {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-secondary);
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.8em;
+    background-color: var(--color-card-bg);
+    border: 1px solid #444; /* Borde sutil */
+    border-radius: 4px;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+}
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(154, 0, 0, 0.3); /* Resplandor al enfocar */
+}
+
+.form-group textarea {
+    resize: vertical; /* Permitir redimensionar verticalmente */
+    min-height: 120px;
+}
+
+.contact-form button {
+    display: block;
+    margin: 1rem auto 0 auto; /* Centrar botón */
+    cursor: pointer;
+}
+
+.alternative-contact {
+    margin-top: 2rem;
+    color: var(--color-secondary);
+}
+.alternative-contact a {
+    color: var(--color-accent);
+    font-weight: bold;
+}
+
+.social-links {
+    margin-top: 2rem;
+}
+.social-links a {
+    color: var(--color-secondary);
+    font-size: 1.5rem;
+    margin: 0 0.7rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.social-links a:hover {
+    color: var(--color-primary);
+}
+
+
+/* --- Footer --- */
+.main-footer {
+    background-color: #0a0a0a; /* Aún más oscuro */
+    padding: 2rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4rem; /* Espacio antes del footer */
+}
+
+.main-footer p {
+    margin-bottom: 0.5em;
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+}
+
+.footer-nav a {
+    color: var(--color-secondary);
+    margin: 0 0.5em;
+    font-size: 0.9rem;
+}
+.footer-nav a:hover {
+    color: var(--color-primary);
+}
+
+
+/* --- Media Queries para Responsividad --- */
+@media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.3rem; }
+
+    section { padding: 4rem 0; }
+
+    .main-header .container {
+        position: relative; /* Necesario para el posicionamiento absoluto del menú */
+    }
+
+    .nav-toggle {
+        display: block; /* Mostrar el botón hamburguesa */
+        position: absolute; /* O relativo al container del header */
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1001; /* Encima del resto */
+    }
+
+    .main-nav {
+        position: fixed; /* O absoluto relativo al header */
+        top: 0;
+        right: -100%; /* Empieza fuera de la pantalla */
+        width: 70%; /* Ocupa parte de la pantalla */
+        max-width: 300px;
+        height: 100vh;
+        background-color: #1f1f1f; /* Fondo sólido para el menú */
+        padding-top: 6rem; /* Espacio para el logo/botón cerrar */
+        transition: right 0.4s ease-in-out;
+        z-index: 1000;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    }
+
+    .main-nav.is-active {
+        right: 0; /* Muestra el menú */
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+     .main-nav li {
+        width: 100%;
+        text-align: center;
+    }
+     .main-nav a {
+        display: block;
+        padding: 1rem;
+        font-size: 1.1rem;
+        color: var(--color-primary); /* Textos más visibles en menú móvil */
+        width: 100%;
+    }
+     .main-nav a:hover {
+         background-color: var(--color-accent);
+         color: white;
+     }
+
+
+    /* Ajustar grids si es necesario */
+    .services-container,
+    .portfolio-grid,
+    .blog-preview {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+    }
+
+    .hero-section {
+        min-height: 60vh;
+    }
+    .hero-section .intro {
+        padding: 0 10px; /* Evitar que el texto toque bordes */
+    }
+
+}
+
+/* Estilos para la 'X' del botón hamburguesa cuando está activo */
+.nav-toggle.is-active .hamburger {
+    background-color: transparent; /* La línea central desaparece */
+}
+.nav-toggle.is-active .hamburger::before {
+    transform: rotate(45deg);
+    top: 0; /* Centrar la X */
+    background-color: var(--color-primary); /* Asegurar color al activar */
+}
+.nav-toggle.is-active .hamburger::after {
+    transform: rotate(-45deg);
+     top: 0; /* Centrar la X */
+     background-color: var(--color-primary); /* Asegurar color al activar */
+}
