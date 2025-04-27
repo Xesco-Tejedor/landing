@@ -39,9 +39,11 @@ Tot i que aquest és un projecte personal, els suggeriments o informes d'errors 
 
 ## 👤 Autor / Contacte
 
-Desenvolupat per a **Xesco Tejedor**.
+Aquesta landing page ha estat desenvolupada per **Francesc Adrià Perelló (Xesco per als amics)** com a part del seu propi portafoli.
 
-Pots contactar amb ell a través del formulari de contacte de la pròpia pàgina web (un cop estigui funcional) o mitjançant [inserir aquí enllaç a LinkedIn o mètode de contacte preferit].
+Pots contactar amb ell a través del formulari de contacte de la pròpia pàgina web (un cop estigui funcional) o connectar directament al seu perfil professional a LinkedIn:
+
+[![Perfil de LinkedIn de Xesco](https://img.shields.io/badge/LinkedIn-Xesco%20Tejedor-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/xesco/)
 
 ---
 
