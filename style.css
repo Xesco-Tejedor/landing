@@ -665,9 +665,12 @@ body {
 
 /* --- Responsividad para Google Translate (Mantenemos oculto en móvil) --- */
 @media (max-width: 768px) {
-    .google-translate-widget {
-        display: none; /* Ocultar en pantallas pequeñas */
-    }
+    /* BORRAR ESTA REGLA: */
+    /* .google-translate-widget { */
+    /*     display: none; */
+    /* } */
+
+    /* ... (otras reglas de la media query) ... */    } 
 }
 
 /* --- Asegurar Flexbox en Header --- */
