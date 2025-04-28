@@ -587,3 +587,101 @@ section:nth-child(odd) { /* Alternar fondos sutilmente si se desea */
      top: 0; /* Centrar la X */
      background-color: var(--color-primary); /* Asegurar color al activar */
 }
+
+/* --- Estilos Google Translate Widget --- */
+
+/* Contenedor principal del widget */
+.google-translate-widget {
+    margin-left: 1.5rem; /* Espacio respecto a la navegación */
+    vertical-align: middle; /* Alineación vertical con otros elementos del header */
+    display: inline-block; /* Para que funcione vertical-align */
+}
+
+/* Estilos específicos para el widget simple */
+#google_translate_element .goog-te-gadget-simple {
+    background-color: transparent !important; /* Fondo transparente */
+    border: none !important; /* Sin borde */
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-block; /* Asegurar inline */
+    vertical-align: middle;
+}
+
+/* Estilo del texto del idioma seleccionado */
+#google_translate_element .goog-te-gadget-simple span {
+    /* Puede que no necesites esto si los estilos siguientes funcionan */
+}
+
+/* Enlace que muestra el idioma actual y abre el menú */
+#google_translate_element .goog-te-menu-value,
+#google_translate_element .goog-te-menu-value span:first-child { /* El span que contiene el texto */
+    color: var(--color-secondary) !important; /* Color como los links de nav */
+    text-decoration: none !important; /* Sin subrayado */
+    font-family: var(--font-sans) !important; /* Misma fuente */
+    font-size: 0.9rem !important; /* Tamaño similar o ligeramente menor */
+    font-weight: 500 !important;
+    background: none !important; /* Sin fondo */
+    border: none !important; /* Sin borde */
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    display: inline !important; /* Asegurar que no sea block */
+}
+
+/* Hover sobre el enlace del idioma */
+#google_translate_element .goog-te-menu-value:hover,
+#google_translate_element .goog-te-menu-value:hover span:first-child {
+    color: var(--color-primary) !important; /* Resaltar al pasar el ratón */
+}
+
+/* Ocultar el icono de Google (opcional, pero más discreto) */
+#google_translate_element img.goog-te-gadget-icon {
+    display: none !important;
+    /* O si quieres mostrarlo pero alinearlo: */
+    /* vertical-align: middle !important; */
+    /* margin: 0 5px 0 0 !important; */
+}
+
+/* Ocultar el texto "Powered by Google Translate" que a veces aparece */
+.goog-logo-link, .goog-te-gadget-logo {
+    display: none !important;
+}
+body > .skiptranslate { /* Oculta el iframe superior de Google */
+    display: none !important;
+}
+/* Ajustar el posicionamiento del cuerpo cuando Google añade su barra (aunque la ocultemos) */
+body {
+    top: 0px !important;
+}
+
+/* --- Responsividad para Google Translate --- */
+@media (max-width: 768px) {
+    .google-translate-widget {
+        /* Opción 1: Ocultarlo en móvil */
+        display: none;
+
+        /* Opción 2: Moverlo a otro lugar o darle otro estilo
+           (requeriría más ajustes, posiblemente con JS para moverlo al menú) */
+        /* Ejemplo: Posicionarlo a la derecha del toggle */
+        /* position: absolute; */
+        /* right: 60px; */ /* Ajustar según tamaño del toggle */
+        /* top: 50%; */
+        /* transform: translateY(-50%); */
+        /* margin-left: 0; */
+    }
+}
+
+/* --- Ajuste Flexbox en Header para alinear todo --- */
+/* Asegúrate de que el contenedor del header use flex */
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Si ya tenías flex aquí, puede que no necesites cambiar mucho */
+}
+
+/* Asegúrate de que la navegación no ocupe todo el espacio restante si no quieres */
+.main-nav {
+    /* flex-grow: 1;  <-- Quita esto si lo tenías y quieres el traductor al lado */
+}
