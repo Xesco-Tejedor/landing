@@ -679,3 +679,33 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+/* --- Estilos Google Translate en Menú Móvil --- */
+
+/* Cuando el widget está dentro del menú desplegable */
+.main-nav .google-translate-widget {
+    display: block; /* Ocupa su propia línea */
+    padding: 1rem 1.5rem; /* Espaciado similar a los enlaces de nav */
+    margin: 0.5rem 0; /* Margen vertical */
+    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea separadora superior */
+    text-align: center; /* Centrar el contenido del widget */
+}
+
+/* Ajustar el widget interno para que se vea bien centrado */
+.main-nav .google-translate-widget .goog-te-gadget-simple {
+    display: inline-block; /* Permitir centrado */
+    background-color: rgba(255, 255, 255, 0.05) !important; /* Fondo sutil si se desea */
+    border-color: var(--color-secondary) !important;
+    padding: 6px 10px !important; /* Ajustar padding si es necesario */
+}
+
+.main-nav .google-translate-widget .goog-te-menu-value {
+     color: var(--color-primary) !important; /* Asegurar texto brillante */
+     font-size: 0.9rem !important;
+}
+
+/* Ocultar widget de su posición original en escritorio cuando estamos en vista móvil */
+@media (max-width: 768px) {
+    .main-header > .container > .google-translate-widget {
+         display: none; /* Oculta el widget que está DIRECTAMENTE en el header */
+    }
+}
