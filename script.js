@@ -13,6 +13,32 @@ document.addEventListener('DOMContentLoaded', () => {
             navToggle.classList.toggle('is-active');
         });
     }
+    document.addEventListener('DOMContentLoaded', () => {
+    // --- Código existente del menú hamburguesa ---
+    const navToggle = document.querySelector('.nav-toggle');
+    const mainNav = document.querySelector('.main-nav');
+    const navLinks = document.querySelectorAll('.main-nav a'); // Para cerrar menú al hacer clic
+
+    if (navToggle && mainNav) {
+        navToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('is-active');
+            const isActive = mainNav.classList.contains('is-active');
+            navToggle.setAttribute('aria-expanded', isActive);
+            navToggle.classList.toggle('is-active');
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (mainNav.classList.contains('is-active')) {
+                mainNav.classList.remove('is-active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.classList.remove('is-active');
+            }
+        });
+    });
+
+    // --- FIN Código existente del menú hamburguesa ---
 
     // Cerrar menú al hacer clic en un enlace (para SPAs o páginas largas)
     navLinks.forEach(link => {
