@@ -14,17 +14,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <!-- Font Awesome para iconos (opcional) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="main-header">
+     <header class="main-header">
         <div class="container">
             <div class="logo">
                 <a href="#">Xesco Tejedor</a>
             </div>
             <nav class="main-nav" id="main-nav">
-                <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav">
+                 <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav">
                     <span class="hamburger"></span>
                 </button>
                 <ul>
@@ -35,7 +35,10 @@
                     <li><a href="#contact">Contacto</a></li>
                 </ul>
             </nav>
-        </div>
+                <!-- ****** NUEVO: Contenedor para Google Translate ****** -->
+                <div id="google_translate_element" class="google-translate-widget"></div>
+                <!-- ****************************************************** -->
+            </div>
     </header>
 
     <main>
@@ -206,6 +209,19 @@
             </nav>
         </div>
     </footer>
+  
+    <!-- ****** NUEVO: Scripts de Google Translate ****** -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({
+              pageLanguage: 'es', // Idioma original de tu página
+              layout: google.translate.TranslateElement.InlineLayout.SIMPLE, // Diseño simple
+              autoDisplay: false // No mostrar banner automáticamente
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- ******************************************** -->
 
     <script src="script.js"></script>
 </body>
