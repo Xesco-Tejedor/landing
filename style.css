@@ -588,100 +588,91 @@ section:nth-child(odd) { /* Alternar fondos sutilmente si se desea */
      background-color: var(--color-primary); /* Asegurar color al activar */
 }
 
-/* --- Estilos Google Translate Widget --- */
+/* --- Estilos Google Translate Widget (ACTUALIZADO) --- */
 
 /* Contenedor principal del widget */
 .google-translate-widget {
     margin-left: 1.5rem; /* Espacio respecto a la navegación */
-    vertical-align: middle; /* Alineación vertical con otros elementos del header */
-    display: inline-block; /* Para que funcione vertical-align */
+    position: relative; /* Para asegurar contexto de apilamiento si es necesario */
+    vertical-align: middle; /* Alinear con la navegación */
+    display: inline-block;
+    line-height: 1; /* Evitar altura extra */
 }
 
 /* Estilos específicos para el widget simple */
 #google_translate_element .goog-te-gadget-simple {
-    background-color: transparent !important; /* Fondo transparente */
-    border: none !important; /* Sin borde */
-    padding: 0 !important;
+    background-color: transparent !important;
+    border: 1px solid var(--color-secondary) !important; /* Añadir un borde sutil para delimitarlo */
+    padding: 5px 8px !important; /* Un poco de padding interno */
     margin: 0 !important;
-    display: inline-block; /* Asegurar inline */
+    display: inline-block;
     vertical-align: middle;
+    border-radius: 3px; /* Bordes redondeados suaves */
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+#google_translate_element .goog-te-gadget-simple:hover {
+     border-color: var(--color-primary) !important; /* Borde más claro al pasar el ratón */
 }
 
-/* Estilo del texto del idioma seleccionado */
-#google_translate_element .goog-te-gadget-simple span {
-    /* Puede que no necesites esto si los estilos siguientes funcionan */
-}
 
 /* Enlace que muestra el idioma actual y abre el menú */
-#google_translate_element .goog-te-menu-value,
-#google_translate_element .goog-te-menu-value span:first-child { /* El span que contiene el texto */
-    color: var(--color-secondary) !important; /* Color como los links de nav */
-    text-decoration: none !important; /* Sin subrayado */
-    font-family: var(--font-sans) !important; /* Misma fuente */
-    font-size: 0.9rem !important; /* Tamaño similar o ligeramente menor */
-    font-weight: 500 !important;
-    background: none !important; /* Sin fondo */
-    border: none !important; /* Sin borde */
+/* Usamos selectores menos agresivos para el span interno */
+#google_translate_element .goog-te-menu-value {
+    color: var(--color-text) !important; /* Usar el color de texto principal (más claro) */
+    text-decoration: none !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.85rem !important; /* Ligeramente más pequeño que nav */
+    font-weight: 400 !important; /* Peso normal */
+    background: none !important;
+    border: none !important;
     padding: 0 !important;
-    margin: 0 !important;
+    margin: 0 5px 0 0 !important; /* Pequeño margen a la derecha del texto */
     cursor: pointer;
-    transition: color 0.3s ease;
-    display: inline !important; /* Asegurar que no sea block */
+    display: inline !important;
+    line-height: 1; /* Asegurar que no añada altura extra */
 }
 
-/* Hover sobre el enlace del idioma */
-#google_translate_element .goog-te-menu-value:hover,
-#google_translate_element .goog-te-menu-value:hover span:first-child {
-    color: var(--color-primary) !important; /* Resaltar al pasar el ratón */
+/* Flecha desplegable */
+#google_translate_element .goog-te-gadget-simple img {
+    vertical-align: middle !important; /* Alinear la flecha */
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-block !important; /* Asegurar visibilidad */
+    filter: invert(85%) sepia(0%) saturate(1%) hue-rotate(158deg) brightness(90%) contrast(90%); /* Intentar cambiar color de flecha a gris claro*/
+    /* Nota: filter puede no funcionar igual en todos los navegadores para la flecha de Google */
+}
+/* Hover sobre el enlace/texto - Cambiamos el color del borde en el contenedor */
+#google_translate_element .goog-te-gadget-simple:hover .goog-te-menu-value {
+    color: var(--color-primary) !important; /* Texto más claro al pasar el ratón */
 }
 
-/* Ocultar el icono de Google (opcional, pero más discreto) */
-#google_translate_element img.goog-te-gadget-icon {
-    display: none !important;
-    /* O si quieres mostrarlo pero alinearlo: */
-    /* vertical-align: middle !important; */
-    /* margin: 0 5px 0 0 !important; */
-}
 
-/* Ocultar el texto "Powered by Google Translate" que a veces aparece */
+/* Ocultar el texto "Powered by Google Translate" */
 .goog-logo-link, .goog-te-gadget-logo {
     display: none !important;
 }
-body > .skiptranslate { /* Oculta el iframe superior de Google */
+body > .skiptranslate iframe { /* Oculta el iframe superior de Google */
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
 }
-/* Ajustar el posicionamiento del cuerpo cuando Google añade su barra (aunque la ocultemos) */
+/* Ajustar el posicionamiento del cuerpo */
 body {
     top: 0px !important;
 }
 
-/* --- Responsividad para Google Translate --- */
+/* --- Responsividad para Google Translate (Mantenemos oculto en móvil) --- */
 @media (max-width: 768px) {
     .google-translate-widget {
-        /* Opción 1: Ocultarlo en móvil */
-        display: none;
-
-        /* Opción 2: Moverlo a otro lugar o darle otro estilo
-           (requeriría más ajustes, posiblemente con JS para moverlo al menú) */
-        /* Ejemplo: Posicionarlo a la derecha del toggle */
-        /* position: absolute; */
-        /* right: 60px; */ /* Ajustar según tamaño del toggle */
-        /* top: 50%; */
-        /* transform: translateY(-50%); */
-        /* margin-left: 0; */
+        display: none; /* Ocultar en pantallas pequeñas */
     }
 }
 
-/* --- Ajuste Flexbox en Header para alinear todo --- */
-/* Asegúrate de que el contenedor del header use flex */
+/* --- Asegurar Flexbox en Header --- */
 .main-header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Si ya tenías flex aquí, puede que no necesites cambiar mucho */
-}
-
-/* Asegúrate de que la navegación no ocupe todo el espacio restante si no quieres */
-.main-nav {
-    /* flex-grow: 1;  <-- Quita esto si lo tenías y quieres el traductor al lado */
 }
