@@ -565,6 +565,32 @@ body > .skiptranslate iframe {
     width: 0 !important;
 }
 
+/* --- Estilos Google Translate en Menú Móvil (AÑADIR/MODIFICAR) --- */
+.main-nav .google-translate-widget {
+    display: block !important;
+    order: -1;
+    padding: 1rem 1.5rem;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+    position: relative; /* Necesario para z-index */
+    z-index: 10;       /* Asegura que esté por encima del fondo del nav */
+    cursor: pointer;  /* Añadir cursor pointer */
+    -webkit-tap-highlight-color: transparent; /* Quita el resaltado azul/gris en iOS/Android al tocar */
+}
+
+/* Asegurarse de que el enlace interno también reciba eventos */
+.main-nav .google-translate-widget .goog-te-gadget-simple,
+.main-nav .google-translate-widget .goog-te-gadget-simple a {
+    pointer-events: auto !important; /* Forzar recepción de eventos */
+    cursor: pointer; /* Heredar o definir cursor */
+}
+
+/* Si el fondo del nav tiene z-index, asegúrate que sea menor */
+.main-nav {
+     /* z-index: 5; O un valor menor que el widget si es necesario */
+    /* ... otros estilos ... */
+}
 
 /* --- Media Queries para Responsividad --- */
 @media (max-width: 768px) {
