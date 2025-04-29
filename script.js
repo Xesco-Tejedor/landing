@@ -21,17 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Cerrar Menú al Hacer Clic en Enlace ---
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (mainNav.classList.contains('is-active')) {
-                mainNav.classList.remove('is-active');
-                navToggle.setAttribute('aria-expanded', 'false');
-                navToggle.classList.remove('is-active');
-            }
-        });
-    });
+    // --- Cerrar Menú al Hacer Clic Fuera (Usando mousedown) ---
+    document.addEventListener('mousedown', (event) => { // <-- CAMBIADO A 'mousedown'
+        // Asegurarse de que los elementos existen
+        if (!mainNav || !navToggle) return;
 
+        // Comprobación extra: Si el click fue en el widget de Google, no hacer nada aquí.
+        // El propio widget manejará su apertura/cierre.
+        const isClickInsideTranslate = googleTranslateWidget && googleTranslateWidget.contains(event.target);
+        if (isClickInsideTranslate) {
+             console.log("Clic/MouseDown detectado DENTRO del widget de traducción. No se cierra el menú.");
+            return; // Salir temprano si el clic fue en el widget
+        }
+
+        // Comprobar si el clic fue fuera del Nav y fuera del Toggle
+        const isClickInsideNav = mainNav.contains(event.target);
+        const isClickOnToggle = navToggle.contains(event.target);
+
+        // Si el menú está activo Y el clic fue fuera de todo (nav, toggle, y ya verificamos translate)
+        if (mainNav.classList.contains('is-active') && !isClickInsideNav && !isClickOnToggle) {
+             console.log("Cerrando menú por mousedown fuera.");
+            mainNav.classList.remove('is-active');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.classList.remove('is-active');
+        }
+    });
     // --- Lógica para Mover Google Translate Widget ---
     function moveTranslateWidget() {
         console.log("--- moveTranslateWidget Check ---");
@@ -105,24 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resizeTimer = setTimeout(() => {
             moveTranslateWidget();
         }, 250); // Esperar un poco (debounce)
-    });
-
-    // --- Cerrar Menú al Hacer Clic Fuera (Opcional, pero recomendado) ---
-    document.addEventListener('click', (event) => {
-        // Asegurarse de que los elementos existen
-        if (!mainNav || !navToggle) return;
-
-        const isClickInsideNav = mainNav.contains(event.target);
-        const isClickOnToggle = navToggle.contains(event.target);
-        // Añadir comprobación: no cerrar si se hace clic dentro del widget de traducción
-        const isClickInsideTranslate = googleTranslateWidget && googleTranslateWidget.contains(event.target);
-
-        if (!isClickInsideNav && !isClickOnToggle && !isClickInsideTranslate && mainNav.classList.contains('is-active')) {
-             console.log("Cerrando menú por clic fuera.");
-            mainNav.classList.remove('is-active');
-            navToggle.setAttribute('aria-expanded', 'false');
-            navToggle.classList.remove('is-active');
-        }
     });
 
 }); // Fin de DOMContentLoaded
