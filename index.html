@@ -3,226 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xesco Tejedor | Humanidades y Código</title>
-    <meta name="description" content="Experiencia interdisciplinaria en curaduría literaria, desarrollo web cultural, análisis filosófico y crítica de cine de terror. Servicios de consultoría y creación de contenido.">
-    <!-- Favicon (opcional, añade tu propio icono) -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts (Ejemplo - Elige fuentes que se ajusten al estilo) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
-    <!-- Font Awesome para iconos (opcional) -->
-     <link rel="stylesheet" href="style.css">
+    <title>Perfil Profesional - Francesc Adrià Perelló</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+            color: #1f2937; /* Tailwind gray-800 */
+        }
+        .section-title {
+            font-size: 2.25rem; /* Equivalent to text-4xl */
+            font-weight: 700;
+            margin-bottom: 2rem; /* Equivalent to mb-8 */
+            text-align: center;
+            color: #1e40af; /* Tailwind blue-800 */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* Equivalent to rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to shadow-lg */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Equivalent to shadow-2xl */
+        }
+        .icon-link {
+            color: #3b82f6; /* Tailwind blue-500 */
+            transition: color 0.3s ease;
+            font-size: 1.5rem; /* text-2xl */
+        }
+        .icon-link:hover {
+            color: #1e40af; /* Tailwind blue-800 */
+        }
+        .tag {
+            background-color: #dbeafe; /* Tailwind blue-100 */
+            color: #1e3a8a; /* Tailwind blue-800 */
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500;
+        }
+        /* Animation for elements appearing on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Typing animation */
+        .typed-cursor {
+            opacity: 1;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
 </head>
-<body>
+<body class="antialiased">
 
-     <header class="main-header">
-        <div class="container">
-            <div class="logo">
-                <a href="#">Xesco Tejedor</a>
+    <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-16 md:py-24 reveal">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Francesc Adrià Perelló</h1>
+            <p class="text-xl md:text-2xl mb-2">
+                <span id="typed-headline"></span><span class="typed-cursor">|</span>
+            </p>
+            <p class="text-lg md:text-xl mb-8 text-blue-200">Curioso Multidisciplinar</p>
+            <div class="flex justify-center space-x-6">
+                <a href="tel:+34645192817" class="icon-link hover:text-blue-300" aria-label="Teléfono">
+                    <i class="fas fa-phone-square"></i>
+                </a>
+                <a href="mailto:xescodes@gmail.com" class="icon-link hover:text-blue-300" aria-label="Correo electrónico">
+                    <i class="fas fa-envelope-square"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/xesco" target="_blank" rel="noopener noreferrer" class="icon-link hover:text-blue-300" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link hover:text-blue-300" aria-label="GitHub">
+                    <i class="fab fa-github-square"></i>
+                </a>
+                <a href="https://linktr.ee/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link hover:text-blue-300" aria-label="Linktree">
+                    <i class="fas fa-link"></i>
+                </a>
             </div>
-            <nav class="main-nav" id="main-nav">
-                 <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav">
-                    <span class="hamburger"></span>
-                </button>
-                <ul>
-                    <li><a href="#about">Filosofía</a></li>
-                    <li><a href="#services">Servicios</a></li>
-                    <li><a href="#portfolio">Proyectos</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contacto</a></li>
-                </ul>
-            </nav>
-                <!-- ****** NUEVO: Contenedor para Google Translate ****** -->
-                <div id="google_translate_element" class="google-translate-widget"></div>
-                <!-- ****************************************************** -->
-            </div>
+        </div>
     </header>
 
-    <main>
-        <!-- Sección Hero -->
-        <section id="hero" class="hero-section">
-            <div class="container">
-                <h1>Xesco Tejedor</h1>
-                <p class="subtitle">Donde se tejen Humanidades y Tecnología: Curaduría Literaria, Desarrollo Web Cultural, Análisis Filosófico y Crítica de Terror.</p>
-                <p class="intro">Ofreciendo soluciones intelectuales y tecnológicas rigurosas en la encrucijada de la cultura, el conocimiento y el código. Experiencia especializada para instituciones educativas, creadores y entusiastas del género.</p>
-                <a href="#services" class="cta-button">Descubrir Servicios</a>
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="about" class="mb-16 reveal">
+            <h2 class="section-title">Sobre Mí</h2>
+            <div class="card max-w-3xl mx-auto text-lg leading-relaxed text-gray-700">
+                <p>Treballar a la Biblioteca d'Història de l'Art Joaquim Folch i Torres és una aventura que forma part del meu dia a dia. Allà, he tingut l'oportunitat de combinar la meva passió per la cultura, la filosofia i la tecnologia, destacant en la interacció amb els usuaris i en l'anàlisi de dades, claus que han enriquit la meva trajectòria tant a nivell professional com personal.</p>
+                <p class="mt-4">Amb més de 20 anys d'experiència al MNAC, he après a fusionar la història, l'art i la innovació en rols tan variats com el de recepcionista i analista de dades avançat. La meva evolució m'ha portat a submergir-me en el món digital, complint un bootcamp de desenvolupador fullstack a The Bridge i obtenint certificacions en Python, xarxes i anàlisi de dades.</p>
+                <p class="mt-4">Em fascina utilitzar aquestes habilitats per connectar les persones amb la tecnologia, preservar el nostre patrimoni i impulsar noves formes de gaudir del coneixement. Actualment, mentre continuo creixent en aquest entorn tan dinàmic, estic buscant noves oportunitats per seguir innovant en tecnologia, anàlisi de dades i cultura. Qui sap, potser aquest camí ens portarà a descobrir idees que canviïn la manera com entenem el futur.</p>
             </div>
         </section>
 
-        <!-- Sección Quién Soy / Filosofía -->
-        <section id="about" class="about-section">
-            <div class="container">
-                <h2>La Mente Interdisciplinar</h2>
-                <p>Este enfoque une la profundidad de la tradición humanística con la agilidad de la innovación digital. Xesco Tejedor representa una voz construida en la encrucijada de estas disciplinas, buscando tender puentes entre la tradición y la vanguardia digital. La propuesta combina la curaduría literaria y la biblioteconomía con el desarrollo web para crear plataformas culturales significativas. El análisis filosófico enriquece la crítica, especialmente en el cine de terror, mientras que la tecnología sirve como herramienta para preservar y diseminar conocimiento. Comprometido con el rigor intelectual y la creación de síntesis únicas en la intersección de disciplinas.</p>
-                <!-- <img src="path/to/your-photo.jpg" alt="Xesco Tejedor" class="profile-photo"> -->
-            </div>
-        </section>
-
-        <!-- Sección Servicios -->
-        <section id="services" class="services-section">
-            <div class="container">
-                <h2>Soluciones a Medida: Del Concepto al Código</h2>
-                <div class="services-container">
-                    <div class="service-item">
-                        <i class="fas fa-book-reader service-icon"></i> <!-- Ejemplo icono -->
-                        <h3>Curaduría y Gestión del Conocimiento</h3>
-                        <p>Diseño e implementación de sistemas de organización de información, curaduría de contenidos, estrategias para bibliotecas y archivos digitales.</p>
-                        <p class="keywords">Biblioteconomía digital, repositorios, taxonomías.</p>
+        <section id="experience" class="mb-16 reveal">
+            <h2 class="section-title">Experiencia Profesional</h2>
+            <div class="space-y-8">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-1">Atención al usuario de la Biblioteca de Historia del Arte Joaquim Folch i Torres (MNAC)</h3>
+                    <p class="text-md font-medium text-gray-600">MagmaCultura</p>
+                    <p class="text-sm text-gray-500 mb-2">Diciembre de 2020 - Presente (4 años y 6 meses) &middot; Barcelona, Cataluña, España</p>
                     </div>
-                    <div class="service-item">
-                        <i class="fas fa-code service-icon"></i> <!-- Ejemplo icono -->
-                        <h3>Desarrollo Web Cultural y Educativo</h3>
-                        <p>Creación de sitios web, archivos digitales y plataformas educativas online a medida, con foco en usabilidad, accesibilidad y preservación.</p>
-                        <p class="keywords">Desarrollo web, plataformas LMS, archivos digitales.</p>
-                    </div>
-                    <div class="service-item">
-                        <i class="fas fa-pen-nib service-icon"></i> <!-- Ejemplo icono -->
-                        <h3>Análisis, Crítica y Contenido</h3>
-                        <p>Elaboración de análisis filosóficos, crítica de cine (terror), ensayos y contenido web especializado que articula conexiones entre disciplinas.</p>
-                        <p class="keywords">Crítica de cine, filosofía, contenido cultural.</p>
-                    </div>
-                     <div class="service-item">
-                        <i class="fas fa-comments service-icon"></i> <!-- Ejemplo icono -->
-                        <h3>Consultoría Interdisciplinar</h3>
-                        <p>Asesoramiento estratégico para proyectos que fusionan conocimientos humanísticos y tecnológicos. Ideación, planificación y ejecución.</p>
-                         <p class="keywords">Humanidades digitales, estrategia, innovación.</p>
-                    </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-1">Atención al público (MNAC)</h3>
+                    <p class="text-md font-medium text-gray-600">MagmaCultura</p>
+                    <p class="text-sm text-gray-500 mb-2">Noviembre de 2004 - Diciembre de 2020 (16 años y 2 meses) &middot; Barcelona, Cataluña, España</p>
                 </div>
-                <a href="#contact" class="cta-button secondary">Solicitar Consulta</a>
-            </div>
-        </section>
-
-        <!-- Sección Proyectos -->
-        <section id="portfolio" class="portfolio-section">
-            <div class="container">
-                <h2>Exploraciones Recientes: Casos de Estudio</h2>
-                <div class="portfolio-grid">
-                    <div class="portfolio-item">
-                        <img src="https://via.placeholder.com/400x300/1a1a1a/cccccc?text=Proyecto+1" alt="Descripción Proyecto 1">
-                        <h3>Archivo Digital de Poesía Oscura</h3>
-                        <p>Desarrollo y curaduría de un repositorio online...</p>
-                        <a href="#" class="portfolio-link">Ver más <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="portfolio-item">
-                        <img src="https://via.placeholder.com/400x300/1a1a1a/cccccc?text=Proyecto+2" alt="Descripción Proyecto 2">
-                        <h3>Web para Festival de Cine de Terror</h3>
-                        <p>Plataforma informativa y de archivo para...</p>
-                        <a href="#" class="portfolio-link">Ver más <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="portfolio-item">
-                        <img src="https://via.placeholder.com/400x300/1a1a1a/cccccc?text=Proyecto+3" alt="Descripción Proyecto 3">
-                        <h3>Ensayo: Filosofía del Horror Cósmico</h3>
-                        <p>Análisis publicado sobre las raíces filosóficas...</p>
-                        <a href="#" class="portfolio-link">Leer Ensayo <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-1">Atención al público (MNAC)</h3>
+                    <p class="text-md font-medium text-gray-600">Manpower Link</p>
+                    <p class="text-sm text-gray-500 mb-2">Noviembre de 2003 - Noviembre de 2004 (1 año y 1 mes) &middot; Barcelona, España</p>
                 </div>
             </div>
         </section>
 
-        <!-- Sección Blog -->
-        <section id="blog" class="blog-section">
-            <div class="container">
-                <h2>El Archivo Digital: Una perspectiva singular de Pensamiento y Análisis</h2>
-                 <p>Reflexiones, análisis y comentarios sobre literatura, tecnología, filosofía y cine de terror.</p>
-                <div class="blog-preview">
-                    <article class="blog-post-preview">
-                        <img src="https://via.placeholder.com/300x200/1a1a1a/cccccc?text=Blog+Post+1" alt="Preview Blog 1">
-                        <h3>Título del Artículo Reciente 1</h3>
-                        <p>Extracto del artículo que introduce el tema principal y engancha al lector...</p>
-                        <a href="#">Leer más <i class="fas fa-arrow-right"></i></a>
-                    </article>
-                     <article class="blog-post-preview">
-                        <img src="https://via.placeholder.com/300x200/1a1a1a/cccccc?text=Blog+Post+2" alt="Preview Blog 2">
-                        <h3>Título del Artículo Reciente 2</h3>
-                        <p>Otro extracto interesante sobre un tema relevante en la intersección de disciplinas...</p>
-                        <a href="#">Leer más <i class="fas fa-arrow-right"></i></a>
-                    </article>
-                     <article class="blog-post-preview">
-                        <img src="https://via.placeholder.com/300x200/1a1a1a/cccccc?text=Blog+Post+3" alt="Preview Blog 3">
-                        <h3>Título del Artículo Reciente 3</h3>
-                        <p>Un tercer extracto que muestra la variedad de temas tratados en el blog...</p>
-                        <a href="#">Leer más <i class="fas fa-arrow-right"></i></a>
-                    </article>
+        <section id="education" class="mb-16 reveal">
+            <h2 class="section-title">Educación</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Máster, Formación del profesorado en Filosofía</h3>
+                    <p class="text-md font-medium text-gray-600">Universidad Nacional de Educación a Distancia - U.N.E.D.</p>
+                    <p class="text-sm text-gray-500">2018 - 2019</p>
                 </div>
-                <a href="#" class="cta-button">Visitar el Blog Completo</a>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Bootcamp Fullstack Developer</h3>
+                    <p class="text-md font-medium text-gray-600">The Bridge | Digital Talent Accelerator</p>
+                    <p class="text-sm text-gray-500">Marzo de 2022 - Noviembre de 2022</p>
+                    <p class="text-gray-700 mt-1 text-sm">Desarrollo de aplicaciones web</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Màster Universitari de Formació del Professorat d'Educació Secundària Obligatòria i Batxillerat</h3>
+                    <p class="text-md font-medium text-gray-600">Universitat de Barcelona</p>
+                    <p class="text-sm text-gray-500">2015 - 2017 &middot; Filosofía</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Licenciatura, Filosofía</h3>
+                    <p class="text-md font-medium text-gray-600">Universitat de Barcelona</p>
+                    <p class="text-sm text-gray-500">2000 - 2014</p>
+                </div>
+                <div class="card md:col-span-2"> <h3 class="text-xl font-semibold text-blue-700 mb-1">Comunicación Audiovisual (licenciatura inacabada)</h3>
+                    <p class="text-md font-medium text-gray-600">Universitat Ramon Llull</p>
+                    <p class="text-sm text-gray-500">1996 - 2000 &middot; Ciencias de la Comunicación</p>
+                </div>
             </div>
         </section>
 
-        <!-- Sección Recursos (Opcional pero recomendada) -->
-        <section id="resources" class="resources-section">
-            <div class="container">
-                <h2>Biblioteca Personal: Enlaces y Herramientas</h2>
-                <p>Una selección curada de recursos esenciales desde esta perspectiva.</p>
-                <div class="resources-list">
-                    <ul>
-                        <li><a href="#" target="_blank" rel="noopener noreferrer">Libro Esencial sobre Humanidades Digitales</a></li>
-                        <li><a href="#" target="_blank" rel="noopener noreferrer">Herramienta Útil para Gestión Bibliográfica</a></li>
-                        <li><a href="#" target="_blank" rel="noopener noreferrer">Ensayo Clave sobre Filosofía del Cine</a></li>
-                        <li><a href="#" target="_blank" rel="noopener noreferrer">Película de Terror Recomendada (Análisis)</a></li>
+        <section id="skills" class="mb-16 reveal">
+            <h2 class="section-title">Habilidades y Certificaciones</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Aptitudes Principales</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Trabajo independiente</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Editorial periodístico</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Informes</li>
                     </ul>
+                    <h3 class="text-xl font-semibold text-blue-700 mt-6 mb-3">Idiomas</h3>
+                     <p class="flex items-center"><i class="fas fa-language text-blue-500 mr-2"></i> Inglés (Full Professional)</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Certificaciones</h3>
+                    <div class="space-y-3">
+                        <div class="tag">ACTIC (nivell mitjà)</div>
+                        <div class="tag">Programming for Everybody (Python)</div>
+                        <div class="tag">The Bits and Bytes of Computer Networking</div>
+                        <div class="tag">Data analyst. Itinerario de aprendizaje</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Sección Contacto -->
-        <section id="contact" class="contact-section">
-            <div class="container">
-                <h2>Conectemos: Inicia una Conversación</h2>
-                <p>¿Listo para explorar cómo este enfoque interdisciplinario puede enriquecer tu proyecto? Contacta para colaboraciones, consultas o intercambiar ideas.</p>
-                <form action="#" method="POST" class="contact-form"> <!-- Necesitarás backend o servicio externo -->
-                    <div class="form-group">
-                        <label for="name">Nombre:</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Asunto:</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Mensaje:</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="cta-button">Enviar Mensaje</button>
-                </form>
-                <p class="alternative-contact">O escríbeme directamente a: <a href="mailto:xescotejedor@gmail.com">xescotejedor@gmail.com</a></p>
-                 <div class="social-links">
-                     <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                     <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                     <!-- Añade otros perfiles relevantes -->
-                 </div>
-            </div>
-        </section>
     </main>
 
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2025 Xesco Tejedor. Todos los derechos reservados.</p>
-            <nav class="footer-nav">
-                <a href="#">Política de Privacidad</a> | <a href="#">Términos de Uso</a>
-            </nav>
+    <footer class="bg-gray-800 text-gray-300 py-8 text-center reveal">
+        <div class="container mx-auto px-6">
+            <p class="mb-2">Contacta conmigo:</p>
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="mailto:xescodes@gmail.com" class="hover:text-blue-400 text-lg" aria-label="Correo electrónico"><i class="fas fa-envelope mr-1"></i> xescodes@gmail.com</a>
+                <span class="text-gray-500">|</span>
+                <a href="tel:+34645192817" class="hover:text-blue-400 text-lg" aria-label="Teléfono"><i class="fas fa-phone mr-1"></i> +34 645192817</a>
+            </div>
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://www.linkedin.com/in/xesco" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white" aria-label="GitHub">
+                    <i class="fab fa-github-square"></i>
+                </a>
+                <a href="https://linktr.ee/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white" aria-label="Linktree">
+                    <i class="fas fa-link"></i>
+                </a>
+            </div>
+            <p class="text-sm">&copy; <span id="currentYear"></span> Francesc Adrià Perelló. Todos los derechos reservados.</p>
+            <p class="text-xs mt-1">Diseñado con <i class="fas fa-heart text-red-500"></i> y Tailwind CSS.</p>
         </div>
     </footer>
-  
-    <!-- ****** NUEVO: Scripts de Google Translate ****** -->
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-          new google.translate.TranslateElement({
-              pageLanguage: 'es', // Idioma original de tu página
-              layout: google.translate.TranslateElement.InlineLayout.SIMPLE, // Diseño simple
-              autoDisplay: false // No mostrar banner automáticamente
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <!-- ******************************************** -->
 
-    <script src="script.js"></script>
+    <button id="scrollToTopBtn" title="Volver arriba"
+        class="fixed bottom-5 right-5 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition duration-300 z-50 hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // JavaScript for dynamic elements
+
+        // Typing animation for headline
+        const typedTextSpan = document.getElementById("typed-headline");
+        const textArray = ["Recepcionista biblioteca MNAC", "Tecnología, Cultura y Filosofía"];
+        const typingDelay = 100;
+        const erasingDelay = 50;
+        const newTextDelay = 2000; // Delay between current and next text
+        let textArrayIndex = 0;
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < textArray[textArrayIndex].length) {
+                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, typingDelay);
+            } else {
+                setTimeout(erase, newTextDelay);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, erasingDelay);
+            } else {
+                textArrayIndex++;
+                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+                setTimeout(type, typingDelay + 1100);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() { 
+            if (textArray.length) setTimeout(type, newTextDelay + 250);
+        });
+
+
+        // Intersection Observer for reveal animations
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Optional: unobserve after revealing to save resources
+                    // observer.unobserve(entry.target); 
+                } else {
+                    // Optional: remove 'visible' to re-trigger animation on scroll up
+                    // entry.target.classList.remove('visible'); 
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Update current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Scroll to Top Button
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // Smooth scroll for internal links (if nav is used)
+        // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        //     anchor.addEventListener('click', function (e) {
+        //         e.preventDefault();
+        //         document.querySelector(this.getAttribute('href')).scrollIntoView({
+        //             behavior: 'smooth'
+        //         });
+        //     });
+        // });
+
+    </script>
 </body>
 </html>
