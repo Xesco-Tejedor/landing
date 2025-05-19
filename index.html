@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Profesional - Francesc Adrià Perelló</title>
+    <!-- TÍTULO DE LA PÁGINA: Enfocado en Xesco Tejedor -->
+    <title>Xesco Tejedor | Tecnología, Cultura y Filosofía | Desarrollo Web y Análisis de Datos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles */
+        /* Tus estilos Custom (mantenerlos como están, son buenos) */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc; /* Tailwind gray-50 */
@@ -47,6 +48,9 @@
             border-radius: 9999px; /* rounded-full */
             font-size: 0.875rem; /* text-sm */
             font-weight: 500;
+            display: inline-block; /* Para que los tags se puedan espaciar mejor */
+            margin-top: 0.25rem;
+            margin-right: 0.25rem;
         }
         /* Animation for elements appearing on scroll */
         .reveal {
@@ -68,17 +72,30 @@
             50% { opacity: 0; }
             100% { opacity: 1; }
         }
+
+        /* Estilo para el subtítulo de Francesc Adrià Perelló */
+        .subtitle-fap {
+            color: #93c5fd; /* Tailwind blue-300, un poco más suave para no competir con el título principal */
+            font-size: 1.125rem; /* text-lg */
+            margin-top: -0.5rem; /* Acercarlo al título principal */
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-16 md:py-24 reveal">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4">Francesc Adrià Perelló</h1>
+            <!-- NOMBRE PRINCIPAL DE LA MARCA/PERSONAJE -->
+            <h1 class="text-4xl md:text-6xl font-bold mb-2">Xesco Tejedor</h1>
+            <!-- NOMBRE REAL QUE RESPALDA (opcional, pero recomendado para claridad) -->
+            <p class="subtitle-fap">(Francesc Adrià Perelló)</p>
+            
             <p class="text-xl md:text-2xl mb-2">
+                <!-- TEXTO ANIMADO: Enfocado en los servicios/roles de Xesco Tejedor -->
                 <span id="typed-headline"></span><span class="typed-cursor">|</span>
             </p>
-            <p class="text-lg md:text-xl mb-8 text-blue-200">Curioso Multidisciplinar</p>
+            <p class="text-lg md:text-xl mb-8 text-blue-200">Conectando Humanidades y Código | Curioso Multidisciplinar</p>
             <div class="flex justify-center space-x-6">
                 <a href="tel:+34645192817" class="icon-link hover:text-blue-300" aria-label="Teléfono">
                     <i class="fas fa-phone-square"></i>
@@ -101,116 +118,200 @@
 
     <main class="container mx-auto px-6 py-12">
 
-        <section id="about" class="mb-16 reveal">
-            <h2 class="section-title">Sobre Mí</h2>
+        <section id="intro-xesco-tejedor" class="mb-16 reveal">
+            <h2 class="section-title">Presentando a Xesco Tejedor</h2>
             <div class="card max-w-3xl mx-auto text-lg leading-relaxed text-gray-700">
-                <p>Treballar a la Biblioteca d'Història de l'Art Joaquim Folch i Torres és una aventura que forma part del meu dia a dia. Allà, he tingut l'oportunitat de combinar la meva passió per la cultura, la filosofia i la tecnologia, destacant en la interacció amb els usuaris i en l'anàlisi de dades, claus que han enriquit la meva trajectòria tant a nivell professional com personal.</p>
-                <p class="mt-4">Amb més de 20 anys d'experiència al MNAC, he après a fusionar la història, l'art i la innovació en rols tan variats com el de recepcionista i analista de dades avançat. La meva evolució m'ha portat a submergir-me en el món digital, complint un bootcamp de desenvolupador fullstack a The Bridge i obtenint certificacions en Python, xarxes i anàlisi de dades.</p>
-                <p class="mt-4">Em fascina utilitzar aquestes habilitats per connectar les persones amb la tecnologia, preservar el nostre patrimoni i impulsar noves formes de gaudir del coneixement. Actualment, mentre continuo creixent en aquest entorn tan dinàmic, estic buscant noves oportunitats per seguir innovant en tecnologia, anàlisi de dades i cultura. Qui sap, potser aquest camí ens portarà a descobrir idees que canviïn la manera com entenem el futur.</p>
+                <p>Soy <strong class="text-blue-700">Francesc Adrià Perelló</strong>, un profesional con una trayectoria de más de veinte años en el enriquecedor cruce entre la cultura, la filosofía y la atención directa al público, principalmente desde la Biblioteca d'Història de l'Art Joaquim Folch i Torres del MNAC. Esta profunda experiencia en humanidades y mi innata curiosidad por la evolución constante del conocimiento me han impulsado hacia una nueva y apasionante faceta profesional: <strong class="text-blue-700">Xesco Tejedor</strong>.</p>
+                <p class="mt-4"><strong class="text-blue-700">Xesco Tejedor</strong> representa mi compromiso con la tecnología como herramienta para innovar, conectar y preservar. A través de esta identidad, canalizo mis habilidades como <strong class="text-blue-600">desarrollador full-stack</strong> y <strong class="text-blue-600">analista de datos</strong>, fusionando la perspectiva humanística con soluciones digitales creativas y eficientes.</p>
+                <p class="mt-4">Mi objetivo es tender puentes entre el legado cultural y las posibilidades del futuro digital, buscando siempre nuevas formas de entender y mejorar cómo interactuamos con la información y la tecnología. Te invito a descubrir cómo esta combinación única de experiencia y nuevas habilidades puede aportar valor a tus proyectos.</p>
+            </div>
+        </section>
+
+        <!-- La sección Sobre Mí (Extracto del CV) ahora se puede llamar "Mi Trayectoria" o "El Camino Recorrido" -->
+        <section id="about" class="mb-16 reveal">
+            <h2 class="section-title">Mi Trayectoria (Francesc Adrià Perelló)</h2>
+            <div class="card max-w-3xl mx-auto text-lg leading-relaxed text-gray-700">
+                <p>Mi día a dia en la Biblioteca d'Història de l'Art Joaquim Folch i Torres ha sido una continua oportunidad para combinar mi pasión por la cultura, la filosofia i la tecnología. La interacción con usuarios y el análisis de datos han sido claves, enriqueciendo mi perspectiva profesional y personal.</p>
+                <p class="mt-4">Con más de 20 años de experiencia en el MNAC, he aprendido a fusionar la historia, el arte y la innovación en roles tan variados como el de recepcionista y analista de datos avanzado. Mi evolución me ha llevado a sumergirme en el mundo digital, completando un bootcamp de desarrollador fullstack en The Bridge y obteniendo certificaciones en Python, redes y análisis de datos.</p>
+                <p class="mt-4">Me fascina utilizar estas habilidades para conectar a las personas con la tecnología, preservar nuestro patrimonio e impulsar nuevas formas de disfrutar del conocimiento. Mientras continúo creciendo en este entorno dinámico, busco nuevas oportunidades para seguir innovando en tecnología, análisis de datos y cultura. Quién sabe, quizás este camino nos llevará a descubrir ideas que cambien la manera como entendemos el futuro.</p>
+            </div>
+        </section>
+
+        <!-- NUEVA SECCIÓN SUGERIDA: Servicios de Xesco Tejedor -->
+        <section id="services" class="mb-16 reveal">
+            <h2 class="section-title">¿Cómo puedo ayudarte como Xesco Tejedor?</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card">
+                    <div class="flex items-center justify-center mb-4">
+                        <i class="fas fa-laptop-code text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-blue-700 mb-2 text-center">Desarrollo Web Full-Stack</h3>
+                    <p class="text-gray-700 text-sm text-center">Creación de aplicaciones web completas, desde la interfaz de usuario (frontend) hasta la lógica del servidor y bases de datos (backend).</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-blue-700 mb-2 text-center">Análisis de Datos</h3>
+                    <p class="text-gray-700 text-sm text-center">Transformación de datos en información valiosa para la toma de decisiones, utilizando herramientas como Python y técnicas de visualización.</p>
+                </div>
+                <div class="card md:col-span-2 lg:col-span-1">
+                     <div class="flex items-center justify-center mb-4">
+                        <i class="fas fa-project-diagram text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-blue-700 mb-2 text-center">Puentes entre Cultura y Tecnología</h3>
+                    <p class="text-gray-700 text-sm text-center">Proyectos que requieren una comprensión profunda del sector cultural y su aplicación tecnológica (digitalización, bases de datos especializadas, etc.).</p>
+                </div>
             </div>
         </section>
 
         <section id="experience" class="mb-16 reveal">
-            <h2 class="section-title">Experiencia Profesional</h2>
+            <h2 class="section-title">Experiencia Profesional (Francesc Adrià Perelló)</h2>
             <div class="space-y-8">
+                <!-- Las tarjetas de experiencia se mantienen igual, ya que son el historial de FAP -->
                 <div class="card">
                     <h3 class="text-2xl font-semibold text-blue-700 mb-1">Atención al usuario de la Biblioteca de Historia del Arte Joaquim Folch i Torres (MNAC)</h3>
                     <p class="text-md font-medium text-gray-600">MagmaCultura</p>
-                    <p class="text-sm text-gray-500 mb-2">Diciembre de 2020 - Presente (4 años y 6 meses) &middot; Barcelona, Cataluña, España</p>
-                    </div>
+                    <p class="text-sm text-gray-500 mb-2">Diciembre de 2020 - Presente (4 años y 6 meses) · Barcelona, Cataluña, España</p>
+                    <!-- Podrías añadir aquí una línea sobre cómo esta experiencia se conecta con Xesco Tejedor -->
+                    <p class="mt-2 text-sm text-gray-600 italic">Aportando: Interacción avanzada con usuarios y comprensión de necesidades informativas, clave para el desarrollo UX/UI y análisis de datos.</p>
+                </div>
                 <div class="card">
                     <h3 class="text-2xl font-semibold text-blue-700 mb-1">Atención al público (MNAC)</h3>
                     <p class="text-md font-medium text-gray-600">MagmaCultura</p>
-                    <p class="text-sm text-gray-500 mb-2">Noviembre de 2004 - Diciembre de 2020 (16 años y 2 meses) &middot; Barcelona, Cataluña, España</p>
+                    <p class="text-sm text-gray-500 mb-2">Noviembre de 2004 - Diciembre de 2020 (16 años y 2 meses) · Barcelona, Cataluña, España</p>
+                     <p class="mt-2 text-sm text-gray-600 italic">Aportando: Larga experiencia en la gestión de expectativas y resolución de problemas en un entorno cultural exigente.</p>
                 </div>
                 <div class="card">
                     <h3 class="text-2xl font-semibold text-blue-700 mb-1">Atención al público (MNAC)</h3>
                     <p class="text-md font-medium text-gray-600">Manpower Link</p>
-                    <p class="text-sm text-gray-500 mb-2">Noviembre de 2003 - Noviembre de 2004 (1 año y 1 mes) &middot; Barcelona, España</p>
+                    <p class="text-sm text-gray-500 mb-2">Noviembre de 2003 - Noviembre de 2004 (1 año y 1 mes) · Barcelona, España</p>
                 </div>
             </div>
         </section>
 
         <section id="education" class="mb-16 reveal">
-            <h2 class="section-title">Educación</h2>
+            <h2 class="section-title">Educación y Formación Clave</h2>
+             <!-- La sección de educación se mantiene, priorizando lo tecnológico -->
             <div class="grid md:grid-cols-2 gap-8">
+                <div class="card border-2 border-blue-500"> <!-- Destacar el Bootcamp -->
+                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Bootcamp Fullstack Developer</h3>
+                    <p class="text-md font-medium text-gray-600">The Bridge | Digital Talent Accelerator</p>
+                    <p class="text-sm text-gray-500">Marzo de 2022 - Noviembre de 2022</p>
+                    <p class="text-gray-700 mt-1 text-sm">Desarrollo de aplicaciones web (Frontend y Backend).</p>
+                </div>
                 <div class="card">
                     <h3 class="text-xl font-semibold text-blue-700 mb-1">Máster, Formación del profesorado en Filosofía</h3>
                     <p class="text-md font-medium text-gray-600">Universidad Nacional de Educación a Distancia - U.N.E.D.</p>
                     <p class="text-sm text-gray-500">2018 - 2019</p>
                 </div>
                 <div class="card">
-                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Bootcamp Fullstack Developer</h3>
-                    <p class="text-md font-medium text-gray-600">The Bridge | Digital Talent Accelerator</p>
-                    <p class="text-sm text-gray-500">Marzo de 2022 - Noviembre de 2022</p>
-                    <p class="text-gray-700 mt-1 text-sm">Desarrollo de aplicaciones web</p>
-                </div>
-                <div class="card">
                     <h3 class="text-xl font-semibold text-blue-700 mb-1">Màster Universitari de Formació del Professorat d'Educació Secundària Obligatòria i Batxillerat</h3>
                     <p class="text-md font-medium text-gray-600">Universitat de Barcelona</p>
-                    <p class="text-sm text-gray-500">2015 - 2017 &middot; Filosofía</p>
+                    <p class="text-sm text-gray-500">2015 - 2017 · Filosofía</p>
                 </div>
                 <div class="card">
                     <h3 class="text-xl font-semibold text-blue-700 mb-1">Licenciatura, Filosofía</h3>
                     <p class="text-md font-medium text-gray-600">Universitat de Barcelona</p>
                     <p class="text-sm text-gray-500">2000 - 2014</p>
                 </div>
-                <div class="card md:col-span-2"> <h3 class="text-xl font-semibold text-blue-700 mb-1">Comunicación Audiovisual (licenciatura inacabada)</h3>
+                <div class="card md:col-span-2"> 
+                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Comunicación Audiovisual (licenciatura inacabada)</h3>
                     <p class="text-md font-medium text-gray-600">Universitat Ramon Llull</p>
-                    <p class="text-sm text-gray-500">1996 - 2000 &middot; Ciencias de la Comunicación</p>
+                    <p class="text-sm text-gray-500">1996 - 2000 · Ciencias de la Comunicación</p>
+                     <p class="mt-1 text-sm text-gray-600 italic">Fundamentos en comunicación y narrativa visual.</p>
                 </div>
             </div>
         </section>
 
         <section id="skills" class="mb-16 reveal">
-            <h2 class="section-title">Habilidades y Certificaciones</h2>
+            <h2 class="section-title">Habilidades Técnicas y Certificaciones</h2>
             <div class="grid md:grid-cols-2 gap-8">
-                <div class="card">
-                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Aptitudes Principales</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Trabajo independiente</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Editorial periodístico</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Informes</li>
+                 <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Tecnologías y Herramientas</h3>
+                    <div class="space-y-1">
+                        <!-- Aquí puedes listar tecnologías específicas del bootcamp o que manejes -->
+                        <span class="tag"><i class="fab fa-python mr-1"></i> Python (Análisis de datos, Backend)</span>
+                        <span class="tag"><i class="fab fa-js-square mr-1"></i> JavaScript (Fullstack)</span>
+                        <span class="tag"><i class="fab fa-html5 mr-1"></i> HTML5</span>
+                        <span class="tag"><i class="fab fa-css3-alt mr-1"></i> CSS3</span>
+                        <span class="tag"><i class="fas fa-database mr-1"></i> SQL/Bases de Datos</span>
+                        <span class="tag"><i class="fab fa-react mr-1"></i> React (o el framework que uses)</span>
+                        <span class="tag"><i class="fab fa-node-js mr-1"></i> Node.js (o el backend que uses)</span>
+                        <span class="tag"><i class="fab fa-git-alt mr-1"></i> Git/GitHub</span>
+                        <!-- Añade más según tus conocimientos -->
+                    </div>
+                    <h3 class="text-xl font-semibold text-blue-700 mt-6 mb-3">Competencias Clave</h3>
+                     <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Análisis y resolución de problemas</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Interacción con usuarios y UX</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Trabajo independiente y proactivo</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Comunicación efectiva (Editorial, Informes)</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Aprendizaje continuo y adaptabilidad</li>
                     </ul>
-                    <h3 class="text-xl font-semibold text-blue-700 mt-6 mb-3">Idiomas</h3>
-                     <p class="flex items-center"><i class="fas fa-language text-blue-500 mr-2"></i> Inglés (Full Professional)</p>
                 </div>
 
                 <div class="card">
-                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Certificaciones</h3>
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Certificaciones Relevantes</h3>
                     <div class="space-y-3">
-                        <div class="tag">ACTIC (nivell mitjà)</div>
-                        <div class="tag">Programming for Everybody (Python)</div>
-                        <div class="tag">The Bits and Bytes of Computer Networking</div>
-                        <div class="tag">Data analyst. Itinerario de aprendizaje</div>
+                        <div class="tag"><i class="fas fa-award mr-1"></i> Bootcamp Fullstack Developer - The Bridge</div>
+                        <div class="tag"><i class="fas fa-award mr-1"></i> Programming for Everybody (Python)</div>
+                        <div class="tag"><i class="fas fa-award mr-1"></i> Data analyst. Itinerario de aprendizaje</div>
+                        <div class="tag"><i class="fas fa-award mr-1"></i> The Bits and Bytes of Computer Networking</div>
+                        <div class="tag"><i class="fas fa-award mr-1"></i> ACTIC (nivell mitjà)</div>
                     </div>
+                    <h3 class="text-xl font-semibold text-blue-700 mt-6 mb-3">Idiomas</h3>
+                     <p class="flex items-center text-gray-700"><i class="fas fa-language text-blue-500 mr-2"></i> Catalán (Nativo)</p>
+                     <p class="flex items-center text-gray-700 mt-1"><i class="fas fa-language text-blue-500 mr-2"></i> Español (Nativo)</p>
+                     <p class="flex items-center text-gray-700 mt-1"><i class="fas fa-language text-blue-500 mr-2"></i> Inglés (Full Professional)</p>
                 </div>
             </div>
         </section>
+        
+        <!-- Opcional: Sección de Proyectos si tienes alguno en GitHub para mostrar -->
+        <!-- 
+        <section id="projects" class="mb-16 reveal">
+            <h2 class="section-title">Proyectos Destacados</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-1">Nombre del Proyecto 1</h3>
+                    <p class="text-sm text-gray-500 mb-2">Breve descripción del proyecto.</p>
+                    <div class="mb-3">
+                        <span class="tag">Tecnología 1</span> <span class="tag">Tecnología 2</span>
+                    </div>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 font-medium">Ver en GitHub <i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 font-medium ml-4">Demo <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
+        </section>
+        -->
 
     </main>
 
     <footer class="bg-gray-800 text-gray-300 py-8 text-center reveal">
         <div class="container mx-auto px-6">
-            <p class="mb-2">Contacta conmigo:</p>
-            <div class="flex justify-center space-x-4 mb-4">
+            <!-- MENSAJE DE CONTACTO ENFOCADO A XESCO TEJEDOR -->
+            <p class="mb-2 text-lg">¿Interesado en colaborar o saber más sobre Xesco Tejedor?</p>
+            <p class="mb-4">¡Hablemos!</p>
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-4 mb-4">
                 <a href="mailto:xescodes@gmail.com" class="hover:text-blue-400 text-lg" aria-label="Correo electrónico"><i class="fas fa-envelope mr-1"></i> xescodes@gmail.com</a>
-                <span class="text-gray-500">|</span>
+                <span class="text-gray-500 hidden md:inline">|</span>
                 <a href="tel:+34645192817" class="hover:text-blue-400 text-lg" aria-label="Teléfono"><i class="fas fa-phone mr-1"></i> +34 645192817</a>
             </div>
             <div class="flex justify-center space-x-6 mb-4">
-                <a href="https://www.linkedin.com/in/xesco" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white" aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/in/xesco" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white text-2xl" aria-label="LinkedIn">
                     <i class="fab fa-linkedin"></i>
                 </a>
-                <a href="https://github.com/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white" aria-label="GitHub">
+                <a href="https://github.com/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white text-2xl" aria-label="GitHub">
                     <i class="fab fa-github-square"></i>
                 </a>
-                <a href="https://linktr.ee/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white" aria-label="Linktree">
+                <a href="https://linktr.ee/xescodes" target="_blank" rel="noopener noreferrer" class="icon-link !text-gray-400 hover:!text-white text-2xl" aria-label="Linktree">
                     <i class="fas fa-link"></i>
                 </a>
             </div>
-            <p class="text-sm">&copy; <span id="currentYear"></span> Francesc Adrià Perelló. Todos los derechos reservados.</p>
-            <p class="text-xs mt-1">Diseñado con <i class="fas fa-heart text-red-500"></i> y Tailwind CSS.</p>
+            <!-- COPYRIGHT -->
+            <p class="text-sm">© <span id="currentYear"></span> Xesco Tejedor (Francesc Adrià Perelló). Todos los derechos reservados.</p>
+            <p class="text-xs mt-1">Diseñado con <i class="fas fa-heart text-red-500"></i> y Tailwind CSS. Inspirado en la colaboración.</p>
         </div>
     </footer>
 
@@ -224,7 +325,8 @@
 
         // Typing animation for headline
         const typedTextSpan = document.getElementById("typed-headline");
-        const textArray = ["Recepcionista biblioteca MNAC", "Tecnología, Cultura y Filosofía"];
+        // NUEVOS TEXTOS PARA LA ANIMACIÓN, ENFOCADOS EN XESCO TEJEDOR
+        const textArray = ["Desarrollador Full-Stack", "Analista de Datos", "Innovación Tecnológica", "Consultoría Cultura-Tech"];
         const typingDelay = 100;
         const erasingDelay = 50;
         const newTextDelay = 2000; // Delay between current and next text
@@ -258,29 +360,27 @@
         });
 
 
-        // Intersection Observer for reveal animations
+        // Intersection Observer for reveal animations (sin cambios)
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Optional: unobserve after revealing to save resources
                     // observer.unobserve(entry.target); 
                 } else {
-                    // Optional: remove 'visible' to re-trigger animation on scroll up
                     // entry.target.classList.remove('visible'); 
                 }
             });
-        }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+        }, { threshold: 0.1 }); 
 
         revealElements.forEach(el => {
             revealObserver.observe(el);
         });
 
-        // Update current year in footer
+        // Update current year in footer (sin cambios)
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Scroll to Top Button
+        // Scroll to Top Button (sin cambios)
         const scrollToTopBtn = document.getElementById('scrollToTopBtn');
         window.onscroll = function() {
             if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
@@ -292,17 +392,6 @@
         scrollToTopBtn.addEventListener('click', function() {
             window.scrollTo({top: 0, behavior: 'smooth'});
         });
-
-        // Smooth scroll for internal links (if nav is used)
-        // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        //     anchor.addEventListener('click', function (e) {
-        //         e.preventDefault();
-        //         document.querySelector(this.getAttribute('href')).scrollIntoView({
-        //             behavior: 'smooth'
-        //         });
-        //     });
-        // });
-
     </script>
 </body>
 </html>
