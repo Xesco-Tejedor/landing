@@ -6,7 +6,6 @@
     <meta name="description" content="Francesc Adrià Perelló (Xesco Tejedor) - Profesional con más de dos décadas de experiencia en el MNAC, fusionando cultura, filosofía, tecnología y análisis de datos. Ghostwriter y creador de contenido.">
     <meta name="keywords" content="Francesc Adrià Perelló, Xesco Tejedor, ghostwriter, creador de contenido, consultor cultural, humanidades digitales, escritura, storytelling, UX writing, análisis de datos, IA, Python, SQL, Power BI, Tableau, RStudio, biblioteconomía, documentación, MNAC, Barcelona, cultura, filosofía, tecnología, edición de textos, comunicación estratégica">
     <title>Francesc Adrià Perelló (Xesco Tejedor) | Cultura, Filosofía y Tecnología para tus Proyectos</title>
-    <link rel="icon" href="docs/biography.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -110,6 +109,30 @@
         .timeline-item:last-child::after {
             display: none; /* Hide line for last item */
         }
+        /* Custom CSS for the orla image */
+        .hero-title-container {
+            position: relative;
+            display: inline-block; /* To make the container wrap the content */
+        }
+        .hero-title-container .orla-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%; /* Adjust size as needed */
+            height: 120%; /* Adjust size as needed */
+            background-image: url('/docs/highly_allegorical_an.jpeg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1; /* Place it behind the text */
+            opacity: 0.7; /* Adjust opacity as needed */
+        }
+        /* Ensure the h1 text is visible over the background */
+        .hero-title-container h1 {
+            position: relative; /* To make sure z-index works if needed */
+            z-index: 1;
+        }
     </style>
 </head>
 <body class="leading-relaxed">
@@ -145,9 +168,12 @@
         <section id="hero" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-24 pt-40 md:py-32 flex items-center justify-center min-h-screen-100">
             <div class="container mx-auto px-6 text-center reveal">
                 <img src="https://via.placeholder.com/150" alt="Francesc Adrià Perelló" class="w-32 h-32 rounded-full mx-auto mb-6 shadow-lg object-cover">
-                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
-                    Francesc Adrià Perelló <span class="text-blue-200">(Xesco Tejedor)</span>: Cultura, Filosofía y Tecnología para tus Proyectos
-                </h1>
+                <div class="hero-title-container mx-auto">
+                    <div class="orla-background"></div>
+                    <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4 relative z-10">
+                        Francesc Adrià Perelló <span class="text-blue-200">(Xesco Tejedor)</span>: Cultura, Filosofía y Tecnología para tus Proyectos
+                    </h1>
+                </div>
                 <p class="text-lg md:text-xl mb-8 opacity-90">
                     Profesional con más de dos décadas de experiencia en el MNAC, fusionando humanidades y el mundo digital para crear narrativas auténticas e insights valiosos como Xesco Tejedor.
                 </p>
