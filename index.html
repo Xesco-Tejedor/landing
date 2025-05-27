@@ -229,7 +229,8 @@
                 <!-- Avatar en orla (imagen dentro del círculo) -->
                 <div class="avatar-orla-container">
                     <div class="avatar-orla">
-                        <img src="https://via.placeholder.com/150" alt="Francesc Adrià Perelló">
+                        <!-- Sustituye la URL por la de tu foto real -->
+                        <img src="docs/biography.ico" alt="Francesc Adrià Perelló">
                     </div>
                     <div class="avatar-name">
                         Francesc Adrià Perelló
@@ -259,91 +260,5 @@
         <!-- Pega aquí el resto de tu HTML sin modificar, desde <section id="about" ... hasta el final del body ... -->
         <!-- ... -->
     </main>
-
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-6 text-center text-gray-400">
-            <p>&copy; <span id="currentYear"></span> Francesc Adrià Perelló (Xesco Tejedor). Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <button id="scrollToTopBtn" class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 hidden">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-            });
-
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                });
-            });
-
-            const sections = document.querySelectorAll('main section');
-            const navLinks = document.querySelectorAll('.nav-link');
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    if (pageYOffset >= sectionTop - sectionHeight / 3) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.href.includes(current)) {
-                        link.classList.add('active');
-                    }
-                });
-                const contactSection = document.querySelector('#contact');
-                if (contactSection) {
-                    const contactLink = document.querySelector('a[href="#contact"]');
-                    if ( (window.innerHeight + window.scrollY) >= document.body.offsetHeight - contactSection.offsetHeight / 2 ) {
-                         navLinks.forEach(link => link.classList.remove('active'));
-                         if(contactLink) contactLink.classList.add('active');
-                    }
-                }
-            });
-        });
-
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        revealElements.forEach(el => {
-            revealObserver.observe(el);
-        });
-
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                scrollToTopBtn.style.display = "block";
-            } else {
-                scrollToTopBtn.style.display = "none";
-            }
-        };
-        scrollToTopBtn.addEventListener('click', function() {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        });
-    </script>
 </body>
 </html>
