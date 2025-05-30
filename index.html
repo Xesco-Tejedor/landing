@@ -128,8 +128,8 @@
 
         <section id="about" class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Breve presentación<span class="toggle-icon pl-2">▼</span></h2>
-                <div class="collapsible-content">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Breve presentación<span class="toggle-icon pl-2">▶</span></h2>
+                <div class="collapsible-content hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-6">
                         <div class="text-lg text-gray-700 space-y-6">
                             <p>
@@ -158,8 +158,8 @@
 
         <section id="services" class="py-16 md:py-24 bg-gray-50">
             <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Áreas de Experiencia y Colaboración<span class="toggle-icon pl-2">▼</span></h2>
-                <div class="collapsible-content">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Áreas de Experiencia y Colaboración<span class="toggle-icon pl-2">▶</span></h2>
+                <div class="collapsible-content hidden">
                     <p class="text-center text-lg text-gray-700 my-6 max-w-2xl mx-auto">
                         Mis habilidades, tanto como Francesc Adrià Perelló como bajo el seudónimo Xesco Tejedor, se centran en la intersección de la cultura, la comunicación, la filosofía y la tecnología.
                     </p>
@@ -225,8 +225,8 @@
 
         <section id="experience" class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Trayectoria Profesional<span class="toggle-icon pl-2">▼</span></h2>
-                <div class="collapsible-content">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Trayectoria Profesional<span class="toggle-icon pl-2">▶</span></h2>
+                <div class="collapsible-content hidden">
                     <div class="relative pl-8 sm:pl-16 md:pl-24 mt-6">
                         <div class="absolute left-0 sm:left-8 md:left-12 top-0 bottom-0 w-1 bg-gray-200"></div>
                         <div class="timeline-item">
@@ -257,8 +257,8 @@
 
         <section id="education" class="py-16 md:py-24 bg-gray-50">
             <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Formación Académica y Certificaciones<span class="toggle-icon pl-2">▼</span></h2>
-                <div class="collapsible-content">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Formación Académica y Certificaciones<span class="toggle-icon pl-2">▶</span></h2>
+                <div class="collapsible-content hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-6">
                         <div>
                             <h3 class="text-2xl font-bold text-gray-900 mb-6">Licenciaturas y Posgrados</h3>
@@ -312,8 +312,8 @@
 
         <section id="skills" class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Habilidades Clave<span class="toggle-icon pl-2">▼</span></h2>
-                <div class="collapsible-content">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Habilidades Clave<span class="toggle-icon pl-2">▶</span></h2>
+                <div class="collapsible-content hidden">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center mt-6">
                         <div class="p-6 bg-gray-50 rounded-lg shadow-md">
                             <i class="fas fa-pencil-alt text-4xl text-blue-600 mb-4"></i>
@@ -382,8 +382,8 @@
 
         <section id="contact" class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Hablemos de tu Proyecto<span class="toggle-icon pl-2">▼</span></h2>
-                <div class="collapsible-content">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Hablemos de tu Proyecto<span class="toggle-icon pl-2">▶</span></h2>
+                <div class="collapsible-content hidden">
                     <p class="text-center text-lg text-gray-700 my-6 max-w-2xl mx-auto">
                         Estoy disponible para nuevas colaboraciones y oportunidades que valoren una combinación única de humanidades y habilidades digitales avanzadas. Puedes contactar con Francesc Adrià Perelló (Xesco Tejedor) por correo, LinkedIn o el formulario.
                     </p>
@@ -494,6 +494,8 @@
                 const icon = title.querySelector('.toggle-icon');
 
                 if (contentElement && contentElement.classList.contains('collapsible-content')) {
+                    // No need to initially hide here if 'hidden' class is already in HTML
+                    // No need to set initial icon if already set in HTML
                     title.addEventListener('click', () => {
                         contentElement.classList.toggle('hidden');
                         if (icon) { 
