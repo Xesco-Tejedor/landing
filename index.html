@@ -68,12 +68,12 @@
             filter: blur(8px);
         }
         .hero-title-container { position: relative; display: inline-block; margin-top: 0.5rem; }
-        .hero-title-orla-art {
+        /* .hero-title-orla-art {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -53%);
             width: 120%; height: 120%; background-image: url('docs/highly_allegorical_an.jpeg');
             background-size: contain; background-repeat: no-repeat; background-position: center;
             z-index: 0; opacity: 0.44; pointer-events: none;
-        }
+        } */
         .hero-title-container h1 { position: relative; z-index: 1; text-shadow: 0 2px 14px rgba(0,0,0,0.08);}
         @media (max-width: 600px) {
             .avatar-orla { width: 100px; height: 100px; }
@@ -112,7 +112,7 @@
     </header>
 
     <main>
-        <section id="hero" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-24 pt-40 md:py-32 flex items-center justify-center min-h-screen-100" style="position:relative;">
+        <section id="hero" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-24 pt-40 md:py-32 flex items-center justify-center min-h-screen" style="position:relative;">
             <div class="hero-orla-bg"></div>
             <div class="container mx-auto px-6 text-center reveal" style="position:relative;z-index:2;">
                 <div class="avatar-orla-container">
@@ -350,7 +350,7 @@
                         <div class="p-6 bg-gray-50 rounded-lg shadow-md">
                             <i class="fas fa-chart-line text-4xl text-blue-600 mb-4"></i>
                             <h3 class="text-xl font-semibold text-gray-900 mb-2">Visualización e Interpretación de Datos</h3>
-                            <p class="text-700 text-sm">Capacidad para transformar datos complejos en insights comprensibles y visualmente atractivos.</p>
+                            <p class="text-gray-700 text-sm">Capacidad para transformar datos complejos en insights comprensibles y visualmente atractivos.</p>
                         </div>
                         <div class="p-6 bg-gray-50 rounded-lg shadow-md">
                             <i class="fas fa-robot text-4xl text-blue-600 mb-4"></i>
@@ -398,19 +398,19 @@
                         <form action="#" method="POST" class="space-y-6">
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
-                                <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-b[...]
+                                <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
-                                <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:borde[...]
+                                <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                             </div>
                             <div>
                                 <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Asunto</label>
-                                <input type="text" id="subject" name="subject" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:bo[...]
+                                <input type="text" id="subject" name="subject" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                             </div>
                             <div>
                                 <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Tu Mensaje</label>
-                                <textarea id="message" name="message" rows="5" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:bo[...]
+                                <textarea id="message" name="message" rows="5" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                             <button type="submit" class="w-full btn-primary font-medium text-lg">Enviar Mensaje</button>
                         </form>
@@ -459,7 +459,6 @@
                         });
                     }
                     
-
                     // Close mobile menu after clicking a link
                     if (!mobileMenu.classList.contains('hidden')) {
                         mobileMenu.classList.add('hidden');
@@ -489,20 +488,22 @@
                 
                 const contactSection = document.querySelector('#contact');
                  if (contactSection) {
-                    const contactLink = document.querySelector('a[href="#contact"]');
+                    const contactLink = document.querySelector('a[href="#contact"].nav-link'); // ensure it's a nav-link
                     // Check if the bottom of the viewport is near or past the top of the contact section
                     // OR if the very bottom of the page is reached (footer visible)
                     const isContactSectionTopVisible = window.scrollY + window.innerHeight >= contactSection.offsetTop + (contactSection.offsetHeight / 3) ;
                     const isPageBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50; // 50px threshold for footer
 
                     if (contactLink && (isContactSectionTopVisible || isPageBottom)) {
-                        if (current === 'contact' || isPageBottom && current !== 'cta' && current !== 'skills' && current !== 'education' && current !== 'experience' && current !== 'services' && current !== 'about' && current !== 'hero') {
+                         // This complex condition tries to make 'contact' active if it's the current section
+                         // OR if we are at the bottom of the page AND 'current' is not one of the specific previous sections.
+                         // This is a fallback for when scrolling to the very end of the page.
+                        if (current === 'contact' || (isPageBottom && current !== 'cta' && current !== 'skills' && current !== 'education' && current !== 'experience' && current !== 'services' && current !== 'about' && current !== 'hero')) {
                             navLinks.forEach(lnk => lnk.classList.remove('active'));
                             contactLink.classList.add('active');
                         }
                     }
                  }
-
             });
 
             // Collapsible sections script
@@ -512,7 +513,7 @@
                 const icon = title.querySelector('.toggle-icon');
 
                 if (contentElement && contentElement.classList.contains('collapsible-content')) {
-                    // Content starts hidden as per new request, icon is '▶'.
+                    // Content starts hidden (class 'hidden' in HTML), icon is '▶'.
                     title.addEventListener('click', () => {
                         contentElement.classList.toggle('hidden');
                         if (icon) { 
@@ -532,6 +533,8 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    // Optionally unobserve after revealing to save resources, if animation only happens once
+                    // observer.unobserve(entry.target); 
                 }
             });
         }, { threshold: 0.1 });
