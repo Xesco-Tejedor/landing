@@ -98,6 +98,25 @@
             visibility: visible;
             opacity: 1;
         }
+        /* Scrollbar styling (Tailwind plugin might be needed for full cross-browser or use ::-webkit-scrollbar) */
+        .scrollbar-thin { /* For Firefox */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.4) transparent; /* thumb track */
+        }
+        /* For Webkit browsers (Chrome, Safari, Edge) */
+        .embedded-lista-proyectos-contenedor::-webkit-scrollbar {
+            width: 8px; /* Ancho del scrollbar */
+        }
+        .embedded-lista-proyectos-contenedor::-webkit-scrollbar-track {
+            background: transparent; /* Color del track */
+        }
+        .embedded-lista-proyectos-contenedor::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.4); /* Color del thumb */
+            border-radius: 10px; /* Bordes redondeados del thumb */
+            border: 2px solid transparent; /* Espacio alrededor del thumb (opcional) */
+            background-clip: content-box;  /* Evita que el borde se pinte sobre el thumb */
+        }
+
 
     </style>
 </head>
@@ -165,7 +184,7 @@
                             </sup>:
                         </h3>
                         <div id="lista-proyectos-scroll" 
-                             class="max-h-48 overflow-y-auto border border-white/30 rounded-md p-4 bg-black/10 text-left shadow-inner scrollbar-thin scrollbar-thumb-white/40 scrollbar-track-transparent scrollbar-thumb-rounded">
+                             class="embedded-lista-proyectos-contenedor max-h-48 overflow-y-auto border border-white/30 rounded-md p-4 bg-black/10 text-left shadow-inner scrollbar-thin">
                             <!-- Los proyectos se añadirán aquí por JavaScript -->
                         </div>
                     </div>
@@ -561,7 +580,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // observer.unobserve(entry.target); // Opcional: dejar de observar una vez revelado
                 }
             });
         }, { threshold: 0.1 });
@@ -588,55 +606,55 @@
             });
         }
 
-        // --- START OF SCRIPT FOR "PROYECTOS ANTERIORES" LIST ---
-        const titulosSurrealistasBase = [
-            "Desarrollo del Necronomicón Interactivo en COBOL",
-            "Simulador de Invocación de Cthulhu para Smartwatches (Tic-Tac-Thulhu)",
-            "Port de 'Doom' a una tostadora inteligente con detección de demonios",
-            "Generador de excusas para el Dungeon Master basadas en física cuántica",
-            "RPG de terror psicológico ambientado en una hoja de cálculo de Excel",
-            "Filtro de Snapchat que te convierte en un Cenobita de Hellraiser",
-            "IA que escribe finales alternativos para Silent Hill 2 con más perros",
-            "Extensión de navegador que traduce todo a Élfico Oscuro (Drow)",
-            "Videojuego de sigilo donde eres un Gremlin saboteando un avión de los 80",
-            "App de citas para Licántropos y Vampiros: 'Love Bites'",
-            "Sistema de crafteo de pociones usando solo emojis y lógica booleana",
-            "Estudio sobre la dieta de los Mimics en entornos urbanos",
-            "Traductor en tiempo real de los susurros de los Dioses Antiguos",
-            "Un videojuego tipo 'Tamagotchi' pero cuidas a un bebé Demogorgon",
-            "Algoritmo para predecir qué personaje de terror morirá primero en una película",
-            "Guía de supervivencia para apocalipsis zombie escrita por un contable",
-            "Juego de ritmo donde controlas los tentáculos de un Kraken DJ",
-            "Simulador de vida de un PNJ (Personaje No Jugador) consciente de su existencia",
-            "Asistente virtual con la personalidad de GLaDOS (Portal)",
-            "Videojuego de cocina donde los ingredientes son monstruos de D&D"
+        // --- START OF SCRIPT FOR "PROYECTOS ANTERIORES" LIST (COMBINATORIAL GENERATOR) ---
+        const titleParts = {
+            adjectives: ["Arcano", "Interdimensional", "Cuántico", "Olvidado", "Prohibido", "Digital", "Analógico", "Nocturno", "Ancestral", "Futurista", "Susurrante", "Cifrado", "Espectral", "Cronológico", "Paradójico", "Sintético", "Algorítmico", "Etéreo", "Psiónico", " Fractal"],
+            nouns: ["Necronomicón", "Simulacro", "Portal", "Algoritmo", "Grimorio", "Artefacto", "Motor", "Oráculo", "Archivo", "Protocolo", "Manuscrito", "Código", "Reliquia", "Laberinto", "Espectro", "Teorema", "Constructor", "Nexo", "Paradigma", "Crisol"],
+            actions: ["Invocación", "Traducción", "Decodificación", "Visualización", "Predicción", "Generación", "Análisis", "Exploración", "Manifestación", "Síntesis", "Revelación", "Ocultación", "Iteración", "Descifrado", "Modelado", "Simulación"],
+            subjects: ["Cthulhu", "Dioses Antiguos", "Entidades Cósmicas", "Geometrías Imposibles", "Datos Perdidos", "Sueños Lúcidos", "Realidades Alternas", "Conciencias Artificiales", "Sombras del Pasado", "Ecos del Futuro", "Secretos Olvidados", "Misterios Velados", "El Inconsciente Colectivo", "Vacío Primordial"],
+            contexts: ["para Smartwatches", "en COBOL", "usando Lógica Booleana", "en Hojas de Cálculo", "para la Web Semántica", "con Realidad Aumentada", "impulsado por IA", "a través del Tiempo", "más allá del Velo", "en el Espacio Profundo", "durante la Convergencia", "bajo la Luna Negra", "en Sistemas Distribuidos", "para Entornos Virtuales"],
+            outcomes: ["con más Perros", "que revela la Verdad", "que susurra Secretos", "y su Impacto en la Realidad", "desafiando la Percepción", "alterando el Espacio-Tiempo", "para Dominar el Caos", "para Entender el Vacío", "aplicado a la Nada", "y sus Consecuencias Imprevistas", "generando Paradojas", "abriendo Nuevas Dimensiones"]
+        };
+
+        const titleTemplates = [
+            (p) => `${getRandomElement(p.adjectives)} ${getRandomElement(p.nouns)} para la ${getRandomElement(p.actions)} de ${getRandomElement(p.subjects)}`,
+            (p) => `El ${getRandomElement(p.nouns)} ${getRandomElement(p.adjectives)} de ${getRandomElement(p.subjects)} ${getRandomElement(p.contexts)}`,
+            (p) => `${getRandomElement(p.actions)} ${getRandomElement(p.adjectives)} de ${getRandomElement(p.subjects)} mediante ${getRandomElement(p.nouns)} ${getRandomElement(p.contexts)}`,
+            (p) => `Un ${getRandomElement(p.nouns)} ${getRandomElement(p.contexts)} para la ${getRandomElement(p.actions)} ${getRandomElement(p.adjectives)}`,
+            (p) => `Proyecto ${getRandomElement(p.adjectives)}: ${getRandomElement(p.nouns)} de ${getRandomElement(p.subjects)} ${getRandomElement(p.outcomes)}`,
+            (p) => `Desarrollo de un ${getRandomElement(p.nouns)} ${getRandomElement(p.adjectives)} para ${getRandomElement(p.actions)} ${getRandomElement(p.contexts)}`,
+            (p) => `Análisis ${getRandomElement(p.adjectives)} del ${getRandomElement(p.nouns)} de ${getRandomElement(p.subjects)} ${getRandomElement(p.outcomes)}`,
+            (p) => `${getRandomElement(p.subjects)}: Un Estudio sobre su ${getRandomElement(p.actions)} con ${getRandomElement(p.nouns)} ${getRandomElement(p.adjectives)}`,
+            (p) => `La ${getRandomElement(p.actions)} ${getRandomElement(p.adjectives)}: ${getRandomElement(p.nouns)} de ${getRandomElement(p.subjects)} ${getRandomElement(p.contexts)}`,
+            (p) => `Implementación de ${getRandomElement(p.nouns)} ${getRandomElement(p.adjectives)} para la ${getRandomElement(p.actions)} en ${getRandomElement(p.subjects)}`
         ];
+        
+        const generatedTitles = new Set();
+        const MAX_GENERATION_ATTEMPTS = 100; // Increased attempts for safety with more complex combinations
 
-        let titulosDisponibles = [];
-        let indiceProximoTitulo = 0;
-
-        function mezclarArray(array) {
-            const nuevoArray = [...array];
-            for (let i = nuevoArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [nuevoArray[i], nuevoArray[j]] = [nuevoArray[j], nuevoArray[i]];
-            }
-            return nuevoArray;
+        function getRandomElement(arr) {
+            if (!arr || arr.length === 0) return ""; // Safety check
+            return arr[Math.floor(Math.random() * arr.length)];
         }
 
-        function rellenarTitulosDisponibles() {
-            titulosDisponibles = mezclarArray(titulosSurrealistasBase);
-            indiceProximoTitulo = 0;
+        function generateUniqueTitle() {
+            let attempts = 0;
+            while (attempts < MAX_GENERATION_ATTEMPTS) {
+                const templateFn = getRandomElement(titleTemplates);
+                const newTitle = templateFn(titleParts); // Pass the whole titleParts object
+
+                if (!generatedTitles.has(newTitle)) {
+                    generatedTitles.add(newTitle);
+                    return newTitle;
+                }
+                attempts++;
+            }
+            console.warn(`No se pudo generar un título único después de ${MAX_GENERATION_ATTEMPTS} intentos. Total únicos generados: ${generatedTitles.size}`);
+            return `Proyecto Arcano Ultra-Secreto #${Date.now()}${Math.random()}`; 
         }
 
         function obtenerSiguienteTitulo() {
-            if (titulosDisponibles.length === 0 || indiceProximoTitulo >= titulosDisponibles.length) {
-                rellenarTitulosDisponibles();
-            }
-            if (titulosDisponibles.length === 0) return "No hay más grimorios en la biblioteca...";
-            const titulo = titulosDisponibles[indiceProximoTitulo];
-            indiceProximoTitulo++;
-            return titulo;
+            return generateUniqueTitle();
         }
 
         function agregarProyectoAlDOM(container) {
@@ -655,7 +673,6 @@
             }
         }
 
-        // Este listener es específico para la lista de proyectos y se ejecuta cuando el DOM está listo.
         document.addEventListener('DOMContentLoaded', function() {
             const contenedorProyectos = document.getElementById('lista-proyectos-scroll');
             const ultimoTrabajoLink = document.querySelector('.ultimo-trabajo a');
@@ -665,12 +682,14 @@
             }
 
             if (contenedorProyectos) {
-                rellenarTitulosDisponibles(); 
-                cargarProyectos(3, contenedorProyectos); // Cargar 3 proyectos iniciales dinámicamente
+                // Cargar suficientes proyectos para que sea probable que aparezca el scrollbar inicialmente
+                // Ajusta este número según el tamaño de fuente y padding.
+                cargarProyectos(5, contenedorProyectos); 
 
                 contenedorProyectos.addEventListener('scroll', function() {
                     const { scrollTop, scrollHeight, clientHeight } = contenedorProyectos;
-                    if (scrollTop + clientHeight >= scrollHeight - 10) { 
+                    // Cargar más si el scroll está cerca del final Y si realmente hay más espacio para hacer scroll
+                    if (scrollHeight > clientHeight && scrollTop + clientHeight >= scrollHeight - 20) { // -20 para un umbral un poco mayor
                         cargarProyectos(1, contenedorProyectos); 
                     }
                 });
