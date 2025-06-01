@@ -74,19 +74,6 @@
             .hero-title-container { font-size: 1.6rem; }
         }
 
-        /* Styles for embedded portfolio section from index.html, adapted for landing.html hero */
-        .embedded-portfolio-link {
-            /* Tailwind classes will be applied directly on the <a> tag */
-        }
-        .embedded-portfolio-projects-title {
-             /* Tailwind classes will be applied directly on the <h3> tag */
-        }
-        .embedded-lista-proyectos-contenedor {
-            /* Tailwind classes will be applied directly on the <div> tag */
-        }
-        .trabajo-antiguo { /* This class is added by JS, so we style it here or use Tailwind on creation if possible */
-            /* Tailwind classes will be applied directly on the <p> elements created by JS */
-        }
         /* Tooltip style for the asterisk */
         .tooltip-text-custom {
             visibility: hidden;
@@ -98,31 +85,105 @@
             visibility: visible;
             opacity: 1;
         }
-        /* Scrollbar styling (Tailwind plugin might be needed for full cross-browser or use ::-webkit-scrollbar) */
-        .scrollbar-thin { /* For Firefox */
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.4) transparent; /* thumb track */
+        
+        /* Scrollbar styling */
+        .scrollbar-thin {
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: rgba(255,255,255,0.4) transparent; /* For Firefox */
         }
-        /* For Webkit browsers (Chrome, Safari, Edge) */
-        .embedded-lista-proyectos-contenedor::-webkit-scrollbar {
-            width: 8px; /* Ancho del scrollbar */
+        /* For Webkit browsers (Chrome, Safari, Edge) - HORIZONTAL */
+        .horizontal-carousel::-webkit-scrollbar {
+            height: 8px; 
         }
-        .embedded-lista-proyectos-contenedor::-webkit-scrollbar-track {
-            background: transparent; /* Color del track */
+        .horizontal-carousel::-webkit-scrollbar-track {
+            background: transparent; 
         }
-        .embedded-lista-proyectos-contenedor::-webkit-scrollbar-thumb {
-            background-color: rgba(255,255,255,0.4); /* Color del thumb */
-            border-radius: 10px; /* Bordes redondeados del thumb */
-            border: 2px solid transparent; /* Espacio alrededor del thumb (opcional) */
-            background-clip: content-box;  /* Evita que el borde se pinte sobre el thumb */
+        .horizontal-carousel::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.4); 
+            border-radius: 10px; 
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        /* For Webkit browsers (Chrome, Safari, Edge) - VERTICAL */
+        .vertical-carousel::-webkit-scrollbar {
+            width: 8px; /* Width for vertical scrollbar */
+        }
+        .vertical-carousel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .vertical-carousel::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.4);
+            border-radius: 10px;
+            border: 2px solid transparent; /* Keep this for the "thin" effect */
+            background-clip: content-box;
         }
 
 
+        /* Styles for the transition modal */
+        #transitionModal {
+            background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+        }
+        .hourglass-icon { /* Simple CSS hourglass */
+            display: inline-block;
+            width: 30px;
+            height: 50px;
+            border-top: 5px solid white;
+            border-bottom: 5px solid white;
+            box-sizing: border-box;
+            position: relative;
+            animation: hourglass-spin 2s infinite linear;
+        }
+        .hourglass-icon::before,
+        .hourglass-icon::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            box-sizing: border-box;
+        }
+        .hourglass-icon::before {
+            top: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        .hourglass-icon::after {
+            bottom: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid white;
+        }
+        @keyframes hourglass-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .modal-content-custom {
+            background: linear-gradient(145deg, #3b82f6, #7c3aed); /* Gradient background for modal content */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body class="leading-relaxed">
 
+    <!-- Transition Modal HTML (initially hidden) -->
+    <div id="transitionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="modal-content-custom text-white p-8 rounded-lg shadow-2xl text-center max-w-md w-full">
+            <div class="hourglass-icon mb-6 mx-auto"></div>
+            <h2 class="text-2xl font-bold mb-3">Un momento, por favor...</h2>
+            <p class="mb-2 text-lg">Estás siendo redirigido al espacio de Francesc Adrià Perelló, donde la seriedad (y el código) reinan.</p>
+            <p class="text-sm opacity-80 mb-6">Redireccionando en <span id="countdownTimer">7</span> segundos...</p>
+            <hr class="border-white/30 my-6">
+            <p class="mb-3 text-md">Pero si el caos creativo de Xesco Tejedor es lo que realmente te llama...</p>
+            <a href="#contact" id="contactXescoLink" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-5 rounded-md transition-colors duration-300 shadow-md">¡Hablemos de locuras!</a>
+        </div>
+    </div>
+
     <header class="bg-white py-4 fixed w-full z-10 navbar-shadow">
+        <!-- ... NAV BAR (no changes needed here) ... -->
         <nav class="container mx-auto px-6 flex justify-between items-center">
             <a href="#hero" class="text-2xl font-bold text-gray-900">Francesc Adrià Perelló/<span class="text-blue-600">/Xesco Tejedor</span></a>
             <div class="hidden md:flex space-x-8">
@@ -165,10 +226,10 @@
                     Profesional con más de dos décadas de experiencia en el MNAC, fusionando humanidades y el mundo digital para crear narrativas auténticas e insights valiosos como Xesco Tejedor.
                 </p>
 
-                <!-- START OF EMBEDDED CONTENT from index.html -->
-                <div class="my-8 w-full max-w-lg mx-auto">
+                <!-- START OF EMBEDDED CONTENT -->
+                <div class="my-8 w-full max-w-2xl mx-auto"> 
                     <div class="ultimo-trabajo mb-6">
-                        <a href="TU_ENLACE_A_GITHUB_AQUI" target="_blank" rel="noopener noreferrer"
+                        <a href="https://github.com/Xesco-Tejedor/" id="ultimoTrabajoLink" target="_blank" rel="noopener noreferrer"
                            class="inline-block py-3 px-6 bg-white/20 border border-white/40 rounded-md text-white font-semibold no-underline hover:bg-white/30 transition-colors duration-300 text-lg shadow-md hover:shadow-lg">
                             Último trabajo
                         </a>
@@ -183,8 +244,9 @@
                                 </span>
                             </sup>:
                         </h3>
+                        <!-- MODIFIED for Vertical Carousel with reduced height -->
                         <div id="lista-proyectos-scroll" 
-                             class="embedded-lista-proyectos-contenedor max-h-48 overflow-y-auto border border-white/30 rounded-md p-4 bg-black/10 text-left shadow-inner scrollbar-thin">
+                             class="vertical-carousel flex flex-col space-y-4 overflow-y-auto max-h-48 pb-4 scrollbar-thin bg-black/10 p-4 rounded-md shadow-inner">
                             <!-- Los proyectos se añadirán aquí por JavaScript -->
                         </div>
                     </div>
@@ -198,6 +260,8 @@
             </div>
         </section>
 
+        <!-- ... OTHER SECTIONS (About, Services, Experience, Education, Skills, Contact) ... -->
+        
         <section id="about" class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-6 reveal">
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Breve presentación<span class="toggle-icon pl-2">▶</span></h2>
@@ -221,7 +285,7 @@
                             </p>
                         </div>
                         <div class="text-center">
-                            <img src="https://via.placeholder.com/400" alt="Francesc Adrià Perelló perfil" class="rounded-lg shadow-xl mx-auto">
+                            <img src="https://raw.githubusercontent.com/Xesco-Tejedor/landing/main/docs/avatar.webp" alt="Francesc Adrià Perelló perfil" class="rounded-lg shadow-xl mx-auto w-full max-w-md h-auto object-cover">
                         </div>
                     </div>
                 </div>
@@ -500,6 +564,7 @@
     <button id="scrollToTopBtn" class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 hidden">
         <i class="fas fa-arrow-up"></i>
     </button>
+
     <script>
         // Script principal de la página
         document.addEventListener('DOMContentLoaded', function() {
@@ -514,13 +579,27 @@
 
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(this.getAttribute('href'));
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    // If the link is the "Contact Xesco" link in the modal, just close modal and scroll
+                    if (this.id === 'contactXescoLink') {
+                        e.preventDefault();
+                        closeTransitionModal();
+                        const targetElement = document.querySelector(this.getAttribute('href'));
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        return; // Stop further processing for this link
                     }
-                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
+
+                    // Standard smooth scroll for other hash links
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(this.getAttribute('href'));
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
                     }
                 });
             });
@@ -551,7 +630,7 @@
                     const isContactSectionTopVisible = window.scrollY + window.innerHeight >= contactSection.offsetTop + (contactSection.offsetHeight / 3) ;
                     const isPageBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50;
                     if (contactLink && (isContactSectionTopVisible || isPageBottom)) {
-                        if (current === 'contact' || (isPageBottom && current !== 'cta' && current !== 'skills' && current !== 'education' && current !== 'experience' && current !== 'services' && current !== 'about')) {
+                         if (current === 'contact' || (isPageBottom && current !== 'cta' && current !== 'skills' && current !== 'education' && current !== 'experience' && current !== 'services' && current !== 'about' && current !== 'hero' )) {
                             navLinks.forEach(lnk => lnk.classList.remove('active'));
                             contactLink.classList.add('active');
                         }
@@ -572,7 +651,56 @@
                     });
                 }
             });
-        });
+
+            // --- Transition Modal Logic ---
+            const transitionModal = document.getElementById('transitionModal');
+            const ultimoTrabajoBtn = document.getElementById('ultimoTrabajoLink');
+            const countdownTimerEl = document.getElementById('countdownTimer');
+            const contactXescoLink = document.getElementById('contactXescoLink');
+            let countdownInterval;
+            let redirectTimeout;
+
+            function showTransitionModal(targetUrl) {
+                transitionModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scroll
+
+                let timeLeft = 7; 
+                countdownTimerEl.textContent = timeLeft;
+
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    countdownTimerEl.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                    }
+                }, 1000);
+
+                redirectTimeout = setTimeout(() => {
+                    window.open(targetUrl, '_blank'); // Open in new tab
+                    closeTransitionModal();
+                }, timeLeft * 1000);
+            }
+
+            function closeTransitionModal() {
+                transitionModal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scroll
+                clearInterval(countdownInterval);
+                clearTimeout(redirectTimeout);
+            }
+
+            if (ultimoTrabajoBtn && transitionModal) {
+                ultimoTrabajoBtn.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    const targetUrl = this.href;
+                     if (targetUrl === "TU_ENLACE_A_GITHUB_AQUI" || targetUrl.endsWith("TU_ENLACE_A_GITHUB_AQUI")) {
+                        console.warn("El enlace de 'Último trabajo' aún apunta a 'TU_ENLACE_A_GITHUB_AQUI'. Por favor, actualízalo.");
+                        window.open(targetUrl, '_blank'); 
+                        return;
+                    }
+                    showTransitionModal(targetUrl);
+                });
+            }
+        }); // End DOMContentLoaded for main scripts
 
         // Animaciones de revelado
         const revealElements = document.querySelectorAll('.reveal');
@@ -611,7 +739,7 @@
             adjectives: ["Arcano", "Interdimensional", "Cuántico", "Olvidado", "Prohibido", "Digital", "Analógico", "Nocturno", "Ancestral", "Futurista", "Susurrante", "Cifrado", "Espectral", "Cronológico", "Paradójico", "Sintético", "Algorítmico", "Etéreo", "Psiónico", " Fractal"],
             nouns: ["Necronomicón", "Simulacro", "Portal", "Algoritmo", "Grimorio", "Artefacto", "Motor", "Oráculo", "Archivo", "Protocolo", "Manuscrito", "Código", "Reliquia", "Laberinto", "Espectro", "Teorema", "Constructor", "Nexo", "Paradigma", "Crisol"],
             actions: ["Invocación", "Traducción", "Decodificación", "Visualización", "Predicción", "Generación", "Análisis", "Exploración", "Manifestación", "Síntesis", "Revelación", "Ocultación", "Iteración", "Descifrado", "Modelado", "Simulación"],
-            subjects: ["Cthulhu", "Dioses Antiguos", "Entidades Cósmicas", "Geometrías Imposibles", "Datos Perdidos", "Sueños Lúcidos", "Realidades Alternas", "Conciencias Artificiales", "Sombras del Pasado", "Ecos del Futuro", "Secretos Olvidados", "Misterios Velados", "El Inconsciente Colectivo", "Vacío Primordial"],
+            subjects: ["Cthulhu", "Dioses Antiguos", "Entidades Cósmicas", "Geometrías Imposibles", "Datos Perdidos", "Sueños Lúcidos", "Realidades Alternas", "Conciencias Artificiales", "Sombras del Pasto", "Ecos del Futuro", "Secretos Olvidados", "Misterios Velados", "El Inconsciente Colectivo", "Vacío Primordial"],
             contexts: ["para Smartwatches", "en COBOL", "usando Lógica Booleana", "en Hojas de Cálculo", "para la Web Semántica", "con Realidad Aumentada", "impulsado por IA", "a través del Tiempo", "más allá del Velo", "en el Espacio Profundo", "durante la Convergencia", "bajo la Luna Negra", "en Sistemas Distribuidos", "para Entornos Virtuales"],
             outcomes: ["con más Perros", "que revela la Verdad", "que susurra Secretos", "y su Impacto en la Realidad", "desafiando la Percepción", "alterando el Espacio-Tiempo", "para Dominar el Caos", "para Entender el Vacío", "aplicado a la Nada", "y sus Consecuencias Imprevistas", "generando Paradojas", "abriendo Nuevas Dimensiones"]
         };
@@ -630,10 +758,10 @@
         ];
         
         const generatedTitles = new Set();
-        const MAX_GENERATION_ATTEMPTS = 100; // Increased attempts for safety with more complex combinations
+        const MAX_GENERATION_ATTEMPTS = 100; 
 
         function getRandomElement(arr) {
-            if (!arr || arr.length === 0) return ""; // Safety check
+            if (!arr || arr.length === 0) return ""; 
             return arr[Math.floor(Math.random() * arr.length)];
         }
 
@@ -641,7 +769,7 @@
             let attempts = 0;
             while (attempts < MAX_GENERATION_ATTEMPTS) {
                 const templateFn = getRandomElement(titleTemplates);
-                const newTitle = templateFn(titleParts); // Pass the whole titleParts object
+                const newTitle = templateFn(titleParts); 
 
                 if (!generatedTitles.has(newTitle)) {
                     generatedTitles.add(newTitle);
@@ -660,10 +788,13 @@
         function agregarProyectoAlDOM(container) {
             const titulo = obtenerSiguienteTitulo();
             if (titulo && container) {
+                const divElement = document.createElement('div');
+                divElement.className = 'trabajo-antiguo w-full p-3 bg-white/10 border border-white/20 rounded-md shadow-lg text-sm text-white opacity-90 italic';
+                
                 const pElement = document.createElement('p');
-                pElement.className = 'trabajo-antiguo text-sm text-white opacity-90 italic mb-2 p-2 bg-white/5 border-l-2 border-white/30 rounded-sm text-left last:mb-0';
                 pElement.textContent = titulo;
-                container.appendChild(pElement);
+                divElement.appendChild(pElement);
+                container.appendChild(divElement);
             }
         }
 
@@ -675,22 +806,14 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const contenedorProyectos = document.getElementById('lista-proyectos-scroll');
-            const ultimoTrabajoLink = document.querySelector('.ultimo-trabajo a');
-
-            if (ultimoTrabajoLink && ultimoTrabajoLink.getAttribute('href') === "TU_ENLACE_A_GITHUB_AQUI") {
-                console.warn("Recuerda cambiar 'TU_ENLACE_A_GITHUB_AQUI' en el enlace de 'Último trabajo'.");
-            }
 
             if (contenedorProyectos) {
-                // Cargar suficientes proyectos para que sea probable que aparezca el scrollbar inicialmente
-                // Ajusta este número según el tamaño de fuente y padding.
-                cargarProyectos(5, contenedorProyectos); 
+                cargarProyectos(8, contenedorProyectos); 
 
                 contenedorProyectos.addEventListener('scroll', function() {
                     const { scrollTop, scrollHeight, clientHeight } = contenedorProyectos;
-                    // Cargar más si el scroll está cerca del final Y si realmente hay más espacio para hacer scroll
-                    if (scrollHeight > clientHeight && scrollTop + clientHeight >= scrollHeight - 20) { // -20 para un umbral un poco mayor
-                        cargarProyectos(1, contenedorProyectos); 
+                    if (scrollHeight > clientHeight && scrollTop + clientHeight >= scrollHeight - 50) { 
+                        cargarProyectos(2, contenedorProyectos); 
                     }
                 });
             } else {
