@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"><script>
+    window[Symbol.for('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}')] = new (class{constructor(e,t){this.name=e,this.destination=t,this.serverListeners={},this.bgRequestsListeners={},this.bgEventsListeners={},window.addEventListener("message",(e=>{const t=e.data,s=!(t.destination&&t.destination===this.name),n=!t.event;if(!s&&!n)if("MARIO_POST_SERVER__BG_RESPONSE"===t.event){const e=t.args;if(this.hasBgRequestListener(e.requestId)){try{this.bgRequestsListeners[e.requestId](e.response)}catch(e){}delete this.bgRequestsListeners[e.requestId]}}else if("MARIO_POST_SERVER__BG_EVENT"===t.event){const e=t.args;if(this.hasBgEventListener(e.event))try{this.bgEventsListeners[t.id](e.payload)}catch(e){}}else if(this.hasServerListener(t.event))try{this.serverListeners[t.event](t.args)}catch(e){}}))}emitToServer(e,t){const s=this.generateUIID(),n={args:t,destination:this.destination,event:e,id:s};return window.postMessage(n,location.origin),s}emitToBg(e,t){const s=this.generateUIID(),n={bgEventName:e,requestId:s,args:t};return this.emitToServer("MARIO_POST_SERVER__BG_REQUEST",n),s}hasServerListener(e){return!!this.serverListeners[e]}hasBgRequestListener(e){return!!this.bgRequestsListeners[e]}hasBgEventListener(e){return!!this.bgEventsListeners[e]}fromServerEvent(e,t){this.serverListeners[e]=t}fromBgEvent(e,t){this.bgEventsListeners[e]=t}fromBgResponse(e,t){this.bgRequestsListeners[e]=t}generateUIID(){return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,(function(e){const t=16*Math.random()|0;return("x"===e?t:3&t|8).toString(16)}))}})('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}', 'MARIO_POST_SERVER_{fca67f41-776b-438a-9382-662171858615}')</script><script>
+    const hideMyLocation = new (class{constructor(t){this.clientKey=t,this.watchIDs={},this.client=window[Symbol.for(t)];const e=navigator.geolocation.getCurrentPosition,o=navigator.geolocation.watchPosition,n=navigator.geolocation.clearWatch,i=this;navigator.geolocation.getCurrentPosition=function(t,o,n){i.handle(e,"GET",t,o,n)},navigator.geolocation.watchPosition=function(t,e,n){return i.handle(o,"WATCH",t,e,n)},navigator.geolocation.clearWatch=function(t){if(-1===t)return;const e=i.watchIDs[t];return delete i.watchIDs[t],n.apply(this,[e])}}handle(t,e,o,n,i){const a=this.client.emitToBg("HIDE_MY_LOCATION__GET_LOCATION");let r=this.getRandomInt(0,1e5);if(this.client.fromBgResponse(a,(a=>{if(a.enabled)if("SUCCESS"===a.status){const t=this.map(a);o(t)}else{const t=this.errorObj();n(t),r=-1}else{const a=[o,n,i],c=t.apply(navigator.geolocation,a);"WATCH"===e&&(this.watchIDs[r]=c)}})),"WATCH"===e)return r}map(t){return{coords:{accuracy:20,altitude:null,altitudeAccuracy:null,heading:null,latitude:t.latitude,longitude:t.longitude,speed:null},timestamp:Date.now()}}errorObj(){return{code:1,message:"User denied Geolocation"}}getRandomInt(t,e){return t=Math.ceil(t),e=Math.floor(e),Math.floor(Math.random()*(e-t+1))+t}})('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}')
+  </script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Francesc Adrià Perelló (Xesco Tejedor) - Profesional con más de dos décadas de experiencia, fusionando cultura, filosofía, tecnología y análisis de datos.">
     <meta name="keywords" content="Francesc Adrià Perelló, Xesco Tejedor, ghostwriter, creador de contenido, consultor cultural, humanidades digitales, escritura, storytelling, UX writing, análisis de datos, IA">
     <title>Francesc Adrià Perelló (Xesco Tejedor)</title>
-    <link rel="icon" href="docs/X.png" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="Francesc%20Adri%C3%A0%20Perell%C3%B3%20(Xesco%20Tejedor)_files/3.4.16"></script>
+    <link rel="stylesheet" href="Francesc%20Adri%C3%A0%20Perell%C3%B3%20(Xesco%20Tejedor)_files/all.min.css">
+    <link href="Francesc%20Adri%C3%A0%20Perell%C3%B3%20(Xesco%20Tejedor)_files/css2.css" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1f2937; }
@@ -57,21 +59,15 @@
             box-shadow: 0 4px 16px rgba(30,64,175,0.18);
             background: linear-gradient(135deg, #4481eb 0%, #7f53ac 100%);
             display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative;
-            z-index: 1; /* --- AÑADIDO para que esté sobre el fondo --- */
+            z-index: 1;
         }
         .avatar-orla img {
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
         .hero-orla-bg {
             position: absolute;
-            /* --- MODIFICADO para centrarse en su nuevo contenedor --- */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            height: 320px;
-            z-index: 0;
-            pointer-events: none;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 320px; height: 320px; z-index: 0; pointer-events: none;
             opacity: 0.42;
             background: radial-gradient(circle at 50% 50%, #fff 0%, #7f53ac 55%, transparent 90%);
             filter: blur(8px);
@@ -83,100 +79,70 @@
             .hero-orla-bg { width: 120px; height: 120px; top: 18px; }
             .hero-title-container { font-size: 1.6rem; }
         }
-
-        /* Tooltip style for the asterisk */
         .tooltip-text-custom {
-            visibility: hidden;
-            opacity: 0;
+            visibility: hidden; opacity: 0;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            pointer-events: none; /* So it doesn't interfere with hover */
+            pointer-events: none;
         }
         .group:hover .tooltip-text-custom {
-            visibility: visible;
-            opacity: 1;
+            visibility: visible; opacity: 1;
         }
-        
-        /* Scrollbar styling */
         .scrollbar-thin {
-            scrollbar-width: thin; /* For Firefox */
-            scrollbar-color: rgba(255,255,255,0.4) transparent; /* For Firefox */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.4) transparent;
         }
-        /* For Webkit browsers (Chrome, Safari, Edge) - HORIZONTAL */
-        .horizontal-carousel::-webkit-scrollbar {
-            height: 8px; 
+        .horizontal-carousel {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: auto;
         }
-        .horizontal-carousel::-webkit-scrollbar-track {
-            background: transparent; 
+        .gallery-item {
+            scroll-snap-align: center;
         }
+        .horizontal-carousel::-webkit-scrollbar { height: 8px; }
+        .horizontal-carousel::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
         .horizontal-carousel::-webkit-scrollbar-thumb {
-            background-color: rgba(255,255,255,0.4); 
-            border-radius: 10px; 
-            border: 2px solid transparent;
-            background-clip: content-box;
+            background-color: rgba(255, 255, 255, 0.5); border-radius: 10px;
+            border: 2px solid transparent; background-clip: content-box;
         }
-
-        /* For Webkit browsers (Chrome, Safari, Edge) - VERTICAL */
-        .vertical-carousel::-webkit-scrollbar {
-            width: 8px; /* Width for vertical scrollbar */
-        }
-        .vertical-carousel::-webkit-scrollbar-track {
-            background: transparent;
-        }
+        .horizontal-carousel::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.7); }
+        .vertical-carousel::-webkit-scrollbar { width: 8px; }
+        .vertical-carousel::-webkit-scrollbar-track { background: transparent; }
         .vertical-carousel::-webkit-scrollbar-thumb {
-            background-color: rgba(255,255,255,0.4);
-            border-radius: 10px;
-            border: 2px solid transparent; /* Keep this for the "thin" effect */
-            background-clip: content-box;
+            background-color: rgba(255,255,255,0.4); border-radius: 10px;
+            border: 2px solid transparent; background-clip: content-box;
         }
-
-
-        /* Styles for the transition modal */
         #transitionModal {
-            background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
-            backdrop-filter: blur(5px); /* Frosted glass effect */
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
         }
-        .hourglass-icon { /* Simple CSS hourglass */
-            display: inline-block;
-            width: 30px;
-            height: 50px;
-            border-top: 5px solid white;
-            border-bottom: 5px solid white;
-            box-sizing: border-box;
-            position: relative;
+        .hourglass-icon {
+            display: inline-block; width: 30px; height: 50px;
+            border-top: 5px solid white; border-bottom: 5px solid white;
+            box-sizing: border-box; position: relative;
             animation: hourglass-spin 2s infinite linear;
         }
-        .hourglass-icon::before,
-        .hourglass-icon::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
+        .hourglass-icon::before, .hourglass-icon::after {
+            content: ''; position: absolute; left: 50%;
+            transform: translateX(-50%); width: 0; height: 0;
             box-sizing: border-box;
         }
         .hourglass-icon::before {
-            top: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid white;
+            top: 0; border-left: 10px solid transparent;
+            border-right: 10px solid transparent; border-top: 10px solid white;
         }
         .hourglass-icon::after {
-            bottom: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 10px solid white;
+            bottom: 0; border-left: 10px solid transparent;
+            border-right: 10px solid transparent; border-bottom: 10px solid white;
         }
         @keyframes hourglass-spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         .modal-content-custom {
-            background: linear-gradient(145deg, #3b82f6, #7c3aed); /* Gradient background for modal content */
+            background: linear-gradient(145deg, #3b82f6, #7c3aed);
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-
-        /* --- ANIMACIÓN DE ROTACIÓN --- */
         @keyframes spin-clockwise {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -184,14 +150,23 @@
         .spin-6s-clockwise {
             animation: spin-clockwise 6s linear infinite;
         }
-        /* --- FIN DE LA ANIMACIÓN --- */
+        .main-symbol {
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+            transition: transform 0.3s ease-in-out;
+        }
+        .gallery-item:hover .main-symbol {
+            transform: scale(1.1);
+        }
     </style>
-</head>
-<body class="leading-relaxed">
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.visible{visibility:visible}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.-top-0\.5{top:-0.125rem}.bottom-0{bottom:0px}.bottom-8{bottom:2rem}.bottom-full{bottom:100%}.left-0{left:0px}.left-1\/2{left:50%}.right-8{right:2rem}.top-0{top:0px}.z-10{z-index:10}.z-20{z-index:20}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.my-6{margin-top:1.5rem;margin-bottom:1.5rem}.my-8{margin-top:2rem;margin-bottom:2rem}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-px{margin-left:1px}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.mt-12{margin-top:3rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-auto{height:auto}.max-h-48{max-height:12rem}.min-h-screen{min-height:100vh}.w-1{width:0.25rem}.w-64{width:16rem}.w-full{width:100%}.flex-grow{flex-grow:1}.max-w-2xl{max-width:42rem}.max-w-full{max-width:100%}.max-w-lg{max-width:32rem}.max-w-md{max-width:28rem}.-translate-x-1\/2{--tw-translate-x:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-help{cursor:help}.list-inside{list-style-position:inside}.list-disc{list-style-type:disc}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-shrink-0{flex-shrink:0}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-12{gap:3rem}.gap-8{gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-8 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(2rem * var(--tw-space-x-reverse));margin-left:calc(2rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.border-white\/25{border-color:rgb(255 255 255 / 0.25)}.border-white\/30{border-color:rgb(255 255 255 / 0.3)}.bg-black\/10{background-color:rgb(0 0 0 / 0.1)}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-blue-500{--tw-gradient-from:#3b82f6 var(--tw-gradient-from-position);--tw-gradient-to:rgb(59 130 246 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-indigo-600{--tw-gradient-to:#4f46e5 var(--tw-gradient-to-position)}.object-cover{object-fit:cover}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.p-3{padding:0.75rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-24{padding-top:6rem;padding-bottom:6rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pb-4{padding-bottom:1rem}.pl-2{padding-left:0.5rem}.pl-8{padding-left:2rem}.pt-8{padding-top:2rem}.pt-40{padding-top:10rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.align-super{vertical-align:super}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.italic{font-style:italic}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.no-underline{-webkit-text-decoration-line:none;text-decoration-line:none}.opacity-80{opacity:0.8}.opacity-90{opacity:0.9}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.hover\:bg-blue-50:hover{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-purple-700:hover{--tw-bg-opacity:1;background-color:rgb(126 34 206 / var(--tw-bg-opacity, 1))}.hover\:bg-white\/20:hover{background-color:rgb(255 255 255 / 0.2)}.hover\:text-blue-900:hover{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.hover\:text-gray-900:hover{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-blue-500:focus{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-blue-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(59 130 246 / var(--tw-ring-opacity, 1))}@media (min-width: 640px){.sm\:left-8{left:2rem}.sm\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.sm\:flex-row{flex-direction:row}.sm\:space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.sm\:space-y-0 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0px * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0px * var(--tw-space-y-reverse))}.sm\:pl-16{padding-left:4rem}}@media (min-width: 768px){.md\:left-12{left:3rem}.md\:flex{display:flex}.md\:hidden{display:none}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:py-20{padding-top:5rem;padding-bottom:5rem}.md\:py-24{padding-top:6rem;padding-bottom:6rem}.md\:py-32{padding-top:8rem;padding-bottom:8rem}.md\:pl-24{padding-left:6rem}.md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width: 1024px){.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.lg\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}}</style><script ecommerce-type="extend-native-history-api">(()=>{const e=history.pushState,t=history.replaceState,a=history.back,r=history.forward;function n(){window.postMessage({_custom_type_:"CUSTOM_ON_URL_CHANGED"})}history.pushState=function(){e.apply(history,arguments),n()},history.replaceState=function(){t.apply(history,arguments),n()},history.back=function(){a.apply(history,arguments),n()},history.forward=function(){r.apply(history,arguments),n()}})()</script></head>
+<body class="leading-relaxed" bis_register="W3sibWFzdGVyIjp0cnVlLCJleHRlbnNpb25JZCI6IntmY2E2N2Y0MS03NzZiLTQzOGEtOTM4Mi02NjIxNzE4NTg2MTV9IiwiYWRibG9ja2VyU3RhdHVzIjp7IkRJU1BMQVkiOiJkaXNhYmxlZCIsIkZBQ0VCT09LIjoiZGlzYWJsZWQiLCJUV0lUVEVSIjoiZGlzYWJsZWQiLCJSRURESVQiOiJkaXNhYmxlZCIsIlBJTlRFUkVTVCI6ImRpc2FibGVkIiwiSU5TVEFHUkFNIjoiZGlzYWJsZWQifSwidmVyc2lvbiI6IjEuOS4xNSIsInNjb3JlIjoxMDkxNX1d" cz-shortcut-listen="true" style="">
 
-    <div id="transitionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-        <div class="modal-content-custom text-white p-8 rounded-lg shadow-2xl text-center max-w-md w-full">
-            <div class="hourglass-icon mb-6 mx-auto"></div>
+    <div id="transitionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden" bis_skin_checked="1">
+        <div class="modal-content-custom text-white p-8 rounded-lg shadow-2xl text-center max-w-md w-full" bis_skin_checked="1">
+            <div class="hourglass-icon mb-6 mx-auto" bis_skin_checked="1"></div>
             <h2 class="text-2xl font-bold mb-3">Un momento, por favor...</h2>
             <p class="mb-2 text-lg">Estás siendo redirigido al espacio de Francesc Adrià Perelló, donde la seriedad (y el código) reinan.</p>
             <p class="text-sm opacity-80 mb-6">Redireccionando en <span id="countdownTimer">7</span> segundos...</p>
@@ -204,7 +179,7 @@
     <header class="bg-white py-4 fixed w-full z-10 navbar-shadow">
         <nav class="container mx-auto px-6 flex justify-between items-center">
             <a href="#hero" class="text-2xl font-bold text-gray-900">Francesc Adrià Perelló/<span class="text-blue-600">/Xesco Tejedor</span></a>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex space-x-8" bis_skin_checked="1">
                 <a href="#about" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Sobre Mí</a>
                 <a href="#services" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Servicios</a>
                 <a href="#experience" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Experiencia</a>
@@ -212,13 +187,13 @@
                 <a href="#skills" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Habilidades</a>
                 <a href="#contact" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Contacto</a>
             </div>
-            <div class="md:hidden">
+            <div class="md:hidden" bis_skin_checked="1">
                 <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white mt-4 py-2 space-y-2 text-center">
+        <div id="mobile-menu" class="hidden md:hidden bg-white mt-4 py-2 space-y-2 text-center" bis_skin_checked="1">
             <a href="#about" class="block py-2 text-gray-600 hover:text-gray-900 transition duration-300">Sobre Mí</a>
             <a href="#services" class="block py-2 text-gray-600 hover:text-gray-900 transition duration-300">Servicios</a>
             <a href="#experience" class="block py-2 text-gray-600 hover:text-gray-900 transition duration-300">Experiencia</a>
@@ -231,43 +206,72 @@
     <main>
         <section id="hero" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-24 pt-40 md:py-32 flex items-center justify-center min-h-screen" style="position:relative;">
             
-            <div class="container mx-auto px-6 text-center reveal" style="position:relative;z-index:2;">
-                <div class="avatar-orla-container spin-6s-clockwise">
-                    <div class="hero-orla-bg"></div>
-                    <div class="avatar-orla">
-                        <img src="https://raw.githubusercontent.com/Xesco-Tejedor/landing/main/docs/X.png" alt="Francesc Adrià Perelló" class="max-w-full h-auto">
+            <div class="container mx-auto px-6 text-center reveal visible" style="position:relative;z-index:2;" bis_skin_checked="1">
+                <div class="avatar-orla-container spin-6s-clockwise" bis_skin_checked="1">
+                    <div class="hero-orla-bg" bis_skin_checked="1"></div>
+                    <div class="avatar-orla" bis_skin_checked="1">
+                        <img src="Francesc%20Adri%C3%A0%20Perell%C3%B3%20(Xesco%20Tejedor)_files/X.png" alt="Francesc Adrià Perelló" class="max-w-full h-auto">
                     </div>
                 </div>
-                <div class="hero-title-container mx-auto">
+                <div class="hero-title-container mx-auto" bis_skin_checked="1">
                     <h2 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4 relative z-10">Cultura, Filosofía y Tecnología para tus Proyectos</h2>
                 </div>
                 <p class="text-lg md:text-xl mb-8 opacity-90">
-                    Profesional con más de dos décadas de experiencia en el MNAC, fusionando humanidades y el mundo digital para crear narrativas auténticas e insights valiosos como Xesco Tejedor.
+                    Profesional con más de dos décadas de experiencia en
+ el MNAC, fusionando humanidades y el mundo digital para crear 
+narrativas auténticas e insights valiosos como Xesco Tejedor.
                 </p>
 
-                <div class="my-8 w-full max-w-2xl mx-auto"> 
-                    <div class="ultimo-trabajo mb-6">
-                        <a href="https://github.com/Xesco-Tejedor/PersonajeGen/blob/main/readme.md" id="ultimoTrabajoLink" target="_blank" rel="noopener noreferrer"
-                           class="inline-block py-3 px-6 bg-white/20 border border-white/40 rounded-md text-white font-semibold no-underline hover:bg-white/30 transition-colors duration-300 text-lg shadow-md hover:shadow-lg">
-                            Último trabajo
-                        </a>
+                <div class="my-8 w-full max-w-2xl mx-auto" bis_skin_checked="1">
+                    <div id="project-gallery" class="w-full">
+                        <h3 class="text-xl font-semibold text-white opacity-90 mb-6 text-center">
+                            Galería de Proyectos Destacados
+                        </h3>
+                        <div class="horizontal-carousel flex space-x-6 overflow-x-auto pb-4 px-2">
+                            <a href="https://xesco-tejedor.github.io/PersonajeGen/" target="_blank" rel="noopener noreferrer" class="gallery-item flex-shrink-0 w-64 bg-white/10 p-6 rounded-lg border border-white/25 shadow-lg hover:bg-white/20 transition-colors duration-300 flex flex-col items-center text-center no-underline">
+                                <div class="main-symbol"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15a5 5 0 0 0 10 0Z"></path><path d="M17.5 12a5.5 5.5 0 1 0-11 0"></path></svg></div>
+                                <h4 class="font-bold text-white text-lg mb-2">PersonajeGen</h4>
+                                <p class="text-white opacity-80 text-sm flex-grow">Generador de personajes complejos y únicos para tus historias con un solo clic.</p>
+                            </a>
+                            <a href="https://xesco-tejedor.github.io/profeciaGen/" target="_blank" rel="noopener noreferrer" class="gallery-item flex-shrink-0 w-64 bg-white/10 p-6 rounded-lg border border-white/25 shadow-lg hover:bg-white/20 transition-colors duration-300 flex flex-col items-center text-center no-underline">
+                                <div class="main-symbol"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.35 7.16h7.65l-6.18 4.44 2.36 7.16L12 16.32l-6.18 4.44 2.36-7.16L2 9.16h7.65L12 2z"></path></svg></div>
+                                <h4 class="font-bold text-white text-lg mb-2">ProfecíaGen</h4>
+                                <p class="text-white opacity-80 text-sm flex-grow">Crea profecías arcanas y misteriosas para ambientar tus mundos de fantasía.</p>
+                            </a>
+                            <a href="https://xesco-tejedor.github.io/falaciaGen/" target="_blank" rel="noopener noreferrer" class="gallery-item flex-shrink-0 w-64 bg-white/10 p-6 rounded-lg border border-white/25 shadow-lg hover:bg-white/20 transition-colors duration-300 flex flex-col items-center text-center no-underline">
+                                <div class="main-symbol"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg></div>
+                                <h4 class="font-bold text-white text-lg mb-2">FalaciaGen</h4>
+                                <p class="text-white opacity-80 text-sm flex-grow">Explora y aprende sobre falacias lógicas con este generador de ejemplos.</p>
+                            </a>
+                            <a href="https://xesco-tejedor.github.io/socratia/" target="_blank" rel="noopener noreferrer" class="gallery-item flex-shrink-0 w-64 bg-white/10 p-6 rounded-lg border border-white/25 shadow-lg hover:bg-white/20 transition-colors duration-300 flex flex-col items-center text-center no-underline">
+                                <div class="main-symbol"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.22-8.66"></path></svg></div>
+                                <h4 class="font-bold text-white text-lg mb-2">Socratia</h4>
+                                <p class="text-white opacity-80 text-sm flex-grow">Dialoga con una IA Socrática para explorar tus propias ideas y argumentos.</p>
+                            </a>
+                            <a href="https://xesco-tejedor.github.io/PhraseForge/" target="_blank" rel="noopener noreferrer" class="gallery-item flex-shrink-0 w-64 bg-white/10 p-6 rounded-lg border border-white/25 shadow-lg hover:bg-white/20 transition-colors duration-300 flex flex-col items-center text-center no-underline">
+                                <div class="main-symbol"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-4-4 8-8 4 4z"></path><path d="M12 2v10h10"></path></svg></div>
+                                <h4 class="font-bold text-white text-lg mb-2">PhraseForge</h4>
+                                <p class="text-white opacity-80 text-sm flex-grow">Una forja de frases para inspirar la creatividad y generar ideas únicas.</p>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="otros-trabajos">
-                        <h3 class="text-xl font-semibold text-white opacity-90 mb-4 mt-8 pt-6 border-t border-white/25">
-                            Proyectos Anteriores<sup class="group relative inline-block cursor-help align-super text-base -top-0.5 ml-px">
+                    <div class="otros-trabajos mt-12 pt-8 border-t border-white/25">
+                        <h3 class="text-xl font-semibold text-white opacity-90 mb-4 text-center">
+                            ... y algunos Proyectos Anteriores<sup class="group relative inline-block cursor-help align-super text-base -top-0.5 ml-px">
                                 *
                                 <span class="tooltip-text-custom absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md shadow-lg whitespace-nowrap z-20">
-                                    Según dice X. Tejedor
+                                    Según la IA de X. Tejedor
                                 </span>
                             </sup>:
                         </h3>
-                        <div id="lista-proyectos-scroll" 
-                             class="vertical-carousel flex flex-col space-y-4 overflow-y-auto max-h-48 pb-4 scrollbar-thin bg-black/10 p-4 rounded-md shadow-inner">
-                            </div>
+                        <div id="lista-proyectos-scroll" class="vertical-carousel flex flex-col space-y-4 overflow-y-auto max-h-48 pb-4 scrollbar-thin bg-black/10 p-4 rounded-md shadow-inner">
+                            <!-- El contenido se generará con JavaScript -->
+                        </div>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8" bis_skin_checked="1">
                     <a href="#contact" class="btn-primary text-lg font-medium">Contáctame para tu Proyecto</a>
                     <a href="#about" class="btn-secondary text-lg font-medium">Más Sobre Mí</a>
                 </div>
@@ -275,306 +279,40 @@
         </section>
 
         <section id="about" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Breve presentación<span class="toggle-icon pl-2">▶</span></h2>
-                <div class="collapsible-content hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-6">
-                        <div class="text-lg text-gray-700 space-y-6">
-                            <p>
-                                Francesc Adrià Perelló, también conocido en el ámbito del contenido y la creación como Xesco Tejedor, es un profesional con una rica y singular trayectoria de dos décadas en el MNAC y su biblioteca, fusionando humanidades y tecnología para crear narrativas auténticas y soluciones digitales innovadoras.
-                            </p>
-                            <p>
-                                Iniciando su camino en roles esenciales de atención al público y recepción, tanto a las salas del MNAC como posteriormente a la prestigiosa Biblioteca d'Història de l'Art Joaquim Folch i Torres, demostró desde el principio una curiosidad y proactividad poco comunes.
-                            </p>
-                            <p>
-                                Esta curiosidad lo llevó, ya en etapas iniciales, a ir más allá de sus funciones, diseñando y implementando soluciones prácticas como una base de datos en Microsoft Excel para gestionar obras y ubicaciones, anticipándose a tendencias de digitalización.
-                            </p>
-                            <p>
-                                Su evolución natural lo ha conducido a profundizar en el mundo digital y tecnológico. Impulsado por la voluntad de conectar personas, patrimonio y conocimiento de manera innovadora, ha incorporado habilidades en análisis de datos, automatización y desarrollo de herramientas propias.
-                            </p>
-                            <p>
-                                Actualmente, mientras continúa aportando valor a la Biblioteca del MNAC dando soporte en procesos técnicos, digitalización y gestión de fondos (con herramientas como VIAF y Excel web), desarrolla proyectos personales de consultoría, ghostwriting y divulgación de humanidades digitales como Xesco Tejedor.
-                            </p>
-                        </div>
-                        <div class="text-center">
-                            <img src="https://raw.githubusercontent.com/Xesco-Tejedor/landing/main/docs/avatar.webp" alt="Francesc Adrià Perelló perfil" class="rounded-lg shadow-xl mx-auto w-full max-w-md h-auto object-cover">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="container mx-auto px-6 reveal visible" bis_skin_checked="1"><h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Breve presentación<span class="toggle-icon pl-2">▶</span></h2><div class="collapsible-content hidden" bis_skin_checked="1"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-6" bis_skin_checked="1"><div class="text-lg text-gray-700 space-y-6" bis_skin_checked="1"><p>Francesc Adrià Perelló, también conocido en el ámbito del contenido y la creación como Xesco Tejedor, es un profesional con una rica y singular trayectoria de dos décadas en el MNAC y su biblioteca, fusionando humanidades y tecnología para crear narrativas auténticas y soluciones digitales innovadoras.</p><p>Iniciando su camino en roles esenciales de atención al público y recepción, tanto a las salas del MNAC como posteriormente a la prestigiosa Biblioteca d'Història de l'Art Joaquim Folch i Torres, demostró desde el principio una curiosidad y proactividad poco comunes.</p><p>Esta curiosidad lo llevó, ya en etapas iniciales, a ir más allá de sus funciones, diseñando y implementando soluciones prácticas como una base de datos en Microsoft Excel para gestionar obras y ubicaciones, anticipándose a tendencias de digitalización.</p><p>Su evolución natural lo ha conducido a profundizar en el mundo digital y tecnológico. Impulsado por la voluntad de conectar personas, patrimonio y conocimiento de manera innovadora, ha incorporado habilidades en análisis de datos, automatización y desarrollo de herramientas propias.</p><p>Actualmente, mientras continúa aportando valor a la Biblioteca del MNAC dando soporte en procesos técnicos, digitalización y gestión de fondos (con herramientas como VIAF y Excel web), desarrolla proyectos personales de consultoría, ghostwriting y divulgación de humanidades digitales como Xesco Tejedor.</p></div><div class="text-center" bis_skin_checked="1"><img src="Francesc%20Adri%C3%A0%20Perell%C3%B3%20(Xesco%20Tejedor)_files/avatar.webp" alt="Francesc Adrià Perelló perfil" class="rounded-lg shadow-xl mx-auto w-full max-w-md h-auto object-cover"></div></div></div></div>
         </section>
 
         <section id="services" class="py-16 md:py-24 bg-gray-50">
-            <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Áreas de Experiencia y Colaboración<span class="toggle-icon pl-2">▶</span></h2>
-                <div class="collapsible-content hidden">
-                    <p class="text-center text-lg text-gray-700 my-6 max-w-2xl mx-auto">
-                        Mis habilidades, tanto como Francesc Adrià Perelló como bajo el seudónimo Xesco Tejedor, se centran en la intersección de la cultura, la comunicación, la filosofía y la tecnología.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div class="feature-card flex flex-col items-center">
-                            <div class="icon-circle mb-6">
-                                <i class="fas fa-pen-fancy fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Ghostwriting y Edición de Contenido</h3>
-                            <p class="text-gray-700">
-                                Creación y pulido de textos de alta calidad para diversas plataformas, transformando ideas complejas en narrativas claras y de impacto. Especializado en temas culturales, filosóficos y divulgativos.
-                            </p>
-                        </div>
-                        <div class="feature-card flex flex-col items-center">
-                            <div class="icon-circle mb-6">
-                                <i class="fas fa-chart-pie fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Análisis y Gestión de Datos</h3>
-                            <p class="text-gray-700">
-                                Dominio de herramientas como Excel, SQL, Power BI, Tableau, R y PySpark para el ciclo de vida completo de la información, facilitando la toma de decisiones y la estrategia basada en datos.
-                            </p>
-                        </div>
-                        <div class="feature-card flex flex-col items-center">
-                            <div class="icon-circle mb-6">
-                                <i class="fas fa-lightbulb fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Consultoría Cultura-Tecnología e IA</h3>
-                            <p class="text-gray-700">
-                                Asesoramiento para la integración de la tecnología y la IA en proyectos culturales, de patrimonio y gestión del conocimiento, explorando nuevas formas de interacción y difusión.
-                            </p>
-                        </div>
-                        <div class="feature-card flex flex-col items-center">
-                            <div class="icon-circle mb-6">
-                                <i class="fas fa-code-branch fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Desarrollo de Herramientas Digitales y Automatización</h3>
-                            <p class="text-gray-700">
-                                Aplicación de conocimientos en desarrollo web (HTML, CSS, JavaScript, PHP, JQuery) y Python para crear soluciones prácticas y automatizar procesos, enfocadas en entornos culturales y divulgativos.
-                            </p>
-                        </div>
-                        <div class="feature-card flex flex-col items-center">
-                            <div class="icon-circle mb-6">
-                                <i class="fas fa-archive fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Gestión del Conocimiento y Documentación</h3>
-                            <p class="text-gray-700">
-                                Experiencia en la organización, clasificación, digitalización y preservación de fondos documentales y colecciones, garantizando la continuidad digital y el acceso a largo plazo.
-                            </p>
-                        </div>
-                        <div class="feature-card flex flex-col items-center">
-                            <div class="icon-circle mb-6">
-                                <i class="fas fa-users-cog fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Experiencia de Usuario (UX) y Atención</h3>
-                            <p class="text-gray-700">
-                                Aplicación de una profunda sensibilidad hacia el usuario, cultivada durante décadas en el MNAC, para diseñar experiencias digitales intuitivas y centradas en la persona.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="container mx-auto px-6 reveal visible" bis_skin_checked="1"><h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Áreas de Experiencia y Colaboración<span class="toggle-icon pl-2">▶</span></h2><div class="collapsible-content hidden" bis_skin_checked="1"><p class="text-center text-lg text-gray-700 my-6 max-w-2xl mx-auto">Mis habilidades, tanto como Francesc Adrià Perelló como bajo el seudónimo Xesco Tejedor, se centran en la intersección de la cultura, la comunicación, la filosofía y la tecnología.</p><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" bis_skin_checked="1"><div class="feature-card flex flex-col items-center" bis_skin_checked="1"><div class="icon-circle mb-6" bis_skin_checked="1"><i class="fas fa-pen-fancy fa-2x"></i></div><h3 class="text-xl font-semibold text-gray-900 mb-4">Ghostwriting y Edición de Contenido</h3><p class="text-gray-700">Creación y pulido de textos de alta calidad para diversas plataformas, transformando ideas complejas en narrativas claras y de impacto. Especializado en temas culturales, filosóficos y divulgativos.</p></div><div class="feature-card flex flex-col items-center" bis_skin_checked="1"><div class="icon-circle mb-6" bis_skin_checked="1"><i class="fas fa-chart-pie fa-2x"></i></div><h3 class="text-xl font-semibold text-gray-900 mb-4">Análisis y Gestión de Datos</h3><p class="text-gray-700">Dominio de herramientas como Excel, SQL, Power BI, Tableau, R y PySpark para el ciclo de vida completo de la información, facilitando la toma de decisiones y la estrategia basada en datos.</p></div><div class="feature-card flex flex-col items-center" bis_skin_checked="1"><div class="icon-circle mb-6" bis_skin_checked="1"><i class="fas fa-lightbulb fa-2x"></i></div><h3 class="text-xl font-semibold text-gray-900 mb-4">Consultoría Cultura-Tecnología e IA</h3><p class="text-gray-700">Asesoramiento para la integración de la tecnología y la IA en proyectos culturales, de patrimonio y gestión del conocimiento, explorando nuevas formas de interacción y difusión.</p></div><div class="feature-card flex flex-col items-center" bis_skin_checked="1"><div class="icon-circle mb-6" bis_skin_checked="1"><i class="fas fa-code-branch fa-2x"></i></div><h3 class="text-xl font-semibold text-gray-900 mb-4">Desarrollo de Herramientas Digitales y Automatización</h3><p class="text-gray-700">Aplicación de conocimientos en desarrollo web (HTML, CSS, JavaScript, PHP, JQuery) y Python para crear soluciones prácticas y automatizar procesos, enfocadas en entornos culturales y divulgativos.</p></div><div class="feature-card flex flex-col items-center" bis_skin_checked="1"><div class="icon-circle mb-6" bis_skin_checked="1"><i class="fas fa-archive fa-2x"></i></div><h3 class="text-xl font-semibold text-gray-900 mb-4">Gestión del Conocimiento y Documentación</h3><p class="text-gray-700">Experiencia en la organización, clasificación, digitalización y preservación de fondos documentales y colecciones, garantizando la continuidad digital y el acceso a largo plazo.</p></div><div class="feature-card flex flex-col items-center" bis_skin_checked="1"><div class="icon-circle mb-6" bis_skin_checked="1"><i class="fas fa-users-cog fa-2x"></i></div><h3 class="text-xl font-semibold text-gray-900 mb-4">Experiencia de Usuario (UX) y Atención</h3><p class="text-gray-700">Aplicación de una profunda sensibilidad hacia el usuario, cultivada durante décadas en el MNAC, para diseñar experiencias digitales intuitivas y centradas en la persona.</p></div></div></div></div>
         </section>
 
         <section id="experience" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Trayectoria Profesional<span class="toggle-icon pl-2">▶</span></h2>
-                <div class="collapsible-content hidden">
-                    <div class="relative pl-8 sm:pl-16 md:pl-24 mt-6">
-                        <div class="absolute left-0 sm:left-8 md:left-12 top-0 bottom-0 w-1 bg-gray-200"></div>
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-gray-900">Atención a los usuarios de la Biblioteca de Historia del Arte Joaquim Folch i Torres (MNAC) con MagmaCultura</h3>
-                            <p class="text-lg text-gray-700">Barcelona, ​​Catalunya</p>
-                            <p class="text-md text-gray-600 mb-2">Noviembre 2020 — Actualmente</p>
-                            <p class="text-gray-700">Soporte en procesos técnicos, digitalización y gestión de fondos con herramientas como VIAF y Excel Web, manteniendo la vocación de servicio y la atención personalizada.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-gray-900">Atención al público con MagmaCultura</h3>
-                            <p class="text-lg text-gray-700">Barcelona</p>
-                            <p class="text-md text-gray-600 mb-2">Noviembre 2004 — Noviembre 2020</p>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 mt-2">
-                                <li>Roles esenciales de atención al público y recepción en el MNAC, cultivando una excelente capacidad de interacción con el usuario.</li>
-                                <li>Diseño e implementación de una base de datos en Microsoft Excel para gestionar obras y ubicaciones, demostrando una temprana habilidad para la organización y digitalización.</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-gray-900">Atención al público (MNAC) con Manpower (Link)</h3>
-                            <p class="text-lg text-gray-700">Barcelona, ​​España</p>
-                            <p class="text-md text-gray-600 mb-2">Noviembre 2003 - Noviembre 2004</p>
-                            <p class="text-gray-700">Experiencia inicial en la atención directa al visitante en un entorno cultural de primer nivel.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="container mx-auto px-6 reveal" bis_skin_checked="1"><h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Trayectoria Profesional<span class="toggle-icon pl-2">▶</span></h2><div class="collapsible-content hidden" bis_skin_checked="1"><div class="relative pl-8 sm:pl-16 md:pl-24 mt-6" bis_skin_checked="1"><div class="absolute left-0 sm:left-8 md:left-12 top-0 bottom-0 w-1 bg-gray-200" bis_skin_checked="1"></div><div class="timeline-item" bis_skin_checked="1"><h3 class="text-xl font-bold text-gray-900">Atención a los usuarios de la Biblioteca de Historia del Arte Joaquim Folch i Torres (MNAC) con MagmaCultura</h3><p class="text-lg text-gray-700">Barcelona, ​​Catalunya</p><p class="text-md text-gray-600 mb-2">Noviembre 2020 — Actualmente</p><p class="text-gray-700">Soporte en procesos técnicos, digitalización y gestión de fondos con herramientas como VIAF y Excel Web, manteniendo la vocación de servicio y la atención personalizada.</p></div><div class="timeline-item" bis_skin_checked="1"><h3 class="text-xl font-bold text-gray-900">Atención al público con MagmaCultura</h3><p class="text-lg text-gray-700">Barcelona</p><p class="text-md text-gray-600 mb-2">Noviembre 2004 — Noviembre 2020</p><ul class="list-disc list-inside text-gray-700 space-y-1 mt-2"><li>Roles esenciales de atención al público y recepción en el MNAC, cultivando una excelente capacidad de interacción con el usuario.</li><li>Diseño e implementación de una base de datos en Microsoft Excel para gestionar obras y ubicaciones, demostrando una temprana habilidad para la organización y digitalización.</li></ul></div><div class="timeline-item" bis_skin_checked="1"><h3 class="text-xl font-bold text-gray-900">Atención al público (MNAC) con Manpower (Link)</h3><p class="text-lg text-gray-700">Barcelona, ​​España</p><p class="text-md text-gray-600 mb-2">Noviembre 2003 - Noviembre 2004</p><p class="text-gray-700">Experiencia inicial en la atención directa al visitante en un entorno cultural de primer nivel.</p></div></div></div></div>
         </section>
 
         <section id="education" class="py-16 md:py-24 bg-gray-50">
-            <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Formación Académica y Certificaciones<span class="toggle-icon pl-2">▶</span></h2>
-                <div class="collapsible-content hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-6">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-6">Licenciaturas y Posgrados</h3>
-                            <div class="space-y-8">
-                                <div class="bg-white p-6 rounded-lg shadow-md">
-                                    <h4 class="text-xl font-semibold text-gray-900">Máster Universitario en Bibliotecas, Archivos y Continuidad Digital</h4>
-                                    <p class="text-lg text-gray-700">Universidad Carlos III de Madrid</p>
-                                    <p class="text-md text-gray-600">A iniciar curso 2025-2026</p>
-                                    <p class="text-gray-700 text-sm mt-2">Para profundizar en la gestión del patrimonio en la era digital y consolidar la experiencia en el ámbito.</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-lg shadow-md">
-                                    <h4 class="text-xl font-semibold text-gray-900">Máster Formación del Profesorado en Filosofía</h4>
-                                    <p class="text-lg text-gray-700">Universidad Nacional de Educación a Distancia - U.N.E.D.</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-lg shadow-md">
-                                    <h4 class="text-xl font-semibold text-gray-900">Licenciatura en Filosofía</h4>
-                                    <p class="text-lg text-gray-700">Universitat de Barcelona (UB)</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-6">Certificaciones y Bootcamps</h3>
-                            <div class="space-y-8">
-                                <div class="bg-white p-6 rounded-lg shadow-md">
-                                    <h4 class="text-xl font-semibold text-gray-900">Bootcamp de Desarrollador Fullstack</h4>
-                                    <p class="text-lg text-gray-700">The Bridge</p>
-                                    <p class="text-gray-700 text-sm mt-2">Competencias en desarrollo front-end y back-end, trabajando con bases de datos MySQL y MongoDB.</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-lg shadow-md">
-                                    <h4 class="text-xl font-semibold text-gray-900">Google IT Support Professional</h4>
-                                    <p class="text-lg text-gray-700">Google (Coursera)</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-lg shadow-md">
-                                    <h4 class="text-xl font-semibold text-gray-900">Múltiples Certificaciones en Análisis de Datos</h4>
-                                    <p class="text-lg text-gray-700">Google (Coursera), LinkedIn Learning</p>
-                                    <p class="text-md text-gray-600">Diversos períodos</p>
-                                    <p class="text-gray-700 text-sm mt-2">Dominio de herramientas clave como Excel, Google Sheets, SQL, Power BI, Tableau, RStudio (R) y PySpark (Python) para todo el ciclo de vida de la información.</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-lg shadow-md">
-                                    <h4 class="text-xl font-semibold text-gray-900">Formación en Aplicaciones Interactivas con API's de OpenAI</h4>
-                                    <p class="text-lg text-gray-700">Autoaprendizaje/cursos</p>
-                                    <p class="text-md text-gray-600">Reciente</p>
-                                    <p class="text-gray-700 text-sm mt-2">Aprendizaje en la construcción de aplicaciones interactivas con las API de OpenAI (ChatGPT, DALL-E, GPT-4), utilizando HTML, CSS, JavaScript y Python.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="container mx-auto px-6 reveal" bis_skin_checked="1"><h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Formación Académica y Certificaciones<span class="toggle-icon pl-2">▶</span></h2><div class="collapsible-content hidden" bis_skin_checked="1"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-6" bis_skin_checked="1"><div bis_skin_checked="1"><h3 class="text-2xl font-bold text-gray-900 mb-6">Licenciaturas y Posgrados</h3><div class="space-y-8" bis_skin_checked="1"><div class="bg-white p-6 rounded-lg shadow-md" bis_skin_checked="1"><h4 class="text-xl font-semibold text-gray-900">Máster Universitario en Bibliotecas, Archivos y Continuidad Digital</h4><p class="text-lg text-gray-700">Universidad Carlos III de Madrid</p><p class="text-md text-gray-600">A iniciar curso 2025-2026</p><p class="text-gray-700 text-sm mt-2">Para profundizar en la gestión del patrimonio en la era digital y consolidar la experiencia en el ámbito.</p></div><div class="bg-white p-6 rounded-lg shadow-md" bis_skin_checked="1"><h4 class="text-xl font-semibold text-gray-900">Máster Formación del Profesorado en Filosofía</h4><p class="text-lg text-gray-700">Universidad Nacional de Educación a Distancia - U.N.E.D.</p></div><div class="bg-white p-6 rounded-lg shadow-md" bis_skin_checked="1"><h4 class="text-xl font-semibold text-gray-900">Licenciatura en Filosofía</h4><p class="text-lg text-gray-700">Universitat de Barcelona (UB)</p></div></div></div><div bis_skin_checked="1"><h3 class="text-2xl font-bold text-gray-900 mb-6">Certificaciones y Bootcamps</h3><div class="space-y-8" bis_skin_checked="1"><div class="bg-white p-6 rounded-lg shadow-md" bis_skin_checked="1"><h4 class="text-xl font-semibold text-gray-900">Bootcamp de Desarrollador Fullstack</h4><p class="text-lg text-gray-700">The Bridge</p><p class="text-gray-700 text-sm mt-2">Competencias en desarrollo front-end y back-end, trabajando con bases de datos MySQL y MongoDB.</p></div><div class="bg-white p-6 rounded-lg shadow-md" bis_skin_checked="1"><h4 class="text-xl font-semibold text-gray-900">Google IT Support Professional</h4><p class="text-lg text-gray-700">Google (Coursera)</p></div><div class="bg-white p-6 rounded-lg shadow-md" bis_skin_checked="1"><h4 class="text-xl font-semibold text-gray-900">Múltiples Certificaciones en Análisis de Datos</h4><p class="text-lg text-gray-700">Google (Coursera), LinkedIn Learning</p><p class="text-md text-gray-600">Diversos períodos</p><p class="text-gray-700 text-sm mt-2">Dominio de herramientas clave como Excel, Google Sheets, SQL, Power BI, Tableau, RStudio (R) y PySpark (Python) para todo el ciclo de vida de la información.</p></div><div class="bg-white p-6 rounded-lg shadow-md" bis_skin_checked="1"><h4 class="text-xl font-semibold text-gray-900">Formación en Aplicaciones Interactivas con API's de OpenAI</h4><p class="text-lg text-gray-700">Autoaprendizaje/cursos</p><p class="text-md text-gray-600">Reciente</p><p class="text-gray-700 text-sm mt-2">Aprendizaje en la construcción de aplicaciones interactivas con las API de OpenAI (ChatGPT, DALL-E, GPT-4), utilizando HTML, CSS, JavaScript y Python.</p></div></div></div></div></div></div>
         </section>
 
         <section id="skills" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Habilidades Clave<span class="toggle-icon pl-2">▶</span></h2>
-                <div class="collapsible-content hidden">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center mt-6">
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-pencil-alt text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Ghostwriting y Edición</h3>
-                            <p class="text-gray-700 text-sm">Escritura creativa y persuasiva, corrección de estilo, edición de textos, redacción de contenidos (cultural, filosófico, técnico).</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-comments text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Comunicación y Atención al Usuario</h3>
-                            <p class="text-gray-700 text-sm">Capacidad de interacción, vocación de servicio, gestión de expectativas y resolución de problemas en entornos culturales.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-brain text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Pensamiento Crítico y Filosófico</h3>
-                            <p class="text-gray-700 text-sm">Análisis conceptual, argumentación rigurosa, perspectiva humanística única para el enfoque tecnológico.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-search text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Investigación y Documentación</h3>
-                            <p class="text-gray-700 text-sm">Búsqueda avanzada de información, gestión de bases de datos, organización del conocimiento, gestión de fondos (VIAF).</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-database text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Análisis de Datos</h3>
-                            <p class="text-gray-700 text-sm">Excel, Google Sheets, SQL, Power BI, Tableau, RStudio (R), PySpark (Python) para el ciclo de vida de la data.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-chart-line text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Visualización e Interpretación de Datos</h3>
-                            <p class="text-gray-700 text-sm">Capacidad para transformar datos complejos en insights comprensibles y visualmente atractivos.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-robot text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Inteligencia Artificial Aplicada</h3>
-                            <p class="text-gray-700 text-sm">Construcción de aplicaciones interactivas con APIs de OpenAI (ChatGPT, DALL-E, GPT-4) utilizando HTML, CSS, JavaScript.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-laptop-code text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Desarrollo Web (Conocimientos)</h3>
-                            <p class="text-gray-700 text-sm">HTML, CSS, JavaScript, PHP, JQuery. Aplicación para herramientas propias, no soluciones web completas a terceros.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-globe text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Gestión de Contenido Digital</h3>
-                            <p class="text-gray-700 text-sm">Principios de usabilidad, experiencia de usuario (UX), SEO básico, y arquitectura de la información.</p>
-                        </div>
-                        <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                            <i class="fas fa-language text-4xl text-blue-600 mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Idiomas</h3>
-                            <p class="text-gray-700 text-sm">Catalán (Nativo, C1), Castellano (Nativo), Inglés (Avanzado, B2).</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="container mx-auto px-6 reveal" bis_skin_checked="1"><h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Habilidades Clave<span class="toggle-icon pl-2">▶</span></h2><div class="collapsible-content hidden" bis_skin_checked="1"><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center mt-6" bis_skin_checked="1"><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-pencil-alt text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Ghostwriting y Edición</h3><p class="text-gray-700 text-sm">Escritura creativa y persuasiva, corrección de estilo, edición de textos, redacción de contenidos (cultural, filosófico, técnico).</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-comments text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Comunicación y Atención al Usuario</h3><p class="text-gray-700 text-sm">Capacidad de interacción, vocación de servicio, gestión de expectativas y resolución de problemas en entornos culturales.</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-brain text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Pensamiento Crítico y Filosófico</h3><p class="text-gray-700 text-sm">Análisis conceptual, argumentación rigurosa, perspectiva humanística única para el enfoque tecnológico.</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-search text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Investigación y Documentación</h3><p class="text-gray-700 text-sm">Búsqueda avanzada de información, gestión de bases de datos, organización del conocimiento, gestión de fondos (VIAF).</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-database text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Análisis de Datos</h3><p class="text-gray-700 text-sm">Excel, Google Sheets, SQL, Power BI, Tableau, RStudio (R), PySpark (Python) para el ciclo de vida de la data.</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-chart-line text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Visualización e Interpretación de Datos</h3><p class="text-gray-700 text-sm">Capacidad para transformar datos complejos en insights comprensibles y visualmente atractivos.</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-robot text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Inteligencia Artificial Aplicada</h3><p class="text-gray-700 text-sm">Construcción de aplicaciones interactivas con APIs de OpenAI (ChatGPT, DALL-E, GPT-4) utilizando HTML, CSS, JavaScript.</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-laptop-code text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Desarrollo Web (Conocimientos)</h3><p class="text-gray-700 text-sm">HTML, CSS, JavaScript, PHP, JQuery. Aplicación para herramientas propias, no soluciones web completas a terceros.</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-globe text-4xl text-blue-600 mb-2"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Gestión de Contenido Digital</h3><p class="text-gray-700 text-sm">Principios de usabilidad, experiencia de usuario (UX), SEO básico, y arquitectura de la información.</p></div><div class="p-6 bg-gray-50 rounded-lg shadow-md" bis_skin_checked="1"><i class="fas fa-language text-4xl text-blue-600 mb-4"></i><h3 class="text-xl font-semibold text-gray-900 mb-2">Idiomas</h3><p class="text-gray-700 text-sm">Catalán (Nativo, C1), Castellano (Nativo), Inglés (Avanzado, B2).</p></div></div></div></div>
         </section>
 
         <section id="cta" class="bg-blue-600 text-white py-16 md:py-20 text-center reveal">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">¿Listo para innovar en la intersección de la cultura, la comunicación y la tecnología?</h2>
-                <p class="text-lg md:text-xl mb-8 opacity-90">
-                    Hablemos de cómo mi experiencia única, como Francesc Adrià Perelló y Xesco Tejedor, puede impulsar tu próximo proyecto.
-                </p>
-                <a href="#contact" class="btn-secondary bg-white text-blue-600 hover:bg-blue-50 text-lg font-medium">Contáctame Hoy</a>
-            </div>
+            <div class="container mx-auto px-6" bis_skin_checked="1"><h2 class="text-3xl md:text-4xl font-bold mb-4">¿Listo para innovar en la intersección de la cultura, la comunicación y la tecnología?</h2><p class="text-lg md:text-xl mb-8 opacity-90">Hablemos de cómo mi experiencia única, como Francesc Adrià Perelló y Xesco Tejedor, puede impulsar tu próximo proyecto.</p><a href="#contact" class="btn-secondary bg-white text-blue-600 hover:bg-blue-50 text-lg font-medium">Contáctame Hoy</a></div>
         </section>
 
         <section id="contact" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6 reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Hablemos de tu Proyecto<span class="toggle-icon pl-2">▶</span></h2>
-                <div class="collapsible-content hidden">
-                    <p class="text-center text-lg text-gray-700 my-6 max-w-2xl mx-auto">
-                        Estoy disponible para nuevas colaboraciones y oportunidades que valoren una combinación única de humanidades y habilidades digitales avanzadas. Puedes contactar con Francesc Adrià Perelló (Xesco Tejedor) por correo, LinkedIn o el formulario.
-                    </p>
-                    <div class="max-w-lg mx-auto bg-gray-50 p-8 rounded-lg shadow-md">
-                        <form action="#" method="POST" class="space-y-6">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label>
-                                <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
-                                <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Asunto</label>
-                                <input type="text" id="subject" name="subject" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Tu Mensaje</label>
-                                <textarea id="message" name="message" rows="5" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
-                            </div>
-                            <button type="submit" class="w-full btn-primary font-medium text-lg">Enviar Mensaje</button>
-                        </form>
-                        <div class="mt-8 text-center">
-                            <p class="text-gray-700 mb-4">También puedes encontrarme en:</p>
-                            <div class="flex justify-center space-x-6 text-2xl">
-                                <a href="https://linkedin.com/in/xesco" target="_blank" class="text-blue-700 hover:text-blue-900 transition duration-300"><i class="fab fa-linkedin"></i></a>
-                            </div>
-                            <p class="text-gray-700 mt-4">Correo-e: xescotejedor@gmail.com</p>
-                            <p class="text-gray-700">Teléfono móvil: +34 645 19 28 17</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="container mx-auto px-6 reveal" bis_skin_checked="1"><h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 collapsible-title" style="cursor: pointer;">Hablemos de tu Proyecto<span class="toggle-icon pl-2">▶</span></h2><div class="collapsible-content hidden" bis_skin_checked="1"><p class="text-center text-lg text-gray-700 my-6 max-w-2xl mx-auto">Estoy disponible para nuevas colaboraciones y oportunidades que valoren una combinación única de humanidades y habilidades digitales avanzadas. Puedes contactar con Francesc Adrià Perelló (Xesco Tejedor) por correo, LinkedIn o el formulario.</p><div class="max-w-lg mx-auto bg-gray-50 p-8 rounded-lg shadow-md" bis_skin_checked="1"><form action="#" method="POST" class="space-y-6"><div bis_skin_checked="1"><label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo</label><input type="text" id="name" name="name" required="" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></div><div bis_skin_checked="1"><label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label><input type="email" id="email" name="email" required="" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></div><div bis_skin_checked="1"><label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Asunto</label><input type="text" id="subject" name="subject" required="" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></div><div bis_skin_checked="1"><label for="message" class="block text-sm font-medium text-gray-700 mb-1">Tu Mensaje</label><textarea id="message" name="message" rows="5" required="" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea></div><button type="submit" class="w-full btn-primary font-medium text-lg">Enviar Mensaje</button></form><div class="mt-8 text-center" bis_skin_checked="1"><p class="text-gray-700 mb-4">También puedes encontrarme en:</p><div class="flex justify-center space-x-6 text-2xl" bis_skin_checked="1"><a href="https://linkedin.com/in/xesco" target="_blank" class="text-blue-700 hover:text-blue-900 transition duration-300"><i class="fab fa-linkedin"></i></a></div><p class="text-gray-700 mt-4">Correo-e: xescotejedor@gmail.com</p><p class="text-gray-700">Teléfono móvil: +34 645 19 28 17</p></div></div></div></div>
         </section>
     </main>
     <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-6 text-center text-gray-400">
-            <p>© <span id="currentYear"></span> Francesc Adrià Perelló (Xesco Tejedor). Todos los derechos reservados.</p>
+        <div class="container mx-auto px-6 text-center text-gray-400" bis_skin_checked="1">
+            <p>© <span id="currentYear">2024</span> Francesc Adrià Perelló (Xesco Tejedor). Todos los derechos reservados.</p>
         </div>
     </footer>
-    <button id="scrollToTopBtn" class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 hidden">
-        <i class="fas fa-arrow-up"></i>
+    <button id="scrollToTopBtn" class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 hidden" style="display: none;">
+        <i class="fas fa-level-up-alt"></i>
     </button>
 
     <script>
@@ -591,7 +329,6 @@
 
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
-                    // If the link is the "Contact Xesco" link in the modal, just close modal and scroll
                     if (this.id === 'contactXescoLink') {
                         e.preventDefault();
                         closeTransitionModal();
@@ -599,10 +336,9 @@
                         if (targetElement) {
                             targetElement.scrollIntoView({ behavior: 'smooth' });
                         }
-                        return; // Stop further processing for this link
+                        return;
                     }
 
-                    // Standard smooth scroll for other hash links
                     if (this.getAttribute('href').startsWith('#')) {
                         e.preventDefault();
                         const targetElement = document.querySelector(this.getAttribute('href'));
@@ -618,7 +354,6 @@
 
             const sections = document.querySelectorAll('main section');
             const navLinks = document.querySelectorAll('.nav-link');
-
             window.addEventListener('scroll', () => {
                 let current = '';
                 sections.forEach(section => {
@@ -628,14 +363,12 @@
                         current = section.getAttribute('id');
                     }
                 });
-
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     if (link.getAttribute('href').substring(1) === current) {
                         link.classList.add('active');
                     }
                 });
-                
                 const contactSection = document.querySelector('#contact');
                 if (contactSection) {
                     const contactLink = document.querySelector('a[href="#contact"].nav-link');
@@ -666,19 +399,15 @@
 
             // --- Transition Modal Logic ---
             const transitionModal = document.getElementById('transitionModal');
-            const ultimoTrabajoBtn = document.getElementById('ultimoTrabajoLink');
             const countdownTimerEl = document.getElementById('countdownTimer');
-            const contactXescoLink = document.getElementById('contactXescoLink');
             let countdownInterval;
             let redirectTimeout;
 
             function showTransitionModal(targetUrl) {
                 transitionModal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden'; // Prevent background scroll
-
+                document.body.style.overflow = 'hidden';
                 let timeLeft = 7; 
                 countdownTimerEl.textContent = timeLeft;
-
                 countdownInterval = setInterval(() => {
                     timeLeft--;
                     countdownTimerEl.textContent = timeLeft;
@@ -686,33 +415,30 @@
                         clearInterval(countdownInterval);
                     }
                 }, 1000);
-
                 redirectTimeout = setTimeout(() => {
-                    window.open(targetUrl, '_blank'); // Open in new tab
+                    window.open(targetUrl, '_blank');
                     closeTransitionModal();
                 }, timeLeft * 1000);
             }
 
             function closeTransitionModal() {
                 transitionModal.classList.add('hidden');
-                document.body.style.overflow = ''; // Restore scroll
+                document.body.style.overflow = '';
                 clearInterval(countdownInterval);
                 clearTimeout(redirectTimeout);
             }
 
-            if (ultimoTrabajoBtn && transitionModal) {
-                ultimoTrabajoBtn.addEventListener('click', function(event) {
-                    event.preventDefault(); // Prevent default link behavior
-                    const targetUrl = this.href;
-                     if (targetUrl === "TU_ENLACE_A_GITHUB_AQUI" || targetUrl.endsWith("TU_ENLACE_A_GITHUB_AQUI")) {
-                        console.warn("El enlace de 'Último trabajo' aún apunta a 'TU_ENLACE_A_GITHUB_AQUI'. Por favor, actualízalo.");
-                        window.open(targetUrl, '_blank'); 
-                        return;
-                    }
-                    showTransitionModal(targetUrl);
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            if (galleryItems.length > 0 && transitionModal) {
+                galleryItems.forEach(item => {
+                    item.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const targetUrl = this.href;
+                        showTransitionModal(targetUrl);
+                    });
                 });
             }
-        }); // End DOMContentLoaded for main scripts
+        });
 
         // Animaciones de revelado
         const revealElements = document.querySelectorAll('.reveal');
@@ -726,10 +452,7 @@
         revealElements.forEach(el => { revealObserver.observe(el); });
 
         // Actualizar año del copyright
-        const currentYearEl = document.getElementById('currentYear');
-        if (currentYearEl) {
-            currentYearEl.textContent = new Date().getFullYear();
-        }
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         // Botón Scroll-to-top
         const scrollToTopBtn = document.getElementById('scrollToTopBtn');
@@ -741,11 +464,9 @@
                     scrollToTopBtn.style.display = "none";
                 }
             };
-            scrollToTopBtn.addEventListener('click', function() {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            });
+            scrollToTopBtn.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
         }
-
+        
         // --- START OF SCRIPT FOR "PROYECTOS ANTERIORES" LIST (COMBINATORIAL GENERATOR) ---
         const titleParts = {
             adjectives: ["Arcano", "Interdimensional", "Cuántico", "Olvidado", "Prohibido", "Digital", "Analógico", "Nocturno", "Ancestral", "Futurista", "Susurrante", "Cifrado", "Espectral", "Cronológico", "Paradójico", "Sintético", "Algorítmico", "Etéreo", "Psiónico", " Fractal"],
@@ -755,7 +476,6 @@
             contexts: ["para Smartwatches", "en COBOL", "usando Lógica Booleana", "en Hojas de Cálculo", "para la Web Semántica", "con Realidad Aumentada", "impulsado por IA", "a través del Tiempo", "más allá del Velo", "en el Espacio Profundo", "durante la Convergencia", "bajo la Luna Negra", "en Sistemas Distribuidos", "para Entornos Virtuales"],
             outcomes: ["con más Perros", "que revela la Verdad", "que susurra Secretos", "y su Impacto en la Realidad", "desafiando la Percepción", "alterando el Espacio-Tiempo", "para Dominar el Caos", "para Entender el Vacío", "aplicado a la Nada", "y sus Consecuencias Imprevistas", "generando Paradojas", "abriendo Nuevas Dimensiones"]
         };
-
         const titleTemplates = [
             (p) => `${getRandomElement(p.adjectives)} ${getRandomElement(p.nouns)} para la ${getRandomElement(p.actions)} de ${getRandomElement(p.subjects)}`,
             (p) => `El ${getRandomElement(p.nouns)} ${getRandomElement(p.adjectives)} de ${getRandomElement(p.subjects)} ${getRandomElement(p.contexts)}`,
@@ -768,71 +488,49 @@
             (p) => `La ${getRandomElement(p.actions)} ${getRandomElement(p.adjectives)}: ${getRandomElement(p.nouns)} de ${getRandomElement(p.subjects)} ${getRandomElement(p.contexts)}`,
             (p) => `Implementación de ${getRandomElement(p.nouns)} ${getRandomElement(p.adjectives)} para la ${getRandomElement(p.actions)} en ${getRandomElement(p.subjects)}`
         ];
-        
         const generatedTitles = new Set();
-        const MAX_GENERATION_ATTEMPTS = 100; 
-
+        const MAX_GENERATION_ATTEMPTS = 100;
         function getRandomElement(arr) {
-            if (!arr || arr.length === 0) return ""; 
             return arr[Math.floor(Math.random() * arr.length)];
         }
-
         function generateUniqueTitle() {
             let attempts = 0;
             while (attempts < MAX_GENERATION_ATTEMPTS) {
-                const templateFn = getRandomElement(titleTemplates);
-                const newTitle = templateFn(titleParts); 
-
+                const newTitle = getRandomElement(titleTemplates)(titleParts);
                 if (!generatedTitles.has(newTitle)) {
                     generatedTitles.add(newTitle);
                     return newTitle;
                 }
                 attempts++;
             }
-            console.warn(`No se pudo generar un título único después de ${MAX_GENERATION_ATTEMPTS} intentos. Total únicos generados: ${generatedTitles.size}`);
-            return `Proyecto Arcano Ultra-Secreto #${Date.now()}${Math.random()}`; 
+            return `Proyecto Arcano Ultra-Secreto #${Date.now()}`;
         }
-
-        function obtenerSiguienteTitulo() {
-            return generateUniqueTitle();
-        }
-
         function agregarProyectoAlDOM(container) {
-            const titulo = obtenerSiguienteTitulo();
-            if (titulo && container) {
-                const divElement = document.createElement('div');
-                divElement.className = 'trabajo-antiguo w-full p-3 bg-white/10 border border-white/20 rounded-md shadow-lg text-sm text-white opacity-90 italic';
-                
-                const pElement = document.createElement('p');
-                pElement.textContent = titulo;
-                divElement.appendChild(pElement);
-                container.appendChild(divElement);
-            }
+            const divElement = document.createElement('div');
+            divElement.className = 'trabajo-antiguo w-full p-3 bg-white/10 border border-white/20 rounded-md shadow-sm text-sm text-white opacity-90 italic';
+            const pElement = document.createElement('p');
+            pElement.textContent = generateUniqueTitle();
+            divElement.appendChild(pElement);
+            container.appendChild(divElement);
         }
-
         function cargarProyectos(cantidad, container) {
             for (let i = 0; i < cantidad; i++) {
                 agregarProyectoAlDOM(container);
             }
         }
-
         document.addEventListener('DOMContentLoaded', function() {
             const contenedorProyectos = document.getElementById('lista-proyectos-scroll');
-
             if (contenedorProyectos) {
-                cargarProyectos(8, contenedorProyectos); 
-
+                cargarProyectos(8, contenedorProyectos);
                 contenedorProyectos.addEventListener('scroll', function() {
                     const { scrollTop, scrollHeight, clientHeight } = contenedorProyectos;
-                    if (scrollHeight > clientHeight && scrollTop + clientHeight >= scrollHeight - 50) { 
-                        cargarProyectos(2, contenedorProyectos); 
+                    if (scrollHeight > clientHeight && scrollTop + clientHeight >= scrollHeight - 50) {
+                        cargarProyectos(2, contenedorProyectos);
                     }
                 });
-            } else {
-                console.error("Elemento 'lista-proyectos-scroll' no encontrado. La lista de proyectos no funcionará.");
             }
         });
         // --- END OF SCRIPT FOR "PROYECTOS ANTERIORES" LIST ---
     </script>
-</body>
-</html>
+
+</body></html>
