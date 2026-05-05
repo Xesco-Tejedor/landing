@@ -108,6 +108,7 @@
             overflow-y: auto;
             padding: 10px;
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
 
         .content::-webkit-scrollbar {
@@ -871,6 +872,15 @@
             
             requestAnimationFrame(gameLoop);
         }
+
+        // Listener para adaptar el juego si el usuario gira el móvil o redimensiona la pantalla
+        window.addEventListener('resize', () => {
+            if (ghostGameActive && canvas) {
+                const container = document.getElementById('game-container');
+                canvas.width = container.clientWidth - 40;
+                canvas.height = container.clientHeight - 40;
+            }
+        });
     </script>
 </body>
 </html>
