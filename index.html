@@ -705,16 +705,17 @@
         function spawnGhost(timeScale = 1) {
             // Se reduce la probabilidad inicial de aparición y su incremento
             if (Math.random() < (0.003 + (score * 0.0002)) * timeScale) {
+                let isAdvanced = score >= 50 && Math.random() < 0.4; // Aparece a partir de 50 puntos (40% de chance)
                 ghosts.push({
-                    type: Math.random() < 0.5 ? 1 : 2,
+                    type: isAdvanced ? 2 : 1,
                     x: canvas.width / 2 + (Math.random() - 0.5) * 150,
                     y: canvas.height / 2 + (Math.random() - 0.5) * 100,
                     size: 10,
-                    // Movimiento lateral mucho más lento
-                    vx: (Math.random() - 0.5) * (1 + score * 0.01),
-                    vy: (Math.random() - 0.5) * (1 + score * 0.01),
-                    // Salud inicial y escalado reducidos
-                    hp: 20 + score * 1.5
+                    // El monstruo avanzado se mueve un 50% más rápido
+                    vx: (Math.random() - 0.5) * (1 + score * 0.01) * (isAdvanced ? 1.5 : 1),
+                    vy: (Math.random() - 0.5) * (1 + score * 0.01) * (isAdvanced ? 1.5 : 1),
+                    // Salud inicial y escalado (el avanzado tiene un bono de salud extra)
+                    hp: 20 + score * 1.5 + (isAdvanced ? 30 : 0)
                 });
             }
         }
