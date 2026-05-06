@@ -703,8 +703,11 @@
         }
 
         function spawnGhost(timeScale = 1) {
-            // Se reduce la probabilidad inicial de aparición y su incremento
-            if (Math.random() < (0.003 + (score * 0.0002)) * timeScale) {
+            let spawnChance = (0.003 + (score * 0.0002)) * timeScale;
+            // Si no hay ningún monstruo en pantalla, aumentamos mucho la probabilidad para que no haya tiempos muertos
+            if (ghosts.length === 0) spawnChance += 0.05 * timeScale;
+            
+            if (Math.random() < spawnChance) {
                 let isAdvanced = score >= 50 && Math.random() < 0.4; // Aparece a partir de 50 puntos (40% de chance)
                 ghosts.push({
                     type: isAdvanced ? 2 : 1,
@@ -924,9 +927,15 @@
                 }
                 
                 let currentImg = g.type === 2 ? ghostImage2 : ghostImage;
-                if (currentImg.complete) {
-                    ctx.drawImage(currentImg, g.x - g.size/2, g.y - g.size/2, g.size, g.size);
-                } else {
+                try {
+                    if (currentImg.complete && currentImg.naturalWidth > 0) {
+                        ctx.drawImage(currentImg, g.x - g.size/2, g.y - g.size/2, g.size, g.size);
+                    } else {
+                        ctx.fillStyle = g.type === 2 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
+                        ctx.fillRect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
+                    }
+                } catch(e) {
+                    console.error("Error drawing image: ", e);
                     ctx.fillStyle = g.type === 2 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
                     ctx.fillRect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
                 }
