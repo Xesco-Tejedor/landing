@@ -112,7 +112,17 @@
         }
 
         .content::-webkit-scrollbar {
-            display: none;
+            width: 8px;
+        }
+        .content::-webkit-scrollbar-track {
+            background: var(--black);
+            border-left: 2px solid var(--blue);
+        }
+        .content::-webkit-scrollbar-thumb {
+            background: var(--bright-cyan);
+        }
+        .content::-webkit-scrollbar-thumb:hover {
+            background: var(--bright-yellow);
         }
 
         p, li {
@@ -298,31 +308,45 @@
             color: var(--bright-yellow);
             text-decoration: underline;
         }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            h1 { font-size: 14px; }
+            h2 { font-size: 11px; }
+            p, li { font-size: 9px; }
+            #game-container { padding: 10px; border-width: 2px; }
+            .btn { font-size: 8px; padding: 10px; }
+            .pixel-art { font-size: 6px !important; }
+            .stats span { font-size: 6px; }
+            .level-badge { font-size: 10px; }
+        }
     </style>
 </head>
 <body>
     <div id="game-container">
         <div id="splash" class="screen active">
-            <div class="pixel-art" style="font-size: 10px; color: var(--bright-cyan);">
+            <div class="content" style="display:flex; flex-direction:column;">
+                <div class="pixel-art" style="font-size: 10px; color: var(--bright-cyan);">
  __  __  ____  ____  ____  _____ 
  \ \/ / / ___|/ ___|/ ___|/ _ \
   \  / | _| |___ \| | | | | |
   /  \ | |___ ___| | |___ | |_| |
  /_/\_\ \____|____/ \____|\_____/
-            </div>
-            <h1>HUMANISTA DIGITAL:<br>EL LEGADO DE XESCO TEJEDOR</h1>
-            <p style="text-align: center;" class="accent">Francesc Adrià Perelló</p>
-            <p style="text-align: center;" class="highlight">"CURIOSO MULTIDISCIPLINAR"</p>
+                </div>
+                <h1>HUMANISTA DIGITAL:<br>EL LEGADO DE XESCO TEJEDOR</h1>
+                <p style="text-align: center;" class="accent">Francesc Adrià Perelló</p>
+                <p style="text-align: center;" class="highlight">"CURIOSO MULTIDISCIPLINAR"</p>
 
-            <div class="menu">
-                <button class="btn" onclick="showScreen('level1')">INICIAR AVENTURA (Perfil)</button>
-                <button class="btn" onclick="showScreen('achievements')">LOGROS (Experiencia)</button>
-                <button class="btn" onclick="showScreen('ghostgame')" style="border-color: var(--bright-magenta); color: var(--bright-magenta);">DESAFÍO ESPECTRAL (Bonus)</button>
-                <button class="btn" onclick="showScreen('gameover')">FIN DE PARTIDA (Contacto)</button>
-            </div>
+                <div class="menu">
+                    <button class="btn" onclick="showScreen('level1')">INICIAR AVENTURA (Perfil)</button>
+                    <button class="btn" onclick="showScreen('achievements')">LOGROS (Experiencia)</button>
+                    <button class="btn" onclick="showScreen('ghostgame')" style="border-color: var(--bright-magenta); color: var(--bright-magenta);">DESAFÍO ESPECTRAL (Bonus)</button>
+                    <button class="btn" onclick="showScreen('gameover')">FIN DE PARTIDA (Contacto)</button>
+                </div>
 
-            <div style="margin-top: auto; text-align: center; font-size: 8px;">
-                <span class="blink">PULSA PARA CONTINUAR</span>
+                <div style="margin-top: 20px; text-align: center; font-size: 8px;">
+                    <span class="blink">PULSA PARA CONTINUAR</span>
+                </div>
             </div>
         </div>
 
@@ -449,6 +473,11 @@
             <h1 style="color: var(--bright-red);">FIN DE PARTIDA</h1>
             <h2 class="accent">¿CONTINUAR?</h2>
             <div class="content">
+                <div id="badgeContainer" style="display: none; text-align: center; margin-bottom: 20px;">
+                    <img id="badgeImage" style="max-width: 100%; border: 2px dashed var(--bright-yellow); margin-bottom: 10px; image-rendering: pixelated;" alt="Insignia de Puntuación">
+                    <br>
+                    <a id="downloadBadgeBtn" class="btn" style="display:inline-block; text-decoration:none; color: var(--bright-yellow); border-color: var(--bright-yellow);" download="cazador_de_espectros.png">DESCARGAR INSIGNIA</a>
+                </div>
                 <ul class="contact-list">
                     <li><span class="highlight">EMAIL:</span> <a href="mailto:xesco@xescotejedor.es">xesco@xescotejedor.es</a></li>
                     <li><span class="highlight">LINKEDIN:</span> <a href="https://www.linkedin.com/in/xesco" target="_blank">linkedin.com/in/xesco</a></li>
@@ -583,8 +612,10 @@
         let score = 0;
         let health = 100;
         let canvas, ctx;
+        let offCanvas, offCtx;
         let mouseX = 0, mouseY = 0;
         let isShooting = false;
+        let lastTime = 0;
         let ghostImage = new Image();
         ghostImage.src = 'ghost.png';
         let bgLibrary = new Image(); bgLibrary.src = 'library.png';
@@ -602,8 +633,20 @@
             ctx = canvas.getContext('2d');
             
             const container = document.getElementById('game-container');
-            canvas.width = container.clientWidth - 40; 
-            canvas.height = container.clientHeight - 40;
+            canvas.width = canvas.offsetWidth; 
+            canvas.height = canvas.offsetHeight;
+            
+            if (!offCanvas) {
+                offCanvas = document.createElement('canvas');
+                offCtx = offCanvas.getContext('2d');
+            }
+            offCanvas.width = canvas.width;
+            offCanvas.height = canvas.height;
+            if (bgLibrary.complete) {
+                offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
+                offCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+            }
             
             score = 0;
             health = 100;
@@ -611,6 +654,7 @@
             ghostGameActive = true;
             gamePhase = 0;
             phaseTimer = 0;
+            lastTime = performance.now();
             updateUI();
             
             container.addEventListener('mousemove', handleMouseMove);
@@ -656,20 +700,54 @@
             crosshair.style.top = (e.touches[0].clientY - rect.top + 20) + 'px';
         }
 
-        function spawnGhost() {
+        function spawnGhost(timeScale = 1) {
             // Se reduce la probabilidad inicial de aparición y su incremento
-            if (Math.random() < 0.003 + (score * 0.0001)) {
+            if (Math.random() < (0.003 + (score * 0.0002)) * timeScale) {
                 ghosts.push({
                     x: canvas.width / 2 + (Math.random() - 0.5) * 150,
                     y: canvas.height / 2 + (Math.random() - 0.5) * 100,
                     size: 10,
                     // Movimiento lateral mucho más lento
-                    vx: (Math.random() - 0.5) * 1,
-                    vy: (Math.random() - 0.5) * 1,
+                    vx: (Math.random() - 0.5) * (1 + score * 0.01),
+                    vy: (Math.random() - 0.5) * (1 + score * 0.01),
                     // Salud inicial y escalado reducidos
-                    hp: 20 + score * 1
+                    hp: 20 + score * 1.5
                 });
             }
+        }
+
+        function generateBadge(finalScore) {
+            const bCanvas = document.createElement('canvas');
+            bCanvas.width = 400; bCanvas.height = 200;
+            const bCtx = bCanvas.getContext('2d');
+            
+            bCtx.fillStyle = '#000000';
+            bCtx.fillRect(0, 0, 400, 200);
+            bCtx.strokeStyle = '#D700D7';
+            bCtx.lineWidth = 4;
+            bCtx.strokeRect(4, 4, 392, 192);
+            
+            bCtx.fillStyle = '#00FFFF';
+            bCtx.font = '12px "Press Start 2P", monospace';
+            bCtx.textAlign = 'center';
+            bCtx.fillText('CERTIFICADO DE CAZADOR', 200, 30);
+            
+            bCtx.fillStyle = '#FFFF00';
+            bCtx.font = '24px "Press Start 2P", monospace';
+            bCtx.fillText(finalScore + ' ESPECTROS', 200, 90);
+            
+            bCtx.fillStyle = '#00FF00';
+            bCtx.font = '10px "Press Start 2P", monospace';
+            bCtx.fillText('ELIMINADOS POR EL BIEN DE LA HUMANIDAD', 200, 140);
+            
+            bCtx.fillStyle = '#D7D7D7';
+            bCtx.font = '8px "Press Start 2P", monospace';
+            bCtx.fillText('ARCHIVOS DE XESCO TEJEDOR - ' + new Date().getFullYear(), 200, 180);
+            
+            const imgData = bCanvas.toDataURL('image/png');
+            document.getElementById('badgeImage').src = imgData;
+            document.getElementById('downloadBadgeBtn').href = imgData;
+            document.getElementById('badgeContainer').style.display = 'block';
         }
 
         function updateUI() {
@@ -686,6 +764,22 @@
             
             const startX = canvas.width / 2;
             const startY = canvas.height;
+            
+            let hitGhost = false;
+            for (let g of ghosts) {
+                if (mouseX > g.x - g.size/2 && mouseX < g.x + g.size/2 &&
+                    mouseY > g.y - g.size/2 && mouseY < g.y + g.size/2) {
+                    hitGhost = true; break;
+                }
+            }
+            
+            if (!hitGhost && gamePhase >= 1) {
+                offCtx.globalCompositeOperation = 'destination-out';
+                offCtx.beginPath();
+                offCtx.arc(mouseX + (Math.random()-0.5)*20, mouseY + (Math.random()-0.5)*20, 15 + Math.random()*15, 0, Math.PI * 2);
+                offCtx.fill();
+                offCtx.globalCompositeOperation = 'source-over';
+            }
             
             ctx.save();
             
@@ -760,13 +854,19 @@
             document.getElementById('crosshair').style.display = 'none';
         }
 
-        function gameLoop() {
+        function gameLoop(timestamp) {
             if (!ghostGameActive) return;
+            
+            if (!lastTime) lastTime = timestamp;
+            let deltaTime = (timestamp - lastTime) / 1000;
+            if (deltaTime > 0.1) deltaTime = 0.1;
+            lastTime = timestamp;
+            const timeScale = deltaTime * 60;
             
             // Handle Phases
             if (gamePhase < 2) {
-                phaseTimer++;
-                if (phaseTimer === 120 && typeof audioCtx !== 'undefined' && audioCtx) {
+                phaseTimer += timeScale;
+                if (Math.floor(phaseTimer) === 120 && typeof audioCtx !== 'undefined' && audioCtx) {
                     createOsc(100, 'sawtooth', audioCtx.currentTime, 1.0, 0.2); // creepy sound when hell starts
                 }
                 if (phaseTimer > 120) gamePhase = 1;
@@ -775,13 +875,12 @@
 
             // Draw Background
             if (gamePhase === 0 && bgLibrary.complete) {
-                ctx.drawImage(bgLibrary, 0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Oscurecer un poco
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(offCanvas, 0, 0);
             } else if (gamePhase >= 1 && bgHell.complete) {
                 ctx.drawImage(bgHell, 0, 0, canvas.width, canvas.height);
+                ctx.drawImage(offCanvas, 0, 0);
                 if (phaseTimer > 120 && phaseTimer < 130) { // Destello rojo en la transición
-                    ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                    ctx.fillStyle = `rgba(255, 0, 0, ${0.5 * (130 - phaseTimer) / 10})`;
                     ctx.fillRect(0,0,canvas.width,canvas.height);
                 }
             } else {
@@ -802,19 +901,19 @@
             }
 
             if (gamePhase === 2) {
-                spawnGhost();
+                spawnGhost(timeScale);
             }
             
             for (let i = ghosts.length - 1; i >= 0; i--) {
                 let g = ghosts[i];
                 
-                g.x += g.vx;
-                g.y += g.vy;
+                g.x += g.vx * timeScale;
+                g.y += g.vy * timeScale;
                 // Crecen/Se acercan MUCHO más despacio
-                g.size += 0.08 + (score * 0.001);
+                g.size += (0.08 + (score * 0.001)) * timeScale;
                 
                 // Fantasmas hululan al azar
-                if (Math.random() < 0.005 && typeof audioCtx !== 'undefined' && audioCtx) {
+                if (Math.random() < 0.005 * timeScale && typeof audioCtx !== 'undefined' && audioCtx) {
                     let freq = 200 + Math.random() * 100;
                     createOsc(freq, 'sine', audioCtx.currentTime, 0.5, 0.02);
                     createOsc(freq + 20, 'sine', audioCtx.currentTime + 0.1, 0.5, 0.02);
@@ -831,12 +930,12 @@
                     if (mouseX > g.x - g.size/2 && mouseX < g.x + g.size/2 &&
                         mouseY > g.y - g.size/2 && mouseY < g.y + g.size/2) {
                         // El rayo hace muchísimo daño
-                        g.hp -= 10;
+                        g.hp -= 10 * timeScale;
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
                         ctx.fillRect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
                         
                         // Chillido al ser alcanzado
-                        if (Math.random() < 0.3 && typeof audioCtx !== 'undefined' && audioCtx) {
+                        if (Math.random() < 0.3 * timeScale && typeof audioCtx !== 'undefined' && audioCtx) {
                             createOsc(800 + Math.random() * 400, 'triangle', audioCtx.currentTime, 0.08, 0.03);
                         }
                     }
@@ -862,6 +961,7 @@
                     
                     if (health <= 0) {
                         stopGhostGame();
+                        generateBadge(score);
                         showScreen('gameover');
                         return;
                     }
@@ -876,9 +976,19 @@
         // Listener para adaptar el juego si el usuario gira el móvil o redimensiona la pantalla
         window.addEventListener('resize', () => {
             if (ghostGameActive && canvas) {
-                const container = document.getElementById('game-container');
-                canvas.width = container.clientWidth - 40;
-                canvas.height = container.clientHeight - 40;
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                if (offCanvas) {
+                    // Ideally we'd scale offCanvas, but re-init is safer to prevent stretching bugs
+                    // Note: previous burns will be lost on resize, which is acceptable
+                    offCanvas.width = canvas.width;
+                    offCanvas.height = canvas.height;
+                    if (bgLibrary.complete) {
+                        offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
+                        offCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                        offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+                    }
+                }
             }
         });
     </script>
