@@ -618,6 +618,8 @@
         let lastTime = 0;
         let ghostImage = new Image();
         ghostImage.src = 'ghost.png';
+        let ghostImage2 = new Image();
+        ghostImage2.src = 'monstuo2.png';
         let bgLibrary = new Image(); bgLibrary.src = 'library.png';
         let bgHell = new Image(); bgHell.src = 'libHell.png';
         let gamePhase = 0;
@@ -704,6 +706,7 @@
             // Se reduce la probabilidad inicial de aparición y su incremento
             if (Math.random() < (0.003 + (score * 0.0002)) * timeScale) {
                 ghosts.push({
+                    type: Math.random() < 0.5 ? 1 : 2,
                     x: canvas.width / 2 + (Math.random() - 0.5) * 150,
                     y: canvas.height / 2 + (Math.random() - 0.5) * 100,
                     size: 10,
@@ -919,10 +922,11 @@
                     createOsc(freq + 20, 'sine', audioCtx.currentTime + 0.1, 0.5, 0.02);
                 }
                 
-                if (ghostImage.complete) {
-                    ctx.drawImage(ghostImage, g.x - g.size/2, g.y - g.size/2, g.size, g.size);
+                let currentImg = g.type === 2 ? ghostImage2 : ghostImage;
+                if (currentImg.complete) {
+                    ctx.drawImage(currentImg, g.x - g.size/2, g.y - g.size/2, g.size, g.size);
                 } else {
-                    ctx.fillStyle = 'rgba(255, 0, 255, 0.8)';
+                    ctx.fillStyle = g.type === 2 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
                     ctx.fillRect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
                 }
                 
