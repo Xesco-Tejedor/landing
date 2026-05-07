@@ -801,13 +801,13 @@
             bCanvas.width = 400; bCanvas.height = 400;
             const bCtx = bCanvas.getContext('2d');
             
-            // Retro Colors
-            const colors = ['#D70000', '#0000D7', '#00D700', '#D700D7', '#00D7D7', '#D7D700', '#000000'];
-            const brightColors = ['#FF0000', '#0000FF', '#00FF00', '#FF00FF', '#00FFFF', '#FFFF00', '#FFFFFF'];
+            // Hardcore Metal Colors
+            const metalColors = ['#1A1A1A', '#4D4D4D', '#8B0000', '#2F4F4F', '#333333'];
+            const brightMetal = ['#C0C0C0', '#FF0000', '#FF4500', '#FFFFFF', '#FFD700'];
             
-            let color1 = colors[Math.floor(Math.random() * colors.length)];
-            let color2 = colors[Math.floor(Math.random() * colors.length)];
-            while(color1 === color2) color2 = colors[Math.floor(Math.random() * colors.length)];
+            let color1 = metalColors[Math.floor(Math.random() * metalColors.length)];
+            let color2 = metalColors[Math.floor(Math.random() * metalColors.length)];
+            while(color1 === color2) color2 = metalColors[Math.floor(Math.random() * metalColors.length)];
             
             // Black Background
             bCtx.fillStyle = '#000000';
@@ -815,95 +815,120 @@
 
             // Translate to center
             bCtx.save();
-            bCtx.translate(200, 180); // Move center slightly up to leave room for ribbon
+            bCtx.translate(200, 180); 
             
-            // Shield Path (Heater shield shape)
+            // SHIELD SHAPES
+            const shapeType = Math.floor(Math.random() * 4);
             bCtx.beginPath();
-            bCtx.moveTo(0, 140); // Bottom point
-            bCtx.bezierCurveTo(120, 90, 140, -10, 140, -100); // Right curve
-            bCtx.lineTo(-140, -100); // Top flat edge
-            bCtx.bezierCurveTo(-140, -10, -120, 90, 0, 140); // Left curve
+            if (shapeType === 0) { // Spiked Pointy
+                bCtx.moveTo(0, 150);
+                bCtx.bezierCurveTo(140, 100, 150, 0, 150, -110);
+                bCtx.lineTo(-150, -110);
+                bCtx.bezierCurveTo(-150, 0, -140, 100, 0, 150);
+            } else if (shapeType === 1) { // Hardcore Spiked
+                bCtx.moveTo(0, 160);
+                bCtx.lineTo(60, 110); bCtx.lineTo(150, 130); bCtx.lineTo(130, 0); bCtx.lineTo(160, -120);
+                bCtx.lineTo(0, -90);
+                bCtx.lineTo(-160, -120); bCtx.lineTo(-130, 0); bCtx.lineTo(-150, 130); bCtx.lineTo(-60, 110);
+            } else if (shapeType === 2) { // Bat-Wing Style
+                bCtx.moveTo(0, 150);
+                bCtx.quadraticCurveTo(80, 120, 150, 150); bCtx.quadraticCurveTo(120, 50, 160, -50); bCtx.quadraticCurveTo(80, -80, 0, -120);
+                bCtx.quadraticCurveTo(-80, -80, -160, -50); bCtx.quadraticCurveTo(-120, 50, -150, 150); bCtx.quadraticCurveTo(-80, 120, 0, 150);
+            } else { // Pointed Gothic
+                bCtx.moveTo(0, 170);
+                bCtx.lineTo(140, 50); bCtx.lineTo(140, -110); bCtx.lineTo(70, -130); bCtx.lineTo(0, -100);
+                bCtx.lineTo(-70, -130); bCtx.lineTo(-140, -110); bCtx.lineTo(-140, 50);
+            }
             bCtx.closePath();
             
             // Background Pattern
-            bCtx.clip(); // Clip everything outside the shield
-            
+            bCtx.clip();
             bCtx.fillStyle = color1;
             bCtx.fill();
             
             bCtx.fillStyle = color2;
-            const patternType = Math.floor(Math.random() * 5);
-            if (patternType === 0) { // Vertical split
-                bCtx.fillRect(0, -150, 200, 350);
-            } else if (patternType === 1) { // Horizontal split
-                bCtx.fillRect(-200, -150, 400, 150);
-            } else if (patternType === 2) { // Diagonal (Tronchado)
-                bCtx.beginPath(); bCtx.moveTo(-200, -150); bCtx.lineTo(200, 200); bCtx.lineTo(200, -150); bCtx.fill();
-            } else if (patternType === 3) { // Stripes
-                for(let i=-200; i<200; i+=40) bCtx.fillRect(i, -150, 20, 350);
-            } else if (patternType === 4) { // Checkered
-                for(let i=-200; i<200; i+=40) {
-                    for(let j=-200; j<200; j+=40) {
-                        if((Math.abs(i)+Math.abs(j)) % 80 === 0) bCtx.fillRect(i, j, 40, 40);
-                    }
+            const patternType = Math.floor(Math.random() * 6);
+            if (patternType === 0) bCtx.fillRect(0, -200, 200, 400);
+            else if (patternType === 1) bCtx.fillRect(-200, -200, 400, 100);
+            else if (patternType === 2) { bCtx.beginPath(); bCtx.moveTo(-200, -200); bCtx.lineTo(200, 200); bCtx.lineTo(200, -200); bCtx.fill(); }
+            else if (patternType === 3) { for(let i=-200; i<200; i+=30) bCtx.fillRect(i, -200, 10, 400); }
+            else if (patternType === 4) { // Blood Splatter
+                bCtx.fillStyle = '#8B0000';
+                for(let i=0; i<15; i++) {
+                    bCtx.beginPath();
+                    bCtx.arc((Math.random()-0.5)*250, (Math.random()-0.5)*250, Math.random()*30, 0, Math.PI*2);
+                    bCtx.fill();
                 }
+            } else { // Rivets / Cross
+                bCtx.fillRect(-10, -200, 20, 400);
+                bCtx.fillRect(-200, -10, 400, 20);
+            }
+
+            // Outline with Rivets
+            bCtx.lineWidth = 10;
+            const outlineColor = brightMetal[Math.floor(Math.random() * brightMetal.length)];
+            bCtx.strokeStyle = outlineColor;
+            bCtx.stroke();
+            
+            // Rivets along the edge
+            bCtx.fillStyle = '#C0C0C0';
+            for(let a=0; a<Math.PI*2; a+=0.4) {
+                bCtx.beginPath();
+                bCtx.arc(Math.cos(a)*140, Math.sin(a)*100, 4, 0, Math.PI*2);
+                bCtx.fill();
             }
             
-            // Outline
-            bCtx.lineWidth = 8;
-            bCtx.strokeStyle = brightColors[Math.floor(Math.random() * brightColors.length)];
-            bCtx.stroke();
-            
             // Central Charge (Icon)
-            const charges = ['👻', '💀', '👾', '🦇', '🔥', '⚔️', '👑', '🛡️', '👁️'];
-            // Better score = cooler icons possibility (last 3 icons)
-            let chargePool = finalScore >= 50 ? charges : charges.slice(0, 6);
-            let charge = chargePool[Math.floor(Math.random() * chargePool.length)];
+            const charges = ['💀', '🤘', '🩸', '🗡️', '⛓️', '🔥', '🦇', '⚡', '⛓️‍💥'];
+            let charge = charges[Math.floor(Math.random() * charges.length)];
             
-            bCtx.font = '100px monospace';
+            bCtx.font = '110px monospace';
             bCtx.textAlign = 'center';
             bCtx.textBaseline = 'middle';
-            // Simple text outline effect
-            bCtx.fillStyle = '#000000';
-            bCtx.fillText(charge, 4, 4);
-            bCtx.fillStyle = '#FFFFFF';
-            bCtx.fillText(charge, 0, 0);
+            // Chrome effect
+            bCtx.fillStyle = '#000000'; bCtx.fillText(charge, 6, 6);
+            bCtx.fillStyle = '#FFFFFF'; bCtx.fillText(charge, 0, 0);
+            bCtx.strokeStyle = '#4D4D4D'; bCtx.lineWidth = 2; bCtx.strokeText(charge, 0, 0);
             
-            bCtx.restore(); // Restore clipping
-            
-            // Ribbon at the bottom
-            bCtx.fillStyle = '#D7D700'; // Retro yellow ribbon
-            bCtx.strokeStyle = '#FFFFFF';
-            bCtx.lineWidth = 4;
-            
-            bCtx.beginPath();
-            bCtx.moveTo(50, 330); bCtx.lineTo(350, 330);
-            bCtx.lineTo(380, 360); bCtx.lineTo(350, 390);
-            bCtx.lineTo(50, 390); bCtx.lineTo(20, 360);
-            bCtx.closePath();
-            bCtx.fill();
-            bCtx.stroke();
-            
-            // Rank and Score text
-            let rank = 'NOVATO';
-            if (finalScore > 20) rank = 'CAZADOR';
-            if (finalScore > 50) rank = 'VETERANO';
-            if (finalScore > 100) rank = 'MAESTRO';
-            if (finalScore > 200) rank = 'LEYENDA';
-            
-            bCtx.fillStyle = '#000000';
-            bCtx.font = '16px "Press Start 2P", monospace';
-            bCtx.textAlign = 'center';
-            bCtx.textBaseline = 'middle';
-            bCtx.fillText(`${rank}: ${finalScore}`, 200, 360);
+            bCtx.restore(); 
 
-            // New Record Badge
+            // Tattered Ribbon
+            bCtx.fillStyle = '#333333';
+            bCtx.strokeStyle = '#8B0000';
+            bCtx.lineWidth = 3;
+            bCtx.beginPath();
+            bCtx.moveTo(40, 330); bCtx.lineTo(360, 330);
+            bCtx.lineTo(380, 350); bCtx.lineTo(360, 370); bCtx.lineTo(380, 390);
+            bCtx.lineTo(40, 390); bCtx.lineTo(20, 370); bCtx.lineTo(40, 350);
+            bCtx.closePath();
+            bCtx.fill(); bCtx.stroke();
+            
+            // Rank Logic
+            let rank = 'NOVATO';
+            if (finalScore > 20) rank = 'SOLDADO';
+            if (finalScore > 50) rank = 'GUERRERO';
+            if (finalScore > 100) rank = 'CAUDILLO';
+            if (finalScore > 200) rank = 'SEÑOR OSCURO';
+            
+            bCtx.fillStyle = '#FF0000';
+            bCtx.font = '14px "Press Start 2P", monospace';
+            bCtx.textAlign = 'center';
+            bCtx.textBaseline = 'middle';
+            bCtx.fillText(`${rank}: ${finalScore}`, 200, 365);
+
+            // New Record (Spiked Plate)
             if (isNewRecord && finalScore > 0) {
-                bCtx.fillStyle = '#FF0000';
-                bCtx.fillRect(100, 10, 200, 30);
-                bCtx.fillStyle = '#FFFFFF';
-                bCtx.font = '12px "Press Start 2P", monospace';
-                bCtx.fillText('NUEVO RECORD', 200, 25);
+                bCtx.fillStyle = '#1A1A1A';
+                bCtx.strokeStyle = '#FF4500';
+                bCtx.lineWidth = 2;
+                bCtx.beginPath();
+                bCtx.moveTo(80, 10); bCtx.lineTo(320, 10); bCtx.lineTo(330, 25); bCtx.lineTo(320, 40); bCtx.lineTo(80, 40); bCtx.lineTo(70, 25); bCtx.closePath();
+                bCtx.fill(); bCtx.stroke();
+                
+                bCtx.fillStyle = '#FF4500';
+                bCtx.font = '10px "Press Start 2P", monospace';
+                bCtx.textAlign = 'center';
+                bCtx.fillText('NUEVO RECORD INFERNAL', 200, 28);
             }
             
             const imgData = bCanvas.toDataURL('image/png');
