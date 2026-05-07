@@ -477,7 +477,7 @@
                     <h3 id="highScoreText" style="color: var(--bright-green); font-size: 12px; margin-bottom: 10px;"></h3>
                     <img id="badgeImage" style="max-width: 100%; border: 2px dashed var(--bright-yellow); margin-bottom: 10px; image-rendering: pixelated;" alt="Insignia de Puntuación">
                     <br>
-                    <a id="downloadBadgeBtn" class="btn" style="display:inline-block; text-decoration:none; color: var(--bright-yellow); border-color: var(--bright-yellow);" download="cazador_de_espectros.png">DESCARGAR INSIGNIA</a>
+                    <a id="downloadBadgeBtn" class="btn" style="display:inline-block; position:relative; z-index:100; text-decoration:none; color: var(--bright-yellow); border-color: var(--bright-yellow);" download="cazador_de_espectros.png" target="_blank">DESCARGAR INSIGNIA</a>
                 </div>
                 <ul class="contact-list">
                     <li><span class="highlight">EMAIL:</span> <a href="mailto:xesco@xescotejedor.es">xesco@xescotejedor.es</a></li>
@@ -773,7 +773,7 @@
             
             const hsText = document.getElementById('highScoreText');
             if (hsText) {
-                hsText.innerText = isNewRecord ? `¡NUEVO RÉCORD LOCAL: ${highScore}!` : `RÉCORD LOCAL: ${highScore}`;
+                hsText.innerText = isNewRecord ? `¡NUEVO RÉCORD INFERNAL: ${highScore}!` : `RÉCORD INFERNAL: ${highScore}`;
                 hsText.style.color = isNewRecord ? 'var(--bright-yellow)' : 'var(--bright-green)';
             }
             
@@ -1230,8 +1230,26 @@
                 }
                 
                 if (p.hp <= 0) {
-                    // Si lo destruyes antes de que llegue, no te quita vida
-                    if(typeof audioCtx !== 'undefined' && audioCtx) createOsc(800, 'square', audioCtx.currentTime, 0.1, 0.05);
+                    // Sonido de quejido (groan) al reventar el veneno
+                    if(typeof audioCtx !== 'undefined' && audioCtx) {
+                        let t = audioCtx.currentTime;
+                        createOsc(150, 'sawtooth', t, 0.2, 0.1);
+                        createOsc(100, 'sawtooth', t + 0.15, 0.3, 0.1);
+                        createOsc(60, 'sawtooth', t + 0.3, 0.4, 0.05);
+                    }
+                    
+                    // Explosión de sangre/fuego
+                    const pColors = ['#8B0000', '#FF0000', '#FF4500', '#FF8C00', '#B22222'];
+                    for(let k = 0; k < 30; k++) {
+                        particles.push({
+                            x: p.x, y: p.y,
+                            vx: (Math.random() - 0.5) * 300,
+                            vy: (Math.random() - 0.5) * 300,
+                            life: 1.0,
+                            color: pColors[Math.floor(Math.random() * pColors.length)]
+                        });
+                    }
+
                     poisons.splice(i, 1);
                     continue;
                 }
