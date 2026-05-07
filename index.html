@@ -1346,6 +1346,19 @@
                 }
                 
                 if (g.hp <= 0) {
+                    // Explosión de ectoplasma/sangre roja
+                    const ghostExplosionColors = ['#FF0000', '#D70000', '#8B0000', '#FF4500', '#B22222'];
+                    for(let k = 0; k < 30; k++) {
+                        particles.push({
+                            x: g.x, 
+                            y: g.y,
+                            vx: (Math.random() - 0.5) * 350,
+                            vy: (Math.random() - 0.5) * 350,
+                            life: 1.2,
+                            color: ghostExplosionColors[Math.floor(Math.random() * ghostExplosionColors.length)]
+                        });
+                    }
+                    
                     ghosts.splice(i, 1);
                     score += 10;
                     updateUI();
