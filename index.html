@@ -1459,6 +1459,18 @@
             }
             
             drawProtonBeam();
+
+            // Efecto de "fuego que se extiende": más veloz y agresivo (física de tela)
+            if (ghostGameActive) {
+                offCtx.save();
+                offCtx.globalCompositeOperation = 'destination-out';
+                // El desenfoque ayuda a que el borde "arda" hacia afuera
+                offCtx.filter = 'blur(2px)';
+                offCtx.globalAlpha = 0.15; 
+                // Escalamos ligeramente la imagen al redibujarla sobre sí misma para forzar la expansión
+                offCtx.drawImage(offCanvas, -1, -1, offCanvas.width + 2, offCanvas.height + 2);
+                offCtx.restore();
+            }
             
             // Perspective Countdown Animation (Last 10 Seconds)
             if (gameTimer <= 10 && gameTimer > 0) {
