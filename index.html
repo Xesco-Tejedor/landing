@@ -474,6 +474,7 @@
             <h2 class="accent">¿CONTINUAR?</h2>
             <div class="content">
                 <div id="badgeContainer" style="display: none; text-align: center; margin-bottom: 20px;">
+                    <h3 id="highScoreText" style="color: var(--bright-green); font-size: 12px; margin-bottom: 10px;"></h3>
                     <img id="badgeImage" style="max-width: 100%; border: 2px dashed var(--bright-yellow); margin-bottom: 10px; image-rendering: pixelated;" alt="Insignia de Puntuación">
                     <br>
                     <a id="downloadBadgeBtn" class="btn" style="display:inline-block; text-decoration:none; color: var(--bright-yellow); border-color: var(--bright-yellow);" download="cazador_de_espectros.png">DESCARGAR INSIGNIA</a>
@@ -620,6 +621,10 @@
         ghostImage.src = 'ghost.png';
         let ghostImage2 = new Image();
         ghostImage2.src = 'monstuo2.png';
+        let powerUpImage = new Image();
+        powerUpImage.src = 'powerUp.png';
+        let powerups = [];
+        let particles = [];
         let bgLibrary = new Image(); bgLibrary.src = 'library.png';
         let bgHell = new Image(); bgHell.src = 'libHell.png';
         let gamePhase = 0;
@@ -653,6 +658,8 @@
             score = 0;
             health = 100;
             ghosts = [];
+            powerups = [];
+            particles = [];
             ghostGameActive = true;
             gamePhase = 0;
             phaseTimer = 0;
@@ -703,7 +710,8 @@
         }
 
         function spawnGhost(timeScale = 1) {
-            let spawnChance = (0.003 + (score * 0.0002)) * timeScale;
+            let effScore = Math.min(score, 50); // Cap difficulty at score 50
+            let spawnChance = (0.003 + (effScore * 0.0002)) * timeScale;
             // Si no hay ningún monstruo en pantalla, aumentamos mucho la probabilidad para que no haya tiempos muertos
             if (ghosts.length === 0) spawnChance += 0.05 * timeScale;
             
@@ -715,41 +723,166 @@
                     y: canvas.height / 2 + (Math.random() - 0.5) * 100,
                     size: 10,
                     // El monstruo avanzado se mueve un 50% más rápido
-                    vx: (Math.random() - 0.5) * (1 + score * 0.01) * (isAdvanced ? 1.5 : 1),
-                    vy: (Math.random() - 0.5) * (1 + score * 0.01) * (isAdvanced ? 1.5 : 1),
+                    vx: (Math.random() - 0.5) * (1 + effScore * 0.01) * (isAdvanced ? 1.5 : 1),
+                    vy: (Math.random() - 0.5) * (1 + effScore * 0.01) * (isAdvanced ? 1.5 : 1),
                     // Salud inicial y escalado (el avanzado tiene un bono de salud extra)
-                    hp: 20 + score * 1.5 + (isAdvanced ? 30 : 0)
+                    hp: 20 + effScore * 1.5 + (isAdvanced ? 30 : 0)
+                });
+            }
+            
+            // Generación del Power-Up (Vida)
+            if (Math.random() < spawnChance * 0.15) { // Aproximadamente 15% de probabilidad en relación a los fantasmas
+                powerups.push({
+                    x: canvas.width / 2 + (Math.random() - 0.5) * 150,
+                    y: canvas.height / 2 + (Math.random() - 0.5) * 100,
+                    size: 10,
+                    vx: (Math.random() - 0.5) * (0.8 + effScore * 0.005),
+                    vy: (Math.random() - 0.5) * (0.8 + effScore * 0.005),
+                    hp: 5 // Fácil de romper
                 });
             }
         }
 
         function generateBadge(finalScore) {
+            // High Score Logic
+            let highScore = localStorage.getItem('ghostGameHighScore') || 0;
+            let isNewRecord = false;
+            if (finalScore > highScore) {
+                highScore = finalScore;
+                localStorage.setItem('ghostGameHighScore', highScore);
+                isNewRecord = true;
+            }
+            
+            const hsText = document.getElementById('highScoreText');
+            if (hsText) {
+                hsText.innerText = isNewRecord ? `¡NUEVO RÉCORD LOCAL: ${highScore}!` : `RÉCORD LOCAL: ${highScore}`;
+                hsText.style.color = isNewRecord ? 'var(--bright-yellow)' : 'var(--bright-green)';
+            }
+            
+            if (isNewRecord && finalScore > 0 && typeof audioCtx !== 'undefined' && audioCtx) {
+                let t = audioCtx.currentTime;
+                const riff = [
+                    {f: 329.63, d: 0.1}, {f: 329.63, d: 0.1}, {f: 392.00, d: 0.1},
+                    {f: 329.63, d: 0.1}, {f: 440.00, d: 0.1}, {f: 329.63, d: 0.1},
+                    {f: 493.88, d: 0.15}, {f: 392.00, d: 0.15}, {f: 587.33, d: 0.4}
+                ];
+                let offset = 0;
+                riff.forEach(note => {
+                    createOsc(note.f, 'sawtooth', t + offset, note.d, 0.15, 0);
+                    createOsc(note.f * 1.01, 'square', t + offset, note.d, 0.1, 0); // Distortion/Chorus
+                    offset += note.d + 0.02;
+                });
+            }
+
+            // Canvas Setup
             const bCanvas = document.createElement('canvas');
-            bCanvas.width = 400; bCanvas.height = 200;
+            bCanvas.width = 400; bCanvas.height = 400;
             const bCtx = bCanvas.getContext('2d');
             
+            // Retro Colors
+            const colors = ['#D70000', '#0000D7', '#00D700', '#D700D7', '#00D7D7', '#D7D700', '#000000'];
+            const brightColors = ['#FF0000', '#0000FF', '#00FF00', '#FF00FF', '#00FFFF', '#FFFF00', '#FFFFFF'];
+            
+            let color1 = colors[Math.floor(Math.random() * colors.length)];
+            let color2 = colors[Math.floor(Math.random() * colors.length)];
+            while(color1 === color2) color2 = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Black Background
             bCtx.fillStyle = '#000000';
-            bCtx.fillRect(0, 0, 400, 200);
-            bCtx.strokeStyle = '#D700D7';
-            bCtx.lineWidth = 4;
-            bCtx.strokeRect(4, 4, 392, 192);
+            bCtx.fillRect(0, 0, 400, 400);
+
+            // Translate to center
+            bCtx.save();
+            bCtx.translate(200, 180); // Move center slightly up to leave room for ribbon
             
-            bCtx.fillStyle = '#00FFFF';
-            bCtx.font = '12px "Press Start 2P", monospace';
+            // Shield Path (Heater shield shape)
+            bCtx.beginPath();
+            bCtx.moveTo(0, 140); // Bottom point
+            bCtx.bezierCurveTo(120, 90, 140, -10, 140, -100); // Right curve
+            bCtx.lineTo(-140, -100); // Top flat edge
+            bCtx.bezierCurveTo(-140, -10, -120, 90, 0, 140); // Left curve
+            bCtx.closePath();
+            
+            // Background Pattern
+            bCtx.clip(); // Clip everything outside the shield
+            
+            bCtx.fillStyle = color1;
+            bCtx.fill();
+            
+            bCtx.fillStyle = color2;
+            const patternType = Math.floor(Math.random() * 5);
+            if (patternType === 0) { // Vertical split
+                bCtx.fillRect(0, -150, 200, 350);
+            } else if (patternType === 1) { // Horizontal split
+                bCtx.fillRect(-200, -150, 400, 150);
+            } else if (patternType === 2) { // Diagonal (Tronchado)
+                bCtx.beginPath(); bCtx.moveTo(-200, -150); bCtx.lineTo(200, 200); bCtx.lineTo(200, -150); bCtx.fill();
+            } else if (patternType === 3) { // Stripes
+                for(let i=-200; i<200; i+=40) bCtx.fillRect(i, -150, 20, 350);
+            } else if (patternType === 4) { // Checkered
+                for(let i=-200; i<200; i+=40) {
+                    for(let j=-200; j<200; j+=40) {
+                        if((Math.abs(i)+Math.abs(j)) % 80 === 0) bCtx.fillRect(i, j, 40, 40);
+                    }
+                }
+            }
+            
+            // Outline
+            bCtx.lineWidth = 8;
+            bCtx.strokeStyle = brightColors[Math.floor(Math.random() * brightColors.length)];
+            bCtx.stroke();
+            
+            // Central Charge (Icon)
+            const charges = ['👻', '💀', '👾', '🦇', '🔥', '⚔️', '👑', '🛡️', '👁️'];
+            // Better score = cooler icons possibility (last 3 icons)
+            let chargePool = finalScore >= 50 ? charges : charges.slice(0, 6);
+            let charge = chargePool[Math.floor(Math.random() * chargePool.length)];
+            
+            bCtx.font = '100px monospace';
             bCtx.textAlign = 'center';
-            bCtx.fillText('CERTIFICADO DE CAZADOR', 200, 30);
+            bCtx.textBaseline = 'middle';
+            // Simple text outline effect
+            bCtx.fillStyle = '#000000';
+            bCtx.fillText(charge, 4, 4);
+            bCtx.fillStyle = '#FFFFFF';
+            bCtx.fillText(charge, 0, 0);
             
-            bCtx.fillStyle = '#FFFF00';
-            bCtx.font = '24px "Press Start 2P", monospace';
-            bCtx.fillText(finalScore + ' ESPECTROS', 200, 90);
+            bCtx.restore(); // Restore clipping
             
-            bCtx.fillStyle = '#00FF00';
-            bCtx.font = '10px "Press Start 2P", monospace';
-            bCtx.fillText('ELIMINADOS POR EL BIEN DE LA HUMANIDAD', 200, 140);
+            // Ribbon at the bottom
+            bCtx.fillStyle = '#D7D700'; // Retro yellow ribbon
+            bCtx.strokeStyle = '#FFFFFF';
+            bCtx.lineWidth = 4;
             
-            bCtx.fillStyle = '#D7D7D7';
-            bCtx.font = '8px "Press Start 2P", monospace';
-            bCtx.fillText('ARCHIVOS DE XESCO TEJEDOR - ' + new Date().getFullYear(), 200, 180);
+            bCtx.beginPath();
+            bCtx.moveTo(50, 330); bCtx.lineTo(350, 330);
+            bCtx.lineTo(380, 360); bCtx.lineTo(350, 390);
+            bCtx.lineTo(50, 390); bCtx.lineTo(20, 360);
+            bCtx.closePath();
+            bCtx.fill();
+            bCtx.stroke();
+            
+            // Rank and Score text
+            let rank = 'NOVATO';
+            if (finalScore > 20) rank = 'CAZADOR';
+            if (finalScore > 50) rank = 'VETERANO';
+            if (finalScore > 100) rank = 'MAESTRO';
+            if (finalScore > 200) rank = 'LEYENDA';
+            
+            bCtx.fillStyle = '#000000';
+            bCtx.font = '16px "Press Start 2P", monospace';
+            bCtx.textAlign = 'center';
+            bCtx.textBaseline = 'middle';
+            bCtx.fillText(`${rank}: ${finalScore}`, 200, 360);
+
+            // New Record Badge
+            if (isNewRecord && finalScore > 0) {
+                bCtx.fillStyle = '#FF0000';
+                bCtx.fillRect(100, 10, 200, 30);
+                bCtx.fillStyle = '#FFFFFF';
+                bCtx.font = '12px "Press Start 2P", monospace';
+                bCtx.fillText('NUEVO RECORD', 200, 25);
+            }
             
             const imgData = bCanvas.toDataURL('image/png');
             document.getElementById('badgeImage').src = imgData;
@@ -777,6 +910,14 @@
                 if (mouseX > g.x - g.size/2 && mouseX < g.x + g.size/2 &&
                     mouseY > g.y - g.size/2 && mouseY < g.y + g.size/2) {
                     hitGhost = true; break;
+                }
+            }
+            if (!hitGhost) {
+                for (let p of powerups) {
+                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
+                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                        hitGhost = true; break;
+                    }
                 }
             }
             
@@ -979,6 +1120,78 @@
                         showScreen('gameover');
                         return;
                     }
+                }
+            }
+            
+            // Loop de Power-Ups
+            for (let i = powerups.length - 1; i >= 0; i--) {
+                let p = powerups[i];
+                p.x += p.vx * timeScale;
+                p.y += p.vy * timeScale;
+                p.size += (0.05 + (score * 0.0005)) * timeScale;
+                
+                try {
+                    if (powerUpImage.complete && powerUpImage.naturalWidth > 0) {
+                        ctx.drawImage(powerUpImage, p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                    } else {
+                        ctx.fillStyle = '#00FF00';
+                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                    }
+                } catch(e) {}
+                
+                if (isShooting) {
+                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
+                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                        p.hp -= 10 * timeScale;
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                    }
+                }
+                
+                if (p.hp <= 0) {
+                    health = Math.min(100, health + 80);
+                    updateUI();
+                    
+                    if(typeof audioCtx !== 'undefined' && audioCtx) {
+                        createOsc(600, 'sine', audioCtx.currentTime, 0.1, 0.1);
+                        createOsc(800, 'sine', audioCtx.currentTime + 0.1, 0.2, 0.1);
+                        createOsc(1200, 'sine', audioCtx.currentTime + 0.3, 0.4, 0.1);
+                    }
+                    
+                    const pColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFFFFF'];
+                    for(let k = 0; k < 30; k++) {
+                        particles.push({
+                            x: p.x, y: p.y,
+                            vx: (Math.random() - 0.5) * 300,
+                            vy: (Math.random() - 0.5) * 300,
+                            life: 1.0,
+                            color: pColors[Math.floor(Math.random() * pColors.length)]
+                        });
+                    }
+                    
+                    powerups.splice(i, 1);
+                    continue;
+                }
+                
+                if (p.size > 200) {
+                    powerups.splice(i, 1); // Desaparece sin hacer daño
+                }
+            }
+            
+            // Loop de Partículas
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let part = particles[i];
+                part.x += part.vx * deltaTime;
+                part.y += part.vy * deltaTime;
+                part.life -= deltaTime * 1.5; // Desaparecen rápido
+                
+                if (part.life <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.fillStyle = part.color;
+                    ctx.globalAlpha = part.life;
+                    ctx.fillRect(part.x - 2, part.y - 2, 4, 4);
+                    ctx.globalAlpha = 1.0;
                 }
             }
             
