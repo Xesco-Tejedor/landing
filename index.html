@@ -39,10 +39,12 @@
             background-color: var(--black);
             color: var(--bright-white);
             font-family: 'Press Start 2P', cursive;
-            overflow: hidden;
+            overflow: hidden; /* Mantener oculto el scroll principal para simular una terminal fija */
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Soporte para dispositivos con notch */
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         /* Scanline effect */
@@ -61,17 +63,20 @@
         }
 
         #game-container {
-            width: 90vw;
-            height: 90vh;
-            max-width: 800px;
-            max-height: 600px;
+            width: 95vw;
+            height: 95vh;
+            width: 95dvw;
+            height: 95dvh;
+            max-width: 900px;
+            max-height: 700px;
             border: var(--border-width) solid var(--bright-blue);
-            padding: 20px;
+            padding: clamp(10px, 2vw, 20px);
             position: relative;
             background-color: var(--black);
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 20px var(--blue);
+            transition: all 0.3s ease;
         }
 
         .screen {
@@ -222,6 +227,45 @@
             font-size: 8px;
         }
 
+        /* Achievement Pulse Animation */
+        @keyframes pulse-yellow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        .pulse-reward {
+            animation: pulse-yellow 2s infinite;
+            border-color: var(--bright-yellow) !important;
+            color: var(--bright-yellow) !important;
+            font-weight: bold;
+        }
+
+        .achievement-banner {
+            background-color: var(--bright-yellow);
+            color: var(--black);
+            padding: 5px;
+            font-size: 10px;
+            margin-bottom: 15px;
+            text-shadow: none;
+            display: inline-block;
+            transform: rotate(-2deg);
+        }
+
+        #badgeContainer {
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #badgeImage {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: contain;
+        }
+
         /* Ghost Game Styles */
         #ghostgame {
             position: relative;
@@ -309,16 +353,37 @@
             text-decoration: underline;
         }
 
-        /* Mobile Responsiveness */
-        @media (max-width: 600px) {
-            h1 { font-size: 14px; }
-            h2 { font-size: 11px; }
-            p, li { font-size: 9px; }
-            #game-container { padding: 10px; border-width: 2px; }
-            .btn { font-size: 8px; padding: 10px; }
-            .pixel-art { font-size: 6px !important; }
-            .stats span { font-size: 6px; }
-            .level-badge { font-size: 10px; }
+        /* Creepy Sign */
+        #creepySign {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--bright-red);
+            font-size: clamp(14px, 4vw, 24px);
+            text-align: center;
+            z-index: 100;
+            display: none;
+            text-shadow: 0 0 10px var(--black), 4px 4px 0 var(--black);
+            pointer-events: none;
+            animation: creepy-flicker 0.1s infinite;
+            width: 80%;
+            line-height: 1.5;
+        }
+
+        @keyframes creepy-flicker {
+            0% { opacity: 0.8; transform: translate(-50%, -50%) skew(2deg); filter: hue-rotate(0deg); }
+            20% { transform: translate(-51%, -49%) skew(-1deg); }
+            40% { transform: translate(-49%, -51%) skew(3deg); filter: hue-rotate(90deg); }
+            60% { transform: translate(-50%, -50%) skew(-2deg); }
+            80% { transform: translate(-51%, -51%) skew(1deg); filter: hue-rotate(180deg); }
+            100% { opacity: 0.9; transform: translate(-50%, -50%) skew(0deg); filter: hue-rotate(0deg); }
+        }
+
+        #timerUI {
+            color: var(--bright-yellow);
+            font-size: 10px;
+            text-shadow: 2px 2px var(--black);
         }
     </style>
 </head>
@@ -458,6 +523,7 @@
             
             <div id="gameUI">
                 <div>SCORE: <span id="gameScore">0</span></div>
+                <div id="timerUI">TIEMPO: <span id="gameTimerUI">60</span>s</div>
                 <div>
                     SALUD:
                     <div class="health-bar-container">
@@ -466,6 +532,7 @@
                 </div>
             </div>
             <canvas id="gameCanvas"></canvas>
+            <div id="creepySign">TIENES UN MINUTO PARA SALVAR EL MUNDO</div>
             <div id="crosshair"></div>
         </div>
 
@@ -473,11 +540,13 @@
             <h1 style="color: var(--bright-red);">FIN DE PARTIDA</h1>
             <h2 class="accent">¿CONTINUAR?</h2>
             <div class="content">
-                <div id="badgeContainer" style="display: none; text-align: center; margin-bottom: 20px;">
-                    <h3 id="highScoreText" style="color: var(--bright-green); font-size: 12px; margin-bottom: 10px;"></h3>
-                    <img id="badgeImage" style="max-width: 100%; border: 2px dashed var(--bright-yellow); margin-bottom: 10px; image-rendering: pixelated;" alt="Insignia de Puntuación">
+                <div id="badgeContainer" style="display: none; text-align: center; margin-bottom: 25px; border: 2px solid var(--bright-blue); padding: 15px; background: rgba(0,0,215,0.1);">
+                    <div class="achievement-banner">¡LOGRO DESBLOQUEADO!</div>
+                    <h3 id="highScoreText" style="color: var(--bright-green); font-size: 12px; margin-bottom: 15px;"></h3>
+                    <img id="badgeImage" style="max-width: 100%; border: 4px double var(--bright-yellow); margin-bottom: 20px; image-rendering: pixelated; background: var(--black);" alt="Insignia de Puntuación">
                     <br>
-                    <a id="downloadBadgeBtn" class="btn" style="display:inline-block; position:relative; z-index:100; text-decoration:none; color: var(--bright-yellow); border-color: var(--bright-yellow);" download="cazador_de_espectros.png" target="_blank">DESCARGAR INSIGNIA</a>
+                    <a id="downloadBadgeBtn" class="btn pulse-reward" style="display:inline-block; position:relative; z-index:100; text-decoration:none;" download="cazador_de_espectros.png" target="_blank">DESCARGAR INSIGNIA</a>
+                    <p style="font-size: 8px; margin-top: 10px; color: var(--bright-cyan);">* Pulsa para guardar tu hazaña</p>
                 </div>
                 <ul class="contact-list">
                     <li><span class="highlight">EMAIL:</span> <a href="mailto:xesco@xescotejedor.es">xesco@xescotejedor.es</a></li>
@@ -522,10 +591,10 @@
             osc.stop(startTime + duration);
         }
 
-        function playEpicMusic() {
-            const tempo = 130;
-            const step = 60 / tempo;
+        let currentTempo = 130;
+        let musicTimeout = null;
 
+        function playEpicMusic() {
             const notes = {
                 C3: 130.81, G3: 196.00, A3: 220.00, F3: 174.61,
                 C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
@@ -549,25 +618,27 @@
                 { f: notes.C3, t: 6 }, { f: notes.C3, t: 6.5 }, { f: notes.G3, t: 7 }, { f: notes.G3, t: 7.5 }
             ];
 
-            function playArp(startTime, baseFreq) {
+            function playArp(startTime, baseFreq, step) {
                 const arp = [1, 1.25, 1.5, 2];
                 arp.forEach((r, i) => {
                     createOsc(baseFreq * r, 'square', startTime + i * (step / 4), step / 4, 0.03);
                 });
             }
 
-            let loopDuration = 16 * step;
-
             function scheduleLoop(startTime) {
+                if (!isMusicPlaying) return;
+                const step = 60 / currentTempo;
+                const loopDuration = 16 * step;
+
                 melody.forEach(n => createOsc(n.f, 'sawtooth', startTime + n.t * step, n.d * step, 0.08, 5));
                 bass.forEach(n => createOsc(n.f, 'triangle', startTime + n.t * step, 0.4 * step, 0.15));
                 
                 for(let i=0; i<16; i+=2) {
                     const freq = i < 8 ? notes.A3 : notes.F3;
-                    playArp(startTime + i * step, freq);
+                    playArp(startTime + i * step, freq, step);
                 }
 
-                setTimeout(() => {
+                musicTimeout = setTimeout(() => {
                     scheduleLoop(audioCtx.currentTime + 0.1);
                 }, loopDuration * 1000 - 100);
             }
@@ -584,13 +655,16 @@
                 stopGhostGame();
             }
             if (screenId === 'gameover' && document.getElementById('badgeContainer').style.display === 'none') {
-                // Generar la insignia con la puntuación actual si el usuario accede desde el menú principal
                 generateBadge(typeof score !== 'undefined' ? score : 0);
             }
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => s.classList.remove('active'));
             const target = document.getElementById(screenId);
             if (target) target.classList.add('active');
+            
+            if (screenId === 'ghostgame') {
+                currentTempo = 130; // Reset tempo when entering game screen
+            }
         }
 
         document.querySelectorAll('.btn').forEach(btn => {
@@ -635,6 +709,8 @@
         let bgHell = new Image(); bgHell.src = 'libHell.png';
         let gamePhase = 0;
         let phaseTimer = 0;
+        let gameTimer = 60;
+        let countdownValue = -1;
 
         function startGhostGame() {
             document.getElementById('ghostMenu').style.display = 'none';
@@ -642,6 +718,14 @@
             document.getElementById('gameUI').style.display = 'flex';
             document.getElementById('crosshair').style.display = 'block';
             
+            // Creepy Sign Logic
+            const sign = document.getElementById('creepySign');
+            sign.style.display = 'block';
+            setTimeout(() => {
+                sign.style.opacity = '0';
+                setTimeout(() => { sign.style.display = 'none'; sign.style.opacity = '1'; }, 1000);
+            }, 3000);
+
             canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
             
@@ -657,12 +741,14 @@
             offCanvas.height = canvas.height;
             if (bgLibrary.complete) {
                 offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                offCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                offCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
                 offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
             }
             
             score = 0;
             health = 100;
+            gameTimer = 60;
+            currentTempo = 130;
             ghosts = [];
             powerups = [];
             poisons = [];
@@ -903,11 +989,12 @@
             bCtx.fill(); bCtx.stroke();
             
             // Rank Logic
-            let rank = 'NOVATO';
-            if (finalScore > 20) rank = 'SOLDADO';
-            if (finalScore > 50) rank = 'GUERRERO';
-            if (finalScore > 100) rank = 'CAUDILLO';
-            if (finalScore > 200) rank = 'SEÑOR OSCURO';
+            let rank = 'ESPECTRO ERRANTE';
+            if (finalScore > 20) rank = 'RECLUTA DEL ABISMO';
+            if (finalScore > 50) rank = 'CAZADOR DE ÉLITE';
+            if (finalScore > 100) rank = 'EXORCISTA BINARIO';
+            if (finalScore > 250) rank = 'MAESTRO DEL ECTOPLASMA';
+            if (finalScore > 500) rank = 'SOBERANO DEL INFRAMUNDO';
             
             bCtx.fillStyle = '#FF0000';
             bCtx.font = '14px "Press Start 2P", monospace';
@@ -948,6 +1035,7 @@
 
         function updateUI() {
             document.getElementById('gameScore').innerText = score;
+            document.getElementById('gameTimerUI').innerText = Math.ceil(gameTimer);
             const hb = document.getElementById('healthBar');
             hb.style.width = Math.max(0, health) + '%';
             if (health < 30) hb.style.backgroundColor = 'var(--bright-red)';
@@ -985,13 +1073,13 @@
                 }
             }
             
-            if (!hitGhost && gamePhase >= 1) {
-                offCtx.globalCompositeOperation = 'destination-out';
-                offCtx.beginPath();
-                offCtx.arc(mouseX + (Math.random()-0.5)*20, mouseY + (Math.random()-0.5)*20, 15 + Math.random()*15, 0, Math.PI * 2);
-                offCtx.fill();
-                offCtx.globalCompositeOperation = 'source-over';
-            }
+            // Siempre "quemar" la oscuridad cuando el rayo esté activo
+            offCtx.globalCompositeOperation = 'destination-out';
+            offCtx.beginPath();
+            // Aumentamos ligeramente el radio del quemado para que sea más efectivo
+            offCtx.arc(mouseX + (Math.random()-0.5)*30, mouseY + (Math.random()-0.5)*30, 20 + Math.random()*20, 0, Math.PI * 2);
+            offCtx.fill();
+            offCtx.globalCompositeOperation = 'source-over';
             
             ctx.save();
             
@@ -1074,6 +1162,22 @@
             if (deltaTime > 0.1) deltaTime = 0.1;
             lastTime = timestamp;
             const timeScale = deltaTime * 60;
+            
+            // Timer Logic
+            gameTimer -= deltaTime;
+            updateUI();
+
+            // Music Speed Up at 15 seconds remaining
+            if (gameTimer <= 15) {
+                currentTempo = 180;
+            }
+
+            if (gameTimer <= 0) {
+                stopGhostGame();
+                generateBadge(score);
+                showScreen('gameover');
+                return;
+            }
             
             // Handle Phases
             if (gamePhase < 2) {
@@ -1331,6 +1435,25 @@
             }
             
             drawProtonBeam();
+            
+            // Perspective Countdown Animation (Last 10 Seconds)
+            if (gameTimer <= 10 && gameTimer > 0) {
+                let currentVal = Math.ceil(gameTimer);
+                let progress = 1 - (gameTimer % 1); // 0 to 1 over each second
+                let scale = progress * 400;
+                let alpha = 1 - progress;
+                
+                ctx.save();
+                ctx.font = `${scale}px "Press Start 2P"`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.strokeStyle = `rgba(255, 0, 0, ${alpha})`;
+                ctx.lineWidth = scale / 20;
+                ctx.strokeText(currentVal, canvas.width / 2, canvas.height / 2);
+                ctx.fillText(currentVal, canvas.width / 2, canvas.height / 2);
+                ctx.restore();
+            }
             
             requestAnimationFrame(gameLoop);
         }
