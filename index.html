@@ -569,7 +569,7 @@
         function initAudio() {
             if (audioCtx) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            playEpicMusic();
+            // Ya no iniciamos playEpicMusic aquí por defecto, lo gestiona showScreen
         }
 
         function createOsc(freq, type, startTime, duration, volume, detune = 0) {
@@ -593,8 +593,20 @@
 
         let currentTempo = 130;
         let musicTimeout = null;
+        let fanfareTimeout = null;
+        let isFanfarePlaying = false;
+
+        function stopAllMusic() {
+            isMusicPlaying = false;
+            isFanfarePlaying = false;
+            if (musicTimeout) clearTimeout(musicTimeout);
+            if (fanfareTimeout) clearTimeout(fanfareTimeout);
+        }
 
         function playEpicMusic() {
+            if (isMusicPlaying) return;
+            isMusicPlaying = true;
+            
             const notes = {
                 C3: 130.81, G3: 196.00, A3: 220.00, F3: 174.61,
                 C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
@@ -643,10 +655,44 @@
                 }, loopDuration * 1000 - 100);
             }
 
-            if (!isMusicPlaying) {
-                isMusicPlaying = true;
-                scheduleLoop(audioCtx.currentTime + 0.1);
+            scheduleLoop(audioCtx.currentTime + 0.1);
+        }
+
+        function playVictoryFanfare() {
+            if (isFanfarePlaying) return;
+            isFanfarePlaying = true;
+
+            const step = 0.15;
+            const notes = { C4: 261.63, E4: 329.63, G4: 392.00, C5: 523.25, G5: 783.99 };
+            
+            function scheduleFanfare(startTime) {
+                if (!isFanfarePlaying) return;
+
+                // Melodía heroica / Fanfarria
+                const sequence = [
+                    {f: notes.C4, t: 0, d: 1}, {f: notes.G4, t: 1, d: 1}, 
+                    {f: notes.C5, t: 2, d: 2}, {f: notes.E4, t: 4, d: 1},
+                    {f: notes.G4, t: 5, d: 1}, {f: notes.C5, t: 6, d: 4},
+                    {f: notes.G4, t: 10, d: 1}, {f: notes.C5, t: 11, d: 1},
+                    {f: notes.G5, t: 12, d: 4}
+                ];
+
+                sequence.forEach(n => {
+                    createOsc(n.f, 'triangle', startTime + n.t * step, n.d * step, 0.15);
+                    createOsc(n.f * 1.01, 'square', startTime + n.t * step, n.d * step, 0.05); // Brillo metálico
+                });
+
+                // Acompañamiento
+                for(let i=0; i<16; i++) {
+                    if (i % 4 === 0) createOsc(notes.C4 / 2, 'sawtooth', startTime + i * step, step * 2, 0.1);
+                }
+
+                fanfareTimeout = setTimeout(() => {
+                    scheduleFanfare(audioCtx.currentTime + 0.1);
+                }, 16 * step * 1000);
             }
+
+            scheduleFanfare(audioCtx.currentTime + 0.1);
         }
 
         function showScreen(screenId) {
@@ -662,8 +708,19 @@
             const target = document.getElementById(screenId);
             if (target) target.classList.add('active');
             
-            if (screenId === 'ghostgame') {
-                currentTempo = 130; // Reset tempo when entering game screen
+            // Gestión de música por pantalla
+            if (screenId === 'gameover') {
+                stopAllMusic();
+                playVictoryFanfare();
+            } else if (screenId === 'ghostgame') {
+                stopAllMusic();
+                currentTempo = 130;
+                playEpicMusic();
+            } else {
+                if (isFanfarePlaying) {
+                    stopAllMusic();
+                    playEpicMusic();
+                }
             }
         }
 
