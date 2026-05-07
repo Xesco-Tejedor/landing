@@ -1073,12 +1073,35 @@
                 }
             }
             
-            // Siempre "quemar" la oscuridad cuando el rayo esté activo
+            // Efecto de "quemado de tela": huecos irregulares y rasgados
             offCtx.globalCompositeOperation = 'destination-out';
             offCtx.beginPath();
-            // Aumentamos ligeramente el radio del quemado para que sea más efectivo
-            offCtx.arc(mouseX + (Math.random()-0.5)*30, mouseY + (Math.random()-0.5)*30, 20 + Math.random()*20, 0, Math.PI * 2);
+            const burnX = mouseX + (Math.random() - 0.5) * 40;
+            const burnY = mouseY + (Math.random() - 0.5) * 40;
+            const radius = 15 + Math.random() * 25;
+            const spikes = 8 + Math.floor(Math.random() * 8);
+            
+            for (let i = 0; i < spikes; i++) {
+                const angle = (i / spikes) * Math.PI * 2;
+                // Jitter para crear bordes dentados y asimétricos (efecto tela quemada)
+                const dist = radius * (0.6 + Math.random() * 0.8);
+                const px = burnX + Math.cos(angle) * dist;
+                const py = burnY + Math.sin(angle) * dist;
+                if (i === 0) offCtx.moveTo(px, py);
+                else offCtx.lineTo(px, py);
+            }
+            offCtx.closePath();
             offCtx.fill();
+
+            // Añadir pequeños "agujeros de chispas" adicionales alrededor
+            for (let j = 0; j < 3; j++) {
+                offCtx.beginPath();
+                const sx = burnX + (Math.random() - 0.5) * 60;
+                const sy = burnY + (Math.random() - 0.5) * 60;
+                const sr = 2 + Math.random() * 5;
+                offCtx.arc(sx, sy, sr, 0, Math.PI * 2);
+                offCtx.fill();
+            }
             offCtx.globalCompositeOperation = 'source-over';
             
             ctx.save();
