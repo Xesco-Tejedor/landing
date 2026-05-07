@@ -623,7 +623,10 @@
         ghostImage2.src = 'monstuo2.png';
         let powerUpImage = new Image();
         powerUpImage.src = 'powerUp.png';
+        let poisonImage = new Image();
+        poisonImage.src = 'poison.png';
         let powerups = [];
+        let poisons = [];
         let particles = [];
         let bgLibrary = new Image(); bgLibrary.src = 'library.png';
         let bgHell = new Image(); bgHell.src = 'libHell.png';
@@ -659,6 +662,7 @@
             health = 100;
             ghosts = [];
             powerups = [];
+            poisons = [];
             particles = [];
             ghostGameActive = true;
             gamePhase = 0;
@@ -736,9 +740,23 @@
                     x: canvas.width / 2 + (Math.random() - 0.5) * 150,
                     y: canvas.height / 2 + (Math.random() - 0.5) * 100,
                     size: 10,
-                    vx: (Math.random() - 0.5) * (0.8 + effScore * 0.005),
-                    vy: (Math.random() - 0.5) * (0.8 + effScore * 0.005),
+                    // El doble de rápidos que los monstruos base
+                    vx: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
+                    vy: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
                     hp: 5 // Fácil de romper
+                });
+            }
+            
+            // Generación del Veneno (Trampa)
+            if (Math.random() < spawnChance * 0.05) { // 5% de probabilidad (aparece menos que el powerUp)
+                poisons.push({
+                    x: canvas.width / 2 + (Math.random() - 0.5) * 150,
+                    y: canvas.height / 2 + (Math.random() - 0.5) * 100,
+                    size: 10,
+                    // El doble de rápidos que los monstruos base
+                    vx: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
+                    vy: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
+                    hp: 5 // Fácil de romper para defenderse
                 });
             }
         }
@@ -914,6 +932,14 @@
             }
             if (!hitGhost) {
                 for (let p of powerups) {
+                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
+                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                        hitGhost = true; break;
+                    }
+                }
+            }
+            if (!hitGhost) {
+                for (let p of poisons) {
                     if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
                         mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
                         hitGhost = true; break;
@@ -1175,6 +1201,59 @@
                 
                 if (p.size > 200) {
                     powerups.splice(i, 1); // Desaparece sin hacer daño
+                }
+            }
+            
+            // Loop de Venenos
+            for (let i = poisons.length - 1; i >= 0; i--) {
+                let p = poisons[i];
+                p.x += p.vx * timeScale;
+                p.y += p.vy * timeScale;
+                p.size += (0.05 + (score * 0.0005)) * timeScale;
+                
+                try {
+                    if (poisonImage.complete && poisonImage.naturalWidth > 0) {
+                        ctx.drawImage(poisonImage, p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                    } else {
+                        ctx.fillStyle = '#800080';
+                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                    }
+                } catch(e) {}
+                
+                if (isShooting) {
+                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
+                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                        p.hp -= 10 * timeScale;
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                    }
+                }
+                
+                if (p.hp <= 0) {
+                    // Si lo destruyes antes de que llegue, no te quita vida
+                    if(typeof audioCtx !== 'undefined' && audioCtx) createOsc(800, 'square', audioCtx.currentTime, 0.1, 0.05);
+                    poisons.splice(i, 1);
+                    continue;
+                }
+                
+                if (p.size > 200) {
+                    // Causa daño letal (40 puntos, el doble que un fantasma normal)
+                    poisons.splice(i, 1);
+                    health -= 40;
+                    updateUI();
+                    
+                    // Flash morado/rojo de daño
+                    ctx.fillStyle = 'rgba(128, 0, 128, 0.4)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    if(typeof audioCtx !== 'undefined' && audioCtx) createOsc(50, 'sawtooth', audioCtx.currentTime, 0.5, 0.1);
+                    
+                    if (health <= 0) {
+                        stopGhostGame();
+                        generateBadge(score);
+                        showScreen('gameover');
+                        return;
+                    }
                 }
             }
             
