@@ -584,6 +584,10 @@
             if (typeof ghostGameActive !== 'undefined' && ghostGameActive && screenId !== 'ghostgame') {
                 stopGhostGame();
             }
+            if (screenId === 'gameover' && document.getElementById('badgeContainer').style.display === 'none') {
+                // Generar la insignia con la puntuación actual si el usuario accede desde el menú principal
+                generateBadge(typeof score !== 'undefined' ? score : 0);
+            }
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => s.classList.remove('active'));
             const target = document.getElementById(screenId);
