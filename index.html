@@ -741,7 +741,8 @@
             offCanvas.height = canvas.height;
             if (bgLibrary.complete) {
                 offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                offCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                // Oscuridad inicial reducida (antes 0.8)
+                offCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
                 offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
             }
             
@@ -1493,7 +1494,7 @@
                     offCanvas.height = canvas.height;
                     if (bgLibrary.complete) {
                         offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                        offCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                        offCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
                         offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
                     }
                 }
