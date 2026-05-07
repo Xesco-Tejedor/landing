@@ -695,14 +695,14 @@
             scheduleFanfare(audioCtx.currentTime + 0.1);
         }
 
+        let comingFromGameEnd = false;
+
         function showScreen(screenId) {
             initAudio();
             if (typeof ghostGameActive !== 'undefined' && ghostGameActive && screenId !== 'ghostgame') {
                 stopGhostGame();
             }
-            if (screenId === 'gameover' && document.getElementById('badgeContainer').style.display === 'none') {
-                generateBadge(typeof score !== 'undefined' ? score : 0);
-            }
+
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => s.classList.remove('active'));
             const target = document.getElementById(screenId);
@@ -712,6 +712,13 @@
             if (screenId === 'gameover') {
                 stopAllMusic();
                 playVictoryFanfare();
+                
+                // Mostrar/Ocultar el badge dependiendo de si venimos de una partida terminada
+                const badgeCont = document.getElementById('badgeContainer');
+                if (!comingFromGameEnd) {
+                    badgeCont.style.display = 'none';
+                }
+                comingFromGameEnd = false; // Resetear para la próxima navegación
             } else if (screenId === 'ghostgame') {
                 stopAllMusic();
                 currentTempo = 130;
@@ -1256,6 +1263,7 @@
             if (gameTimer <= 0) {
                 stopGhostGame();
                 generateBadge(score);
+                comingFromGameEnd = true;
                 showScreen('gameover');
                 return;
             }
@@ -1379,6 +1387,7 @@
                     if (health <= 0) {
                         stopGhostGame();
                         generateBadge(score);
+                        comingFromGameEnd = true;
                         showScreen('gameover');
                         return;
                     }
