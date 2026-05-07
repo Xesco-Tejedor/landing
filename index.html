@@ -563,16 +563,15 @@
     </div>
 
     <script>
-        let audioCtx = null;
-        let isMusicPlaying = false;
+        let activeOscillators = [];
 
         function initAudio() {
             if (audioCtx) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            // Ya no iniciamos playEpicMusic aquí por defecto, lo gestiona showScreen
         }
 
         function createOsc(freq, type, startTime, duration, volume, detune = 0) {
+            if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
@@ -589,6 +588,11 @@
 
             osc.start(startTime);
             osc.stop(startTime + duration);
+            
+            activeOscillators.push(osc);
+            osc.onended = () => {
+                activeOscillators = activeOscillators.filter(o => o !== osc);
+            };
         }
 
         let currentTempo = 130;
@@ -601,6 +605,15 @@
             isFanfarePlaying = false;
             if (musicTimeout) clearTimeout(musicTimeout);
             if (fanfareTimeout) clearTimeout(fanfareTimeout);
+            
+            // Detener todos los osciladores activos inmediatamente
+            activeOscillators.forEach(osc => {
+                try {
+                    osc.stop();
+                    osc.disconnect();
+                } catch(e) {}
+            });
+            activeOscillators = [];
         }
 
         function playEpicMusic() {
@@ -784,11 +797,24 @@
             
             // Creepy Sign Logic
             const sign = document.getElementById('creepySign');
-            sign.style.display = 'block';
-            setTimeout(() => {
-                sign.style.opacity = '0';
-                setTimeout(() => { sign.style.display = 'none'; sign.style.opacity = '1'; }, 1000);
-            }, 3000);
+            if (sign) {
+                // Eliminar posibles duplicados "normales" que puedan haber quedado
+                document.querySelectorAll('.screen div, .screen p').forEach(el => {
+                    if (el.id !== 'creepySign' && el.textContent.includes('TIENES UN MINUTO')) {
+                        el.style.display = 'none';
+                    }
+                });
+                
+                sign.style.display = 'block';
+                sign.style.opacity = '1';
+                setTimeout(() => {
+                    sign.style.opacity = '0';
+                    setTimeout(() => { 
+                        sign.style.display = 'none'; 
+                        sign.style.opacity = '1'; 
+                    }, 1000);
+                }, 3000);
+            }
 
             canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
@@ -1148,7 +1174,6 @@
             
             for (let i = 0; i < spikes; i++) {
                 const angle = (i / spikes) * Math.PI * 2;
-                // Jitter para crear bordes dentados y asimétricos (efecto tela quemada)
                 const dist = radius * (0.6 + Math.random() * 0.8);
                 const px = burnX + Math.cos(angle) * dist;
                 const py = burnY + Math.sin(angle) * dist;
@@ -1168,6 +1193,26 @@
                 offCtx.fill();
             }
             offCtx.globalCompositeOperation = 'source-over';
+
+            // Glow en los bordes de la tela quemada (sobre offCanvas)
+            offCtx.save();
+            offCtx.globalCompositeOperation = 'source-atop'; // Solo dibuja sobre la tela existente
+            offCtx.strokeStyle = Math.random() > 0.5 ? 'var(--bright-red)' : 'var(--bright-yellow)';
+            offCtx.lineWidth = 4;
+            offCtx.filter = 'blur(4px)';
+            offCtx.beginPath();
+            // Dibujamos el mismo camino que el hueco pero como contorno
+            for (let i = 0; i < spikes; i++) {
+                const angle = (i / spikes) * Math.PI * 2;
+                const dist = radius * (0.6 + Math.random() * 0.8);
+                const px = burnX + Math.cos(angle) * dist;
+                const py = burnY + Math.sin(angle) * dist;
+                if (i === 0) offCtx.moveTo(px, py);
+                else offCtx.lineTo(px, py);
+            }
+            offCtx.closePath();
+            offCtx.stroke();
+            offCtx.restore();
             
             ctx.save();
             
@@ -1279,6 +1324,9 @@
             }
 
             // Draw Background
+            ctx.fillStyle = 'black'; // Fondo base para que la transparencia de offCanvas se vea negra
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
             if (gamePhase === 0 && bgLibrary.complete) {
                 ctx.drawImage(offCanvas, 0, 0);
             } else if (gamePhase >= 1 && bgHell.complete) {
@@ -1539,14 +1587,13 @@
             
             drawProtonBeam();
 
-            // Efecto de "fuego que se extiende": más veloz y agresivo (física de tela)
+            // Efecto de "fuego que se extiende": física de tela quemándose
             if (ghostGameActive) {
                 offCtx.save();
-                offCtx.globalCompositeOperation = 'destination-out';
-                // El desenfoque ayuda a que el borde "arda" hacia afuera
-                offCtx.filter = 'blur(2px)';
-                offCtx.globalAlpha = 0.15; 
-                // Escalamos ligeramente la imagen al redibujarla sobre sí misma para forzar la expansión
+                // Usamos destination-in con un ligero escalado para que los bordes de los agujeros se expandan
+                offCtx.globalCompositeOperation = 'destination-in';
+                offCtx.filter = 'blur(1px)';
+                // Dibujamos la misma tela pero un 0.5% más grande desde el centro para "encoger" lo opaco
                 offCtx.drawImage(offCanvas, -1, -1, offCanvas.width + 2, offCanvas.height + 2);
                 offCtx.restore();
             }
