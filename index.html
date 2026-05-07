@@ -932,9 +932,19 @@
             }
             
             const imgData = bCanvas.toDataURL('image/png');
-            document.getElementById('badgeImage').src = imgData;
-            document.getElementById('downloadBadgeBtn').href = imgData;
-            document.getElementById('badgeContainer').style.display = 'block';
+            const bImg = document.getElementById('badgeImage');
+            const dBtn = document.getElementById('downloadBadgeBtn');
+            const bCont = document.getElementById('badgeContainer');
+            
+            if (bImg && dBtn && bCont) {
+                bImg.src = imgData;
+                dBtn.href = imgData;
+                bCont.style.display = 'block';
+                dBtn.style.display = 'inline-block';
+                console.log("Badge generated and displayed successfully.");
+            } else {
+                console.error("Badge elements not found in DOM.");
+            }
         }
 
         function updateUI() {
