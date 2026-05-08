@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUMANISTA DIGITAL: EL LEGADO DE XESCO TEJEDOR</title>
+    <title>XESCO TEJEDOR: LEVEL UP EN CULTURA DIGITAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,7 +32,8 @@
             image-rendering: pixelated;
         }
 
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -39,7 +41,8 @@
             background-color: var(--black);
             color: var(--bright-white);
             font-family: 'Press Start 2P', cursive;
-            overflow: hidden; /* Mantener oculto el scroll principal para simular una terminal fija */
+            overflow: hidden;
+            /* Mantener oculto el scroll principal para simular una terminal fija */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -90,7 +93,8 @@
             display: flex;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             text-align: center;
             text-transform: uppercase;
             margin-bottom: 20px;
@@ -119,18 +123,22 @@
         .content::-webkit-scrollbar {
             width: 8px;
         }
+
         .content::-webkit-scrollbar-track {
             background: var(--black);
             border-left: 2px solid var(--blue);
         }
+
         .content::-webkit-scrollbar-thumb {
             background: var(--bright-cyan);
         }
+
         .content::-webkit-scrollbar-thumb:hover {
             background: var(--bright-yellow);
         }
 
-        p, li {
+        p,
+        li {
             font-size: 10px;
             line-height: 1.8;
             margin-bottom: 15px;
@@ -185,14 +193,29 @@
 
         /* Retro Animations */
         @keyframes flicker {
-            0% { opacity: 0.99; }
-            50% { opacity: 1; }
-            100% { opacity: 0.99; }
+            0% {
+                opacity: 0.99;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.99;
+            }
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
 
         .blink {
@@ -229,9 +252,17 @@
 
         /* Achievement Pulse Animation */
         @keyframes pulse-yellow {
-            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            }
         }
 
         .pulse-reward {
@@ -270,7 +301,7 @@
         #ghostgame {
             position: relative;
         }
-        
+
         #gameCanvas {
             display: none;
             width: 100%;
@@ -308,7 +339,7 @@
             background: var(--bright-green);
             transition: width 0.2s, background-color 0.2s;
         }
-        
+
         #crosshair {
             display: none;
             position: absolute;
@@ -318,19 +349,28 @@
             z-index: 3;
             transform: translate(-50%, -50%);
         }
-        
-        #crosshair::before, #crosshair::after {
+
+        #crosshair::before,
+        #crosshair::after {
             content: '';
             position: absolute;
             background: var(--bright-red);
         }
-        
+
         #crosshair::before {
-            top: 50%; left: 0; width: 100%; height: 2px; margin-top: -1px;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            margin-top: -1px;
         }
-        
+
         #crosshair::after {
-            left: 50%; top: 0; height: 100%; width: 2px; margin-left: -1px;
+            left: 50%;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            margin-left: -1px;
         }
 
         /* Contact Links */
@@ -372,12 +412,35 @@
         }
 
         @keyframes creepy-flicker {
-            0% { opacity: 0.8; transform: translate(-50%, -50%) skew(2deg); filter: hue-rotate(0deg); }
-            20% { transform: translate(-51%, -49%) skew(-1deg); }
-            40% { transform: translate(-49%, -51%) skew(3deg); filter: hue-rotate(90deg); }
-            60% { transform: translate(-50%, -50%) skew(-2deg); }
-            80% { transform: translate(-51%, -51%) skew(1deg); filter: hue-rotate(180deg); }
-            100% { opacity: 0.9; transform: translate(-50%, -50%) skew(0deg); filter: hue-rotate(0deg); }
+            0% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) skew(2deg);
+                filter: hue-rotate(0deg);
+            }
+
+            20% {
+                transform: translate(-51%, -49%) skew(-1deg);
+            }
+
+            40% {
+                transform: translate(-49%, -51%) skew(3deg);
+                filter: hue-rotate(90deg);
+            }
+
+            60% {
+                transform: translate(-50%, -50%) skew(-2deg);
+            }
+
+            80% {
+                transform: translate(-51%, -51%) skew(1deg);
+                filter: hue-rotate(180deg);
+            }
+
+            100% {
+                opacity: 0.9;
+                transform: translate(-50%, -50%) skew(0deg);
+                filter: hue-rotate(0deg);
+            }
         }
 
         #timerUI {
@@ -389,7 +452,7 @@
         /* Electric Dreams / Edgar Style Logo */
         .edgar-style {
             color: var(--bright-green);
-            text-shadow: 
+            text-shadow:
                 0 0 2px var(--bright-green),
                 0 0 8px rgba(0, 255, 65, 0.6);
             display: inline-block;
@@ -398,8 +461,15 @@
         }
 
         @keyframes snake-exit {
-            0% { transform: translateX(0); opacity: 1; }
-            100% { transform: translateX(100vw); opacity: 0; }
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100vw);
+                opacity: 0;
+            }
         }
 
         .exit-right {
@@ -411,7 +481,8 @@
             animation: cursor-blink 0.5s step-start infinite;
             margin-left: 5px;
             vertical-align: middle;
-            display: none; /* Solo lo mostraremos si es necesario */
+            display: none;
+            /* Solo lo mostraremos si es necesario */
         }
 
         #xesco-logo {
@@ -427,11 +498,19 @@
         }
 
         @keyframes cursor-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
     </style>
 </head>
+
 <body>
     <div id="game-container">
         <div id="splash" class="screen active">
@@ -446,7 +525,9 @@
                 <div class="menu">
                     <button class="btn" onclick="showScreen('level1')">INICIAR AVENTURA (Perfil)</button>
                     <button class="btn" onclick="showScreen('achievements')">LOGROS (Experiencia)</button>
-                    <button class="btn" onclick="showScreen('ghostgame')" style="border-color: var(--bright-magenta); color: var(--bright-magenta);">DESAFÍO ESPECTRAL (Bonus)</button>
+                    <button class="btn" onclick="showScreen('ghostgame')"
+                        style="border-color: var(--bright-magenta); color: var(--bright-magenta);">DESAFÍO ESPECTRAL
+                        (Bonus)</button>
                     <button class="btn" onclick="showScreen('gameover')">FIN DE PARTIDA (Contacto)</button>
                 </div>
 
@@ -464,9 +545,12 @@
                 <ul>
                     <li><span class="highlight">IDENTIDAD REAL:</span> Francesc Adrià Perelló</li>
                     <li><span class="highlight">MISIÓN:</span> Preservar el patrimonio artístico y bibliográfico.</li>
-                    <li><span class="highlight">EXPERIENCIA:</span> +20 AÑOS en el <span class="accent">MNAC</span>.</li>
-                    <li><span class="highlight">ESTUDIOS:</span> Licenciatura y Máster en <span class="accent">Filosofía</span> (UNED/UB).</li>
-                    <li><span class="highlight">MISIÓN ACTUAL:</span> Cursando el <span class="accent">MUBACD</span> (Máster en Bibliotecas, Archivos y Continuidad Digital).</li>
+                    <li><span class="highlight">EXPERIENCIA:</span> +20 AÑOS en el <span class="accent">MNAC</span>.
+                    </li>
+                    <li><span class="highlight">ESTUDIOS:</span> Licenciatura y Máster en <span
+                            class="accent">Filosofía</span> (UNED/UB).</li>
+                    <li><span class="highlight">MISIÓN ACTUAL:</span> Cursando el <span class="accent">MUBACD</span>
+                        (Máster en Bibliotecas, Archivos y Continuidad Digital).</li>
                 </ul>
             </div>
             <div class="navigation">
@@ -486,9 +570,13 @@
             <div class="content">
                 <p>El código fluye como tinta digital. La transformación ha comenzado.</p>
                 <ul>
-                    <li><span class="highlight">BOOTCAMP:</span> Fullstack Developer en <span class="accent">The Bridge</span> (2022).</li>
-                    <li><span class="highlight">POWER-UPS:</span> <br>- Certificación <span class="accent">Python</span> ("Programming for Everybody"). <br>- Especialista en <span class="accent">Análisis de Datos</span>. </li>
-                    <li><span class="highlight">DIGITAL ASSETS:</span> Aplicando <span class="accent">MUBACD</span> a la preservación digital.</li>
+                    <li><span class="highlight">BOOTCAMP:</span> Fullstack Developer en <span class="accent">The
+                            Bridge</span> (2022).</li>
+                    <li><span class="highlight">POWER-UPS:</span> <br>- Certificación <span class="accent">Python</span>
+                        ("Programming for Everybody"). <br>- Especialista en <span class="accent">Análisis de
+                            Datos</span>. </li>
+                    <li><span class="highlight">DIGITAL ASSETS:</span> Aplicando <span class="accent">MUBACD</span> a la
+                        preservación digital.</li>
                 </ul>
             </div>
             <div class="navigation">
@@ -506,12 +594,16 @@
             <div class="level-badge">NIVEL 3</div>
             <h2>RESILIENCIA Y PROPÓSITO</h2>
             <div class="content">
-                <p>El jefe final es la incertidumbre, pero el <span class="highlight">FACTOR HUMANO</span> es invencible.</p>
+                <p>El jefe final es la incertidumbre, pero el <span class="highlight">FACTOR HUMANO</span> es
+                    invencible.</p>
                 <p>Fusionando mundos: Conectando personas con la tecnología para disfrutar del conocimiento.</p>
                 <ul>
-                    <li><span class="highlight">RETO:</span> Diagnóstico de <span class="accent">Esclerosis Múltiple</span> (EMRR) en 1996.</li>
-                    <li><span class="highlight">LOGRO:</span> Transformación de la adversidad en adaptabilidad radical.</li>
-                    <li><span class="highlight">CONTINUIDAD:</span> Integrando <span class="accent">Cultura, Código y Archivo</span>.</li>
+                    <li><span class="highlight">RETO:</span> Diagnóstico de <span class="accent">Esclerosis
+                            Múltiple</span> (EMRR) en 1996.</li>
+                    <li><span class="highlight">LOGRO:</span> Transformación de la adversidad en adaptabilidad radical.
+                    </li>
+                    <li><span class="highlight">CONTINUIDAD:</span> Integrando <span class="accent">Cultura, Código y
+                            Archivo</span>.</li>
                 </ul>
                 <p class="accent">"Preservar el pasado, construir el futuro."</p>
             </div>
@@ -534,7 +626,8 @@
                 <p><span class="highlight">[X]</span> Desarrollador Fullstack & Python.</p>
                 <p><span class="highlight">[X]</span> Candidato MUBACD (Continuidad Digital).</p>
                 <p><span class="highlight">[X]</span> Superviviente y Adaptador Nato.</p>
-                <p style="font-size: 8px; margin-top: 20px; color: var(--bright-cyan);">AUTENTICADO COMO: FRANCESC ADRIÀ PERELLÓ</p>
+                <p style="font-size: 8px; margin-top: 20px; color: var(--bright-cyan);">AUTENTICADO COMO: FRANCESC ADRIÀ
+                    PERELLÓ</p>
             </div>
             <div class="navigation">
                 <button class="btn" onclick="showScreen('splash')">INICIO</button>
@@ -547,9 +640,13 @@
                 <div class="level-badge" style="background-color: var(--bright-magenta);">NIVEL SECRETO</div>
                 <h2 style="color: var(--bright-magenta);">EL ESPECTRO DEL CÓDIGO</h2>
                 <div class="content" style="text-align: center;">
-                    <img src="ghost.png" style="width: 200px; filter: contrast(120%) brightness(110%); border: 4px solid var(--white); box-shadow: 0 0 15px var(--bright-magenta); margin-bottom: 15px;" alt="Fantasma Amenazante">
-                    <p class="blink" style="color: var(--bright-red); font-size: 12px;">¡ADVERTENCIA: ENTIDAD DETECTADA!</p>
-                    <p>Un guardián espectral custodia los archivos antiguos. ¿Deseas investigar el fenómeno o prefieres retroceder?</p>
+                    <img src="ghost.png"
+                        style="width: 200px; filter: contrast(120%) brightness(110%); border: 4px solid var(--white); box-shadow: 0 0 15px var(--bright-magenta); margin-bottom: 15px;"
+                        alt="Fantasma Amenazante">
+                    <p class="blink" style="color: var(--bright-red); font-size: 12px;">¡ADVERTENCIA: ENTIDAD DETECTADA!
+                    </p>
+                    <p>Un guardián espectral custodia los archivos antiguos. ¿Deseas investigar el fenómeno o prefieres
+                        retroceder?</p>
                 </div>
                 <div class="navigation">
                     <button class="btn" onclick="showScreen('splash')">RETROCEDER</button>
@@ -561,7 +658,7 @@
                     <span>LUCK: ??</span>
                 </div>
             </div>
-            
+
             <div id="gameUI">
                 <div>SCORE: <span id="gameScore">0</span></div>
                 <div id="timerUI">TIEMPO: <span id="gameTimerUI">60</span>s</div>
@@ -581,17 +678,26 @@
             <h1 style="color: var(--bright-red);">FIN DE PARTIDA</h1>
             <h2 class="accent">¿CONTINUAR?</h2>
             <div class="content">
-                <div id="badgeContainer" style="display: none; text-align: center; margin-bottom: 25px; border: 2px solid var(--bright-blue); padding: 15px; background: rgba(0,0,215,0.1);">
+                <div id="badgeContainer"
+                    style="display: none; text-align: center; margin-bottom: 25px; border: 2px solid var(--bright-blue); padding: 15px; background: rgba(0,0,215,0.1);">
                     <div class="achievement-banner">¡LOGRO DESBLOQUEADO!</div>
-                    <h3 id="highScoreText" style="color: var(--bright-green); font-size: 12px; margin-bottom: 15px;"></h3>
-                    <img id="badgeImage" style="max-width: 100%; border: 4px double var(--bright-yellow); margin-bottom: 20px; image-rendering: pixelated; background: var(--black);" alt="Insignia de Puntuación">
+                    <h3 id="highScoreText" style="color: var(--bright-green); font-size: 12px; margin-bottom: 15px;">
+                    </h3>
+                    <img id="badgeImage"
+                        style="max-width: 100%; border: 4px double var(--bright-yellow); margin-bottom: 20px; image-rendering: pixelated; background: var(--black);"
+                        alt="Insignia de Puntuación">
                     <br>
-                    <a id="downloadBadgeBtn" class="btn pulse-reward" style="display:inline-block; position:relative; z-index:100; text-decoration:none;" download="cazador_de_espectros.png" target="_blank">DESCARGAR INSIGNIA</a>
-                    <p style="font-size: 8px; margin-top: 10px; color: var(--bright-cyan);">* Pulsa para guardar tu hazaña</p>
+                    <a id="downloadBadgeBtn" class="btn pulse-reward"
+                        style="display:inline-block; position:relative; z-index:100; text-decoration:none;"
+                        download="cazador_de_espectros.png" target="_blank">DESCARGAR INSIGNIA</a>
+                    <p style="font-size: 8px; margin-top: 10px; color: var(--bright-cyan);">* Pulsa para guardar tu
+                        hazaña</p>
                 </div>
                 <ul class="contact-list">
-                    <li><span class="highlight">EMAIL:</span> <a href="mailto:xesco@xescotejedor.es">xesco@xescotejedor.es</a></li>
-                    <li><span class="highlight">LINKEDIN:</span> <a href="https://www.linkedin.com/in/xesco" target="_blank">linkedin.com/in/xesco</a></li>
+                    <li><span class="highlight">EMAIL:</span> <a
+                            href="mailto:xesco@xescotejedor.es">xesco@xescotejedor.es</a></li>
+                    <li><span class="highlight">LINKEDIN:</span> <a href="https://www.linkedin.com/in/xesco"
+                            target="_blank">linkedin.com/in/xesco</a></li>
                 </ul>
             </div>
             <div class="menu">
@@ -618,14 +724,14 @@
         function typeLogo() {
             const el = document.getElementById('xesco-logo');
             if (!el) return;
-            
+
             const fullText = logoText.trim();
             el.style.opacity = '1';
             el.textContent = '';
-            
+
             let i = 0;
             let blinkCount = 0;
-            
+
             // FASE 1: PARPADEO INICIAL (1.5s)
             const initialBlink = setInterval(() => {
                 el.textContent = (blinkCount % 2 === 0) ? '█' : '';
@@ -642,11 +748,11 @@
                     // Texto actual + cursor al final
                     el.textContent = fullText.substring(0, i) + '█';
                     i++;
-                    
+
                     if (i > fullText.length) {
                         clearInterval(typeInterval);
                         el.textContent = fullText; // Quitar cursor al terminar
-                        
+
                         // FASE 3: ESPERAR (4 segundos)
                         setTimeout(() => {
                             // FASE 4: BORRAR (Recorrido inverso / Backspace)
@@ -654,7 +760,7 @@
                             const eraseInterval = setInterval(() => {
                                 el.textContent = fullText.substring(0, eraseIdx) + '█';
                                 eraseIdx--;
-                                
+
                                 if (eraseIdx < 0) {
                                     clearInterval(eraseInterval);
                                     setTimeout(typeLogo, 500); // Reiniciar ciclo tras breve pausa
@@ -691,7 +797,7 @@
 
             osc.start(startTime);
             osc.stop(startTime + duration);
-            
+
             activeOscillators.push(osc);
             osc.onended = () => {
                 activeOscillators = activeOscillators.filter(o => o !== osc);
@@ -708,13 +814,13 @@
             isFanfarePlaying = false;
             if (musicTimeout) clearTimeout(musicTimeout);
             if (fanfareTimeout) clearTimeout(fanfareTimeout);
-            
+
             // Detener todos los osciladores activos inmediatamente
             activeOscillators.forEach(osc => {
                 try {
                     osc.stop();
                     osc.disconnect();
-                } catch(e) {}
+                } catch (e) { }
             });
             activeOscillators = [];
         }
@@ -722,7 +828,7 @@
         function playEpicMusic() {
             if (isMusicPlaying) return;
             isMusicPlaying = true;
-            
+
             const notes = {
                 C3: 130.81, G3: 196.00, A3: 220.00, F3: 174.61,
                 C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
@@ -760,8 +866,8 @@
 
                 melody.forEach(n => createOsc(n.f, 'sawtooth', startTime + n.t * step, n.d * step, 0.08, 5));
                 bass.forEach(n => createOsc(n.f, 'triangle', startTime + n.t * step, 0.4 * step, 0.15));
-                
-                for(let i=0; i<16; i+=2) {
+
+                for (let i = 0; i < 16; i += 2) {
                     const freq = i < 8 ? notes.A3 : notes.F3;
                     playArp(startTime + i * step, freq, step);
                 }
@@ -780,17 +886,17 @@
 
             const step = 0.15;
             const notes = { C4: 261.63, E4: 329.63, G4: 392.00, C5: 523.25, G5: 783.99 };
-            
+
             function scheduleFanfare(startTime) {
                 if (!isFanfarePlaying) return;
 
                 // Melodía heroica / Fanfarria
                 const sequence = [
-                    {f: notes.C4, t: 0, d: 1}, {f: notes.G4, t: 1, d: 1}, 
-                    {f: notes.C5, t: 2, d: 2}, {f: notes.E4, t: 4, d: 1},
-                    {f: notes.G4, t: 5, d: 1}, {f: notes.C5, t: 6, d: 4},
-                    {f: notes.G4, t: 10, d: 1}, {f: notes.C5, t: 11, d: 1},
-                    {f: notes.G5, t: 12, d: 4}
+                    { f: notes.C4, t: 0, d: 1 }, { f: notes.G4, t: 1, d: 1 },
+                    { f: notes.C5, t: 2, d: 2 }, { f: notes.E4, t: 4, d: 1 },
+                    { f: notes.G4, t: 5, d: 1 }, { f: notes.C5, t: 6, d: 4 },
+                    { f: notes.G4, t: 10, d: 1 }, { f: notes.C5, t: 11, d: 1 },
+                    { f: notes.G5, t: 12, d: 4 }
                 ];
 
                 sequence.forEach(n => {
@@ -799,7 +905,7 @@
                 });
 
                 // Acompañamiento
-                for(let i=0; i<16; i++) {
+                for (let i = 0; i < 16; i++) {
                     if (i % 4 === 0) createOsc(notes.C4 / 2, 'sawtooth', startTime + i * step, step * 2, 0.1);
                 }
 
@@ -823,12 +929,12 @@
             screens.forEach(s => s.classList.remove('active'));
             const target = document.getElementById(screenId);
             if (target) target.classList.add('active');
-            
+
             // Gestión de música por pantalla
             if (screenId === 'gameover') {
                 stopAllMusic();
                 playVictoryFanfare();
-                
+
                 // Mostrar/Ocultar el badge dependiendo de si venimos de una partida terminada
                 const badgeCont = document.getElementById('badgeContainer');
                 if (!comingFromGameEnd) {
@@ -897,7 +1003,7 @@
             document.getElementById('gameCanvas').style.display = 'block';
             document.getElementById('gameUI').style.display = 'flex';
             document.getElementById('crosshair').style.display = 'block';
-            
+
             // Creepy Sign Logic
             const sign = document.getElementById('creepySign');
             if (sign) {
@@ -907,25 +1013,25 @@
                         el.style.display = 'none';
                     }
                 });
-                
+
                 sign.style.display = 'block';
                 sign.style.opacity = '1';
                 setTimeout(() => {
                     sign.style.opacity = '0';
-                    setTimeout(() => { 
-                        sign.style.display = 'none'; 
-                        sign.style.opacity = '1'; 
+                    setTimeout(() => {
+                        sign.style.display = 'none';
+                        sign.style.opacity = '1';
                     }, 1000);
                 }, 3000);
             }
 
             canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
-            
+
             const container = document.getElementById('game-container');
-            canvas.width = canvas.offsetWidth; 
+            canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
-            
+
             if (!offCanvas) {
                 offCanvas = document.createElement('canvas');
                 offCtx = offCanvas.getContext('2d');
@@ -938,7 +1044,7 @@
                 offCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
                 offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
             }
-            
+
             score = 0;
             health = 100;
             gameTimer = 60;
@@ -952,45 +1058,45 @@
             phaseTimer = 0;
             lastTime = performance.now();
             updateUI();
-            
+
             container.addEventListener('mousemove', handleMouseMove);
             container.addEventListener('mousedown', () => isShooting = true);
             container.addEventListener('mouseup', () => isShooting = false);
             container.addEventListener('mouseleave', () => isShooting = false);
-            
+
             container.addEventListener('touchmove', (e) => {
-                if(!ghostGameActive) return;
+                if (!ghostGameActive) return;
                 e.preventDefault();
                 handleTouchMove(e);
-            }, {passive: false});
+            }, { passive: false });
             container.addEventListener('touchstart', (e) => {
-                if(!ghostGameActive) return;
+                if (!ghostGameActive) return;
                 e.preventDefault();
                 handleTouchMove(e);
                 isShooting = true;
-            }, {passive: false});
+            }, { passive: false });
             container.addEventListener('touchend', () => isShooting = false);
 
             requestAnimationFrame(gameLoop);
         }
 
         function handleMouseMove(e) {
-            if(!ghostGameActive) return;
+            if (!ghostGameActive) return;
             const rect = canvas.getBoundingClientRect();
             mouseX = e.clientX - rect.left;
             mouseY = e.clientY - rect.top;
-            
+
             const crosshair = document.getElementById('crosshair');
-            crosshair.style.left = (e.clientX - rect.left + 20) + 'px'; 
+            crosshair.style.left = (e.clientX - rect.left + 20) + 'px';
             crosshair.style.top = (e.clientY - rect.top + 20) + 'px';
         }
-        
+
         function handleTouchMove(e) {
-            if(!ghostGameActive) return;
+            if (!ghostGameActive) return;
             const rect = canvas.getBoundingClientRect();
             mouseX = e.touches[0].clientX - rect.left;
             mouseY = e.touches[0].clientY - rect.top;
-            
+
             const crosshair = document.getElementById('crosshair');
             crosshair.style.left = (e.touches[0].clientX - rect.left + 20) + 'px';
             crosshair.style.top = (e.touches[0].clientY - rect.top + 20) + 'px';
@@ -1001,7 +1107,7 @@
             let spawnChance = (0.003 + (effScore * 0.0002)) * timeScale;
             // Si no hay ningún monstruo en pantalla, aumentamos mucho la probabilidad para que no haya tiempos muertos
             if (ghosts.length === 0) spawnChance += 0.05 * timeScale;
-            
+
             if (Math.random() < spawnChance) {
                 let isAdvanced = score >= 50 && Math.random() < 0.4; // Aparece a partir de 50 puntos (40% de chance)
                 ghosts.push({
@@ -1016,7 +1122,7 @@
                     hp: 20 + effScore * 1.5 + (isAdvanced ? 30 : 0)
                 });
             }
-            
+
             // Generación del Power-Up (Vida)
             if (Math.random() < spawnChance * 0.15) { // Aproximadamente 15% de probabilidad en relación a los fantasmas
                 powerups.push({
@@ -1029,7 +1135,7 @@
                     hp: 5 // Fácil de romper
                 });
             }
-            
+
             // Generación del Veneno (Trampa)
             if (Math.random() < spawnChance * 0.05) { // 5% de probabilidad (aparece menos que el powerUp)
                 poisons.push({
@@ -1053,19 +1159,19 @@
                 localStorage.setItem('ghostGameHighScore', highScore);
                 isNewRecord = true;
             }
-            
+
             const hsText = document.getElementById('highScoreText');
             if (hsText) {
                 hsText.innerText = isNewRecord ? `¡NUEVO RÉCORD INFERNAL: ${highScore}!` : `RÉCORD INFERNAL: ${highScore}`;
                 hsText.style.color = isNewRecord ? 'var(--bright-yellow)' : 'var(--bright-green)';
             }
-            
+
             if (isNewRecord && finalScore > 0 && typeof audioCtx !== 'undefined' && audioCtx) {
                 let t = audioCtx.currentTime;
                 const riff = [
-                    {f: 329.63, d: 0.1}, {f: 329.63, d: 0.1}, {f: 392.00, d: 0.1},
-                    {f: 329.63, d: 0.1}, {f: 440.00, d: 0.1}, {f: 329.63, d: 0.1},
-                    {f: 493.88, d: 0.15}, {f: 392.00, d: 0.15}, {f: 587.33, d: 0.4}
+                    { f: 329.63, d: 0.1 }, { f: 329.63, d: 0.1 }, { f: 392.00, d: 0.1 },
+                    { f: 329.63, d: 0.1 }, { f: 440.00, d: 0.1 }, { f: 329.63, d: 0.1 },
+                    { f: 493.88, d: 0.15 }, { f: 392.00, d: 0.15 }, { f: 587.33, d: 0.4 }
                 ];
                 let offset = 0;
                 riff.forEach(note => {
@@ -1079,23 +1185,23 @@
             const bCanvas = document.createElement('canvas');
             bCanvas.width = 400; bCanvas.height = 400;
             const bCtx = bCanvas.getContext('2d');
-            
+
             // Hardcore Metal Colors
             const metalColors = ['#1A1A1A', '#4D4D4D', '#8B0000', '#2F4F4F', '#333333'];
             const brightMetal = ['#C0C0C0', '#FF0000', '#FF4500', '#FFFFFF', '#FFD700'];
-            
+
             let color1 = metalColors[Math.floor(Math.random() * metalColors.length)];
             let color2 = metalColors[Math.floor(Math.random() * metalColors.length)];
-            while(color1 === color2) color2 = metalColors[Math.floor(Math.random() * metalColors.length)];
-            
+            while (color1 === color2) color2 = metalColors[Math.floor(Math.random() * metalColors.length)];
+
             // Black Background
             bCtx.fillStyle = '#000000';
             bCtx.fillRect(0, 0, 400, 400);
 
             // Translate to center
             bCtx.save();
-            bCtx.translate(200, 180); 
-            
+            bCtx.translate(200, 180);
+
             // SHIELD SHAPES
             const shapeType = Math.floor(Math.random() * 4);
             bCtx.beginPath();
@@ -1119,23 +1225,23 @@
                 bCtx.lineTo(-70, -130); bCtx.lineTo(-140, -110); bCtx.lineTo(-140, 50);
             }
             bCtx.closePath();
-            
+
             // Background Pattern
             bCtx.clip();
             bCtx.fillStyle = color1;
             bCtx.fill();
-            
+
             bCtx.fillStyle = color2;
             const patternType = Math.floor(Math.random() * 6);
             if (patternType === 0) bCtx.fillRect(0, -200, 200, 400);
             else if (patternType === 1) bCtx.fillRect(-200, -200, 400, 100);
             else if (patternType === 2) { bCtx.beginPath(); bCtx.moveTo(-200, -200); bCtx.lineTo(200, 200); bCtx.lineTo(200, -200); bCtx.fill(); }
-            else if (patternType === 3) { for(let i=-200; i<200; i+=30) bCtx.fillRect(i, -200, 10, 400); }
+            else if (patternType === 3) { for (let i = -200; i < 200; i += 30) bCtx.fillRect(i, -200, 10, 400); }
             else if (patternType === 4) { // Blood Splatter
                 bCtx.fillStyle = '#8B0000';
-                for(let i=0; i<15; i++) {
+                for (let i = 0; i < 15; i++) {
                     bCtx.beginPath();
-                    bCtx.arc((Math.random()-0.5)*250, (Math.random()-0.5)*250, Math.random()*30, 0, Math.PI*2);
+                    bCtx.arc((Math.random() - 0.5) * 250, (Math.random() - 0.5) * 250, Math.random() * 30, 0, Math.PI * 2);
                     bCtx.fill();
                 }
             } else { // Rivets / Cross
@@ -1148,19 +1254,19 @@
             const outlineColor = brightMetal[Math.floor(Math.random() * brightMetal.length)];
             bCtx.strokeStyle = outlineColor;
             bCtx.stroke();
-            
+
             // Rivets along the edge
             bCtx.fillStyle = '#C0C0C0';
-            for(let a=0; a<Math.PI*2; a+=0.4) {
+            for (let a = 0; a < Math.PI * 2; a += 0.4) {
                 bCtx.beginPath();
-                bCtx.arc(Math.cos(a)*140, Math.sin(a)*100, 4, 0, Math.PI*2);
+                bCtx.arc(Math.cos(a) * 140, Math.sin(a) * 100, 4, 0, Math.PI * 2);
                 bCtx.fill();
             }
-            
+
             // Central Charge (Icon)
             const charges = ['💀', '🤘', '🩸', '🗡️', '⛓️', '🔥', '🦇', '⚡', '⛓️‍💥'];
             let charge = charges[Math.floor(Math.random() * charges.length)];
-            
+
             bCtx.font = '110px monospace';
             bCtx.textAlign = 'center';
             bCtx.textBaseline = 'middle';
@@ -1168,8 +1274,8 @@
             bCtx.fillStyle = '#000000'; bCtx.fillText(charge, 6, 6);
             bCtx.fillStyle = '#FFFFFF'; bCtx.fillText(charge, 0, 0);
             bCtx.strokeStyle = '#4D4D4D'; bCtx.lineWidth = 2; bCtx.strokeText(charge, 0, 0);
-            
-            bCtx.restore(); 
+
+            bCtx.restore();
 
             // Tattered Ribbon
             bCtx.fillStyle = '#333333';
@@ -1181,7 +1287,7 @@
             bCtx.lineTo(40, 390); bCtx.lineTo(20, 370); bCtx.lineTo(40, 350);
             bCtx.closePath();
             bCtx.fill(); bCtx.stroke();
-            
+
             // Rank Logic
             let rank = 'ESPECTRO ERRANTE';
             if (finalScore > 20) rank = 'RECLUTA DEL ABISMO';
@@ -1189,7 +1295,7 @@
             if (finalScore > 100) rank = 'EXORCISTA BINARIO';
             if (finalScore > 250) rank = 'MAESTRO DEL ECTOPLASMA';
             if (finalScore > 500) rank = 'SOBERANO DEL INFRAMUNDO';
-            
+
             bCtx.fillStyle = '#FF0000';
             bCtx.font = '14px "Press Start 2P", monospace';
             bCtx.textAlign = 'center';
@@ -1204,18 +1310,18 @@
                 bCtx.beginPath();
                 bCtx.moveTo(80, 10); bCtx.lineTo(320, 10); bCtx.lineTo(330, 25); bCtx.lineTo(320, 40); bCtx.lineTo(80, 40); bCtx.lineTo(70, 25); bCtx.closePath();
                 bCtx.fill(); bCtx.stroke();
-                
+
                 bCtx.fillStyle = '#FF4500';
                 bCtx.font = '10px "Press Start 2P", monospace';
                 bCtx.textAlign = 'center';
                 bCtx.fillText('NUEVO RECORD INFERNAL', 200, 28);
             }
-            
+
             const imgData = bCanvas.toDataURL('image/png');
             const bImg = document.getElementById('badgeImage');
             const dBtn = document.getElementById('downloadBadgeBtn');
             const bCont = document.getElementById('badgeContainer');
-            
+
             if (bImg && dBtn && bCont) {
                 bImg.src = imgData;
                 dBtn.href = imgData;
@@ -1239,97 +1345,99 @@
 
         function drawProtonBeam() {
             if (!isShooting) return;
-            
+
             const startX = canvas.width / 2;
             const startY = canvas.height;
-            
+
             let hitGhost = false;
             for (let g of ghosts) {
-                if (mouseX > g.x - g.size/2 && mouseX < g.x + g.size/2 &&
-                    mouseY > g.y - g.size/2 && mouseY < g.y + g.size/2) {
+                if (mouseX > g.x - g.size / 2 && mouseX < g.x + g.size / 2 &&
+                    mouseY > g.y - g.size / 2 && mouseY < g.y + g.size / 2) {
                     hitGhost = true; break;
                 }
             }
             if (!hitGhost) {
                 for (let p of powerups) {
-                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
-                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
+                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
                         hitGhost = true; break;
                     }
                 }
             }
             if (!hitGhost) {
                 for (let p of poisons) {
-                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
-                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
+                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
                         hitGhost = true; break;
                     }
                 }
             }
-            
-            // Efecto de "quemado de tela": huecos irregulares y rasgados
-            offCtx.globalCompositeOperation = 'destination-out';
-            offCtx.beginPath();
-            const burnX = mouseX + (Math.random() - 0.5) * 40;
-            const burnY = mouseY + (Math.random() - 0.5) * 40;
-            const radius = 15 + Math.random() * 25;
-            const spikes = 8 + Math.floor(Math.random() * 8);
-            
-            for (let i = 0; i < spikes; i++) {
-                const angle = (i / spikes) * Math.PI * 2;
-                const dist = radius * (0.6 + Math.random() * 0.8);
-                const px = burnX + Math.cos(angle) * dist;
-                const py = burnY + Math.sin(angle) * dist;
-                if (i === 0) offCtx.moveTo(px, py);
-                else offCtx.lineTo(px, py);
-            }
-            offCtx.closePath();
-            offCtx.fill();
 
-            // Añadir pequeños "agujeros de chispas" adicionales alrededor
-            for (let j = 0; j < 3; j++) {
+            if (!hitGhost) {
+                // Efecto de "quemado de tela": huecos irregulares y rasgados
+                offCtx.globalCompositeOperation = 'destination-out';
                 offCtx.beginPath();
-                const sx = burnX + (Math.random() - 0.5) * 60;
-                const sy = burnY + (Math.random() - 0.5) * 60;
-                const sr = 2 + Math.random() * 5;
-                offCtx.arc(sx, sy, sr, 0, Math.PI * 2);
+                const burnX = mouseX + (Math.random() - 0.5) * 40;
+                const burnY = mouseY + (Math.random() - 0.5) * 40;
+                const radius = 15 + Math.random() * 25;
+                const spikes = 8 + Math.floor(Math.random() * 8);
+
+                for (let i = 0; i < spikes; i++) {
+                    const angle = (i / spikes) * Math.PI * 2;
+                    const dist = radius * (0.6 + Math.random() * 0.8);
+                    const px = burnX + Math.cos(angle) * dist;
+                    const py = burnY + Math.sin(angle) * dist;
+                    if (i === 0) offCtx.moveTo(px, py);
+                    else offCtx.lineTo(px, py);
+                }
+                offCtx.closePath();
                 offCtx.fill();
-            }
-            offCtx.globalCompositeOperation = 'source-over';
 
-            // Glow en los bordes de la tela quemada (sobre offCanvas)
-            offCtx.save();
-            offCtx.globalCompositeOperation = 'source-atop'; // Solo dibuja sobre la tela existente
-            offCtx.strokeStyle = Math.random() > 0.5 ? 'var(--bright-red)' : 'var(--bright-yellow)';
-            offCtx.lineWidth = 4;
-            offCtx.filter = 'blur(4px)';
-            offCtx.beginPath();
-            // Dibujamos el mismo camino que el hueco pero como contorno
-            for (let i = 0; i < spikes; i++) {
-                const angle = (i / spikes) * Math.PI * 2;
-                const dist = radius * (0.6 + Math.random() * 0.8);
-                const px = burnX + Math.cos(angle) * dist;
-                const py = burnY + Math.sin(angle) * dist;
-                if (i === 0) offCtx.moveTo(px, py);
-                else offCtx.lineTo(px, py);
-            }
-            offCtx.closePath();
-            offCtx.restore();
+                // Añadir pequeños "agujeros de chispas" adicionales alrededor
+                for (let j = 0; j < 3; j++) {
+                    offCtx.beginPath();
+                    const sx = burnX + (Math.random() - 0.5) * 60;
+                    const sy = burnY + (Math.random() - 0.5) * 60;
+                    const sr = 2 + Math.random() * 5;
+                    offCtx.arc(sx, sy, sr, 0, Math.PI * 2);
+                    offCtx.fill();
+                }
+                offCtx.globalCompositeOperation = 'source-over';
 
-            // Generar partículas de ceniza al disparar
-            for (let k = 0; k < 3; k++) {
-                particles.push({
-                    x: burnX + (Math.random() - 0.5) * 20,
-                    y: burnY + (Math.random() - 0.5) * 20,
-                    vx: (Math.random() - 0.5) * 80,
-                    vy: -Math.random() * 120, // La ceniza sube por el calor
-                    life: 0.8 + Math.random() * 0.7,
-                    color: Math.random() > 0.4 ? '#111' : '#333'
-                });
+                // Glow en los bordes de la tela quemada (sobre offCanvas)
+                offCtx.save();
+                offCtx.globalCompositeOperation = 'source-atop'; // Solo dibuja sobre la tela existente
+                offCtx.strokeStyle = Math.random() > 0.5 ? 'var(--bright-red)' : 'var(--bright-yellow)';
+                offCtx.lineWidth = 4;
+                offCtx.filter = 'blur(4px)';
+                offCtx.beginPath();
+                // Dibujamos el mismo camino que el hueco pero como contorno
+                for (let i = 0; i < spikes; i++) {
+                    const angle = (i / spikes) * Math.PI * 2;
+                    const dist = radius * (0.6 + Math.random() * 0.8);
+                    const px = burnX + Math.cos(angle) * dist;
+                    const py = burnY + Math.sin(angle) * dist;
+                    if (i === 0) offCtx.moveTo(px, py);
+                    else offCtx.lineTo(px, py);
+                }
+                offCtx.closePath();
+                offCtx.restore();
+
+                // Generar partículas de ceniza al disparar
+                for (let k = 0; k < 3; k++) {
+                    particles.push({
+                        x: burnX + (Math.random() - 0.5) * 20,
+                        y: burnY + (Math.random() - 0.5) * 20,
+                        vx: (Math.random() - 0.5) * 80,
+                        vy: -Math.random() * 120, // La ceniza sube por el calor
+                        life: 0.8 + Math.random() * 0.7,
+                        color: Math.random() > 0.4 ? '#111' : '#333'
+                    });
+                }
             }
-            
+
             ctx.save();
-            
+
             // 1. Núcleo principal del rayo (Naranja/Amarillo/Blanco)
             ctx.shadowBlur = 15;
             ctx.shadowColor = 'var(--bright-red)';
@@ -1357,39 +1465,39 @@
             ctx.moveTo(startX, startY);
             ctx.lineTo(mouseX, mouseY);
             ctx.stroke();
-            
+
             ctx.restore();
-            
+
             // 2. Rayos eléctricos inestables (Cian/Azul) que envuelven el núcleo
             const numArcs = 2;
-            for(let a = 0; a < numArcs; a++) {
+            for (let a = 0; a < numArcs; a++) {
                 ctx.lineWidth = 3;
                 ctx.strokeStyle = Math.random() > 0.5 ? 'var(--bright-cyan)' : 'var(--bright-blue)';
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
-                
+
                 let steps = 12;
                 let dx = (mouseX - startX) / steps;
                 let dy = (mouseY - startY) / steps;
-                
+
                 let currentX = startX;
                 let currentY = startY;
-                
-                for(let i=1; i<=steps; i++) {
+
+                for (let i = 1; i <= steps; i++) {
                     let jitterX = (Math.random() - 0.5) * 50; // Gran dispersión
                     let jitterY = (Math.random() - 0.5) * 50;
-                    if(i === steps) { jitterX = 0; jitterY = 0; } // Debe terminar justo en la mirilla
-                    
+                    if (i === steps) { jitterX = 0; jitterY = 0; } // Debe terminar justo en la mirilla
+
                     ctx.lineTo(currentX + dx + jitterX, currentY + dy + jitterY);
                     currentX += dx;
                     currentY += dy;
                 }
                 ctx.stroke();
             }
-            
+
             // Sonido más grave y constante para el rayo
             if (Math.random() < 0.3 && typeof audioCtx !== 'undefined' && audioCtx) {
-                createOsc(250 + Math.random()*100, 'sawtooth', audioCtx.currentTime, 0.1, 0.08);
+                createOsc(250 + Math.random() * 100, 'sawtooth', audioCtx.currentTime, 0.1, 0.08);
             }
         }
 
@@ -1403,13 +1511,13 @@
 
         function gameLoop(timestamp) {
             if (!ghostGameActive) return;
-            
+
             if (!lastTime) lastTime = timestamp;
             let deltaTime = (timestamp - lastTime) / 1000;
             if (deltaTime > 0.1) deltaTime = 0.1;
             lastTime = timestamp;
             const timeScale = deltaTime * 60;
-            
+
             // Timer Logic
             gameTimer -= deltaTime;
             updateUI();
@@ -1426,7 +1534,7 @@
                 showScreen('gameover');
                 return;
             }
-            
+
             // Handle Phases
             if (gamePhase < 2) {
                 phaseTimer += timeScale;
@@ -1451,76 +1559,76 @@
             // Destello rojo en la transición de fase (para mantener el impacto visual)
             if (gamePhase >= 1 && phaseTimer > 120 && phaseTimer < 140) {
                 ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (140 - phaseTimer) / 20})`;
-                ctx.fillRect(0,0,canvas.width,canvas.height);
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-            
+
             // Draw Phase Text
             if (gamePhase === 0) {
                 ctx.fillStyle = 'var(--white)';
                 ctx.font = '14px "Press Start 2P"';
                 ctx.textAlign = 'center';
-                ctx.fillText('ACCEDIENDO A LOS ARCHIVOS...', canvas.width/2, canvas.height/2);
+                ctx.fillText('ACCEDIENDO A LOS ARCHIVOS...', canvas.width / 2, canvas.height / 2);
             } else if (gamePhase === 1) {
                 ctx.fillStyle = 'var(--bright-red)';
                 ctx.font = '14px "Press Start 2P"';
                 ctx.textAlign = 'center';
-                ctx.fillText('¡ANOMALÍA DETECTADA!', canvas.width/2, canvas.height/2);
+                ctx.fillText('¡ANOMALÍA DETECTADA!', canvas.width / 2, canvas.height / 2);
             }
 
             if (gamePhase === 2) {
                 spawnGhost(timeScale);
             }
-            
+
             for (let i = ghosts.length - 1; i >= 0; i--) {
                 let g = ghosts[i];
-                
+
                 g.x += g.vx * timeScale;
                 g.y += g.vy * timeScale;
                 // Crecen/Se acercan MUCHO más despacio
                 g.size += (0.08 + (score * 0.001)) * timeScale;
-                
+
                 // Fantasmas hululan al azar
                 if (Math.random() < 0.005 * timeScale && typeof audioCtx !== 'undefined' && audioCtx) {
                     let freq = 200 + Math.random() * 100;
                     createOsc(freq, 'sine', audioCtx.currentTime, 0.5, 0.02);
                     createOsc(freq + 20, 'sine', audioCtx.currentTime + 0.1, 0.5, 0.02);
                 }
-                
+
                 let currentImg = g.type === 2 ? ghostImage2 : ghostImage;
                 try {
                     if (currentImg.complete && currentImg.naturalWidth > 0) {
-                        ctx.drawImage(currentImg, g.x - g.size/2, g.y - g.size/2, g.size, g.size);
+                        ctx.drawImage(currentImg, g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
                     } else {
                         ctx.fillStyle = g.type === 2 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
-                        ctx.fillRect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
+                        ctx.fillRect(g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
                     }
-                } catch(e) {
+                } catch (e) {
                     console.error("Error drawing image: ", e);
                     ctx.fillStyle = g.type === 2 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
-                    ctx.fillRect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
+                    ctx.fillRect(g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
                 }
-                
+
                 if (isShooting) {
-                    if (mouseX > g.x - g.size/2 && mouseX < g.x + g.size/2 &&
-                        mouseY > g.y - g.size/2 && mouseY < g.y + g.size/2) {
+                    if (mouseX > g.x - g.size / 2 && mouseX < g.x + g.size / 2 &&
+                        mouseY > g.y - g.size / 2 && mouseY < g.y + g.size / 2) {
                         // El rayo hace muchísimo daño
                         g.hp -= 10 * timeScale;
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                        ctx.fillRect(g.x - g.size/2, g.y - g.size/2, g.size, g.size);
-                        
+                        ctx.fillRect(g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
+
                         // Chillido al ser alcanzado
                         if (Math.random() < 0.3 * timeScale && typeof audioCtx !== 'undefined' && audioCtx) {
                             createOsc(800 + Math.random() * 400, 'triangle', audioCtx.currentTime, 0.08, 0.03);
                         }
                     }
                 }
-                
+
                 if (g.hp <= 0) {
                     // Explosión de ectoplasma/sangre roja
                     const ghostExplosionColors = ['#FF0000', '#D70000', '#8B0000', '#FF4500', '#B22222'];
-                    for(let k = 0; k < 30; k++) {
+                    for (let k = 0; k < 30; k++) {
                         particles.push({
-                            x: g.x, 
+                            x: g.x,
                             y: g.y,
                             vx: (Math.random() - 0.5) * 350,
                             vy: (Math.random() - 0.5) * 350,
@@ -1528,24 +1636,24 @@
                             color: ghostExplosionColors[Math.floor(Math.random() * ghostExplosionColors.length)]
                         });
                     }
-                    
+
                     ghosts.splice(i, 1);
                     score += 10;
                     updateUI();
-                    if(typeof audioCtx !== 'undefined' && audioCtx) createOsc(800, 'square', audioCtx.currentTime, 0.1, 0.05);
+                    if (typeof audioCtx !== 'undefined' && audioCtx) createOsc(800, 'square', audioCtx.currentTime, 0.1, 0.05);
                     continue;
                 }
-                
+
                 if (g.size > 200) {
                     ghosts.splice(i, 1);
                     health -= 20;
                     updateUI();
-                    
+
                     ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    if(typeof audioCtx !== 'undefined' && audioCtx) createOsc(100, 'sawtooth', audioCtx.currentTime, 0.3, 0.1);
-                    
+
+                    if (typeof audioCtx !== 'undefined' && audioCtx) createOsc(100, 'sawtooth', audioCtx.currentTime, 0.3, 0.1);
+
                     if (health <= 0) {
                         stopGhostGame();
                         generateBadge(score);
@@ -1555,44 +1663,44 @@
                     }
                 }
             }
-            
+
             // Loop de Power-Ups
             for (let i = powerups.length - 1; i >= 0; i--) {
                 let p = powerups[i];
                 p.x += p.vx * timeScale;
                 p.y += p.vy * timeScale;
                 p.size += (0.05 + (score * 0.0005)) * timeScale;
-                
+
                 try {
                     if (powerUpImage.complete && powerUpImage.naturalWidth > 0) {
-                        ctx.drawImage(powerUpImage, p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                        ctx.drawImage(powerUpImage, p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
                     } else {
                         ctx.fillStyle = '#00FF00';
-                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
                     }
-                } catch(e) {}
-                
+                } catch (e) { }
+
                 if (isShooting) {
-                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
-                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
+                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
                         p.hp -= 10 * timeScale;
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
                     }
                 }
-                
+
                 if (p.hp <= 0) {
                     health = Math.min(100, health + 80);
                     updateUI();
-                    
-                    if(typeof audioCtx !== 'undefined' && audioCtx) {
+
+                    if (typeof audioCtx !== 'undefined' && audioCtx) {
                         createOsc(600, 'sine', audioCtx.currentTime, 0.1, 0.1);
                         createOsc(800, 'sine', audioCtx.currentTime + 0.1, 0.2, 0.1);
                         createOsc(1200, 'sine', audioCtx.currentTime + 0.3, 0.4, 0.1);
                     }
-                    
+
                     const pColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFFFFF'];
-                    for(let k = 0; k < 30; k++) {
+                    for (let k = 0; k < 30; k++) {
                         particles.push({
                             x: p.x, y: p.y,
                             vx: (Math.random() - 0.5) * 300,
@@ -1601,53 +1709,53 @@
                             color: pColors[Math.floor(Math.random() * pColors.length)]
                         });
                     }
-                    
+
                     powerups.splice(i, 1);
                     continue;
                 }
-                
+
                 if (p.size > 200) {
                     powerups.splice(i, 1); // Desaparece sin hacer daño
                 }
             }
-            
+
             // Loop de Venenos
             for (let i = poisons.length - 1; i >= 0; i--) {
                 let p = poisons[i];
                 p.x += p.vx * timeScale;
                 p.y += p.vy * timeScale;
                 p.size += (0.05 + (score * 0.0005)) * timeScale;
-                
+
                 try {
                     if (poisonImage.complete && poisonImage.naturalWidth > 0) {
-                        ctx.drawImage(poisonImage, p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                        ctx.drawImage(poisonImage, p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
                     } else {
                         ctx.fillStyle = '#800080';
-                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
                     }
-                } catch(e) {}
-                
+                } catch (e) { }
+
                 if (isShooting) {
-                    if (mouseX > p.x - p.size/2 && mouseX < p.x + p.size/2 &&
-                        mouseY > p.y - p.size/2 && mouseY < p.y + p.size/2) {
+                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
+                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
                         p.hp -= 10 * timeScale;
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                        ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
                     }
                 }
-                
+
                 if (p.hp <= 0) {
                     // Sonido de quejido (groan) al reventar el veneno
-                    if(typeof audioCtx !== 'undefined' && audioCtx) {
+                    if (typeof audioCtx !== 'undefined' && audioCtx) {
                         let t = audioCtx.currentTime;
                         createOsc(150, 'sawtooth', t, 0.2, 0.1);
                         createOsc(100, 'sawtooth', t + 0.15, 0.3, 0.1);
                         createOsc(60, 'sawtooth', t + 0.3, 0.4, 0.05);
                     }
-                    
+
                     // Explosión de sangre/fuego
                     const pColors = ['#8B0000', '#FF0000', '#FF4500', '#FF8C00', '#B22222'];
-                    for(let k = 0; k < 30; k++) {
+                    for (let k = 0; k < 30; k++) {
                         particles.push({
                             x: p.x, y: p.y,
                             vx: (Math.random() - 0.5) * 300,
@@ -1660,19 +1768,19 @@
                     poisons.splice(i, 1);
                     continue;
                 }
-                
+
                 if (p.size > 200) {
                     // Causa daño letal (40 puntos, el doble que un fantasma normal)
                     poisons.splice(i, 1);
                     health -= 40;
                     updateUI();
-                    
+
                     // Flash morado/rojo de daño
                     ctx.fillStyle = 'rgba(128, 0, 128, 0.4)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    if(typeof audioCtx !== 'undefined' && audioCtx) createOsc(50, 'sawtooth', audioCtx.currentTime, 0.5, 0.1);
-                    
+
+                    if (typeof audioCtx !== 'undefined' && audioCtx) createOsc(50, 'sawtooth', audioCtx.currentTime, 0.5, 0.1);
+
                     if (health <= 0) {
                         stopGhostGame();
                         generateBadge(score);
@@ -1681,14 +1789,14 @@
                     }
                 }
             }
-            
+
             // Loop de Partículas
             for (let i = particles.length - 1; i >= 0; i--) {
                 let part = particles[i];
                 part.x += part.vx * deltaTime;
                 part.y += part.vy * deltaTime;
                 part.life -= deltaTime * 1.5; // Desaparecen rápido
-                
+
                 if (part.life <= 0) {
                     particles.splice(i, 1);
                 } else {
@@ -1698,7 +1806,7 @@
                     ctx.globalAlpha = 1.0;
                 }
             }
-            
+
             drawProtonBeam();
 
             // Efecto de "fuego que se extiende": física de tela quemándose
@@ -1711,14 +1819,14 @@
                 offCtx.drawImage(offCanvas, -1, -1, offCanvas.width + 2, offCanvas.height + 2);
                 offCtx.restore();
             }
-            
+
             // Perspective Countdown Animation (Last 10 Seconds)
             if (gameTimer <= 10 && gameTimer > 0) {
                 let currentVal = Math.ceil(gameTimer);
                 let progress = 1 - (gameTimer % 1); // 0 to 1 over each second
                 let scale = progress * 400;
                 let alpha = 1 - progress;
-                
+
                 ctx.save();
                 ctx.font = `${scale}px "Press Start 2P"`;
                 ctx.textAlign = 'center';
@@ -1730,7 +1838,7 @@
                 ctx.fillText(currentVal, canvas.width / 2, canvas.height / 2);
                 ctx.restore();
             }
-            
+
             requestAnimationFrame(gameLoop);
         }
 
@@ -1754,4 +1862,5 @@
         });
     </script>
 </body>
+
 </html>
