@@ -994,9 +994,10 @@
             const sign = document.getElementById('creepySign');
             if (sign) {
                 // Eliminar posibles duplicados "normales" que puedan haber quedado
-                document.querySelectorAll('.screen div, .screen p').forEach(el => {
+                // Limpieza agresiva de duplicados: eliminar CUALQUIER elemento con ese texto que no sea el oficial
+                document.body.querySelectorAll('*').forEach(el => {
                     if (el.id !== 'creepySign' && el.textContent.includes('TIENES UN MINUTO')) {
-                        el.style.display = 'none';
+                        el.remove(); // Eliminar del DOM por completo
                     }
                 });
 
@@ -1821,16 +1822,10 @@
 
             drawProtonBeam();
 
-            // Efecto de "fuego que se extiende": física de tela quemándose
-            if (ghostGameActive) {
-                offCtx.save();
-                // Usamos destination-in con un ligero escalado para que los bordes de los agujeros se expandan
-                offCtx.globalCompositeOperation = 'destination-in';
-                offCtx.filter = 'blur(1px)';
-                // Dibujamos la misma tela pero un 0.5% más grande desde el centro para "encoger" lo opaco
-                offCtx.drawImage(offCanvas, -1, -1, offCanvas.width + 2, offCanvas.height + 2);
-                offCtx.restore();
-            }
+            /* 
+               Eliminamos la expansión automática del fuego para que el descubrimiento 
+               sea 100% manual y no haya un "fade out" accidental de la biblioteca.
+            */
 
             // Cuenta regresiva final con perspectiva y contorno rojo
             if (gameTimer <= 10 && gameTimer > 0) {
@@ -1871,7 +1866,8 @@
                     offCanvas.height = canvas.height;
                     if (bgLibrary.complete) {
                         offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                        offCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                        // Mantenemos opacidad TOTAL en el resize
+                        offCtx.fillStyle = 'rgba(0, 0, 0, 1.0)';
                         offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
                     }
                 }
