@@ -420,6 +420,10 @@
             clip-path: none !important;
             margin: 0 auto;
             text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @keyframes cursor-blink {
@@ -615,47 +619,52 @@
             const el = document.getElementById('xesco-logo');
             if (!el) return;
             
-            const lines = logoText.trim().split('\n');
-            const maxLen = Math.max(...lines.map(l => l.length));
-            const paddedLines = lines.map(l => l.padEnd(maxLen, ' '));
-            
-            let col = 0;
-            el.textContent = '';
+            const fullText = logoText.trim();
             el.style.opacity = '1';
+            el.textContent = '';
             
-            // FASE 1: ESCRIBIR (Izquierda a Derecha)
-            const typeInterval = setInterval(() => {
-                let frame = '';
-                for (let r = 0; r < paddedLines.length; r++) {
-                    frame += paddedLines[r].substring(0, col) + '\n';
+            let i = 0;
+            let blinkCount = 0;
+            
+            // FASE 1: PARPADEO INICIAL (1.5s)
+            const initialBlink = setInterval(() => {
+                el.textContent = (blinkCount % 2 === 0) ? '█' : '';
+                blinkCount++;
+                if (blinkCount > 6) {
+                    clearInterval(initialBlink);
+                    startTyping();
                 }
-                el.textContent = frame;
-                col++;
-                
-                if (col > maxLen) {
-                    clearInterval(typeInterval);
+            }, 250);
+
+            function startTyping() {
+                // FASE 2: ESCRIBIR CARÁCTER A CARÁCTER
+                const typeInterval = setInterval(() => {
+                    // Texto actual + cursor al final
+                    el.textContent = fullText.substring(0, i) + '█';
+                    i++;
                     
-                    // FASE 2: ESPERAR (4 segundos)
-                    setTimeout(() => {
-                        // FASE 3: BORRAR (Desaparecer por la derecha)
-                        let eraseCol = 0;
-                        const eraseInterval = setInterval(() => {
-                            let eraseFrame = '';
-                            for (let r = 0; r < paddedLines.length; r++) {
-                                // Reemplazamos los caracteres de la izquierda por espacios
-                                eraseFrame += ' '.repeat(eraseCol) + paddedLines[r].substring(eraseCol) + '\n';
-                            }
-                            el.textContent = eraseFrame;
-                            eraseCol++;
-                            
-                            if (eraseCol > maxLen) {
-                                clearInterval(eraseInterval);
-                                setTimeout(typeLogo, 1000); // Reiniciar ciclo
-                            }
-                        }, 20); // Velocidad de borrado
-                    }, 4000);
-                }
-            }, 30); // Velocidad de escritura
+                    if (i > fullText.length) {
+                        clearInterval(typeInterval);
+                        el.textContent = fullText; // Quitar cursor al terminar
+                        
+                        // FASE 3: ESPERAR (4 segundos)
+                        setTimeout(() => {
+                            // FASE 4: BORRAR (Desaparecer por la derecha)
+                            let eraseIdx = 0;
+                            const eraseInterval = setInterval(() => {
+                                // Reemplazamos los caracteres desde el inicio por espacios para "empujar" a la derecha
+                                el.textContent = ' '.repeat(eraseIdx) + fullText.substring(eraseIdx);
+                                eraseIdx++;
+                                
+                                if (eraseIdx > fullText.length) {
+                                    clearInterval(eraseInterval);
+                                    setTimeout(typeLogo, 1000); // Reiniciar ciclo
+                                }
+                            }, 10); // Borrado rápido
+                        }, 4000);
+                    }
+                }, 10); // Velocidad de escritura rápida pero perceptible
+            }
         }
 
         window.addEventListener('DOMContentLoaded', typeLogo);
