@@ -428,6 +428,14 @@
             animation: cursor-blink 0.5s step-start infinite;
             margin-left: 5px;
             vertical-align: middle;
+            display: none; /* Solo lo mostraremos si es necesario */
+        }
+
+        #xesco-logo {
+            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1), 
+                        clip-path 2s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.5s;
+            will-change: transform, clip-path;
         }
 
         @keyframes cursor-blink {
@@ -622,34 +630,32 @@
         function typeLogo() {
             const el = document.getElementById('xesco-logo');
             if (!el) return;
-            el.textContent = '';
-            el.classList.remove('exit-right');
-            el.classList.add('cursor');
             
-            // Pausa inicial con cursor parpadeando
+            // Estado Inicial: Fuera por la izquierda y recortado
+            el.style.transition = 'none';
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(-100vw)';
+            el.style.clipPath = 'inset(0 0 0 100%)';
+            el.textContent = logoText.trim();
+            
+            // Pequeño delay para que el navegador registre el estado inicial
             setTimeout(() => {
-                const lines = logoText.split('\n');
-                let col = 0;
-                const maxLen = Math.max(...lines.map(l => l.length));
+                // FASE 1: ENTRADA (Se desenrolla desde la izquierda)
+                el.style.transition = 'transform 2s cubic-bezier(0.4, 0, 0.2, 1), clip-path 2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s';
+                el.style.opacity = '1';
+                el.style.transform = 'translateX(0)';
+                el.style.clipPath = 'inset(0 0 0 0)';
                 
-                const interval = setInterval(() => {
-                    let frame = '';
-                    for (let r = 0; r < lines.length; r++) {
-                        frame += lines[r].substring(0, col).padEnd(lines[r].length, ' ') + '\n';
-                    }
-                    el.textContent = frame;
-                    col++;
+                // FASE 2: PAUSA (4 segundos)
+                setTimeout(() => {
+                    // FASE 3: SALIDA (Se enrolla hacia la derecha)
+                    el.style.transform = 'translateX(100vw)';
+                    el.style.clipPath = 'inset(0 100% 0 0)';
                     
-                    if (col > maxLen) {
-                        clearInterval(interval);
-                        el.classList.remove('cursor');
-                        setTimeout(() => {
-                            el.classList.add('exit-right');
-                            setTimeout(typeLogo, 1500); 
-                        }, 4000);
-                    }
-                }, 40); // Velocidad ligeramente más lenta para que se aprecie el "dibujo"
-            }, 1000);
+                    // Reiniciar el ciclo tras la salida
+                    setTimeout(typeLogo, 2500);
+                }, 4000);
+            }, 100);
         }
 
         window.addEventListener('DOMContentLoaded', typeLogo);
