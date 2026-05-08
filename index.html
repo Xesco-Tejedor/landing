@@ -994,10 +994,15 @@
             const sign = document.getElementById('creepySign');
             if (sign) {
                 // Eliminar posibles duplicados "normales" que puedan haber quedado
-                // Limpieza agresiva de duplicados: eliminar CUALQUIER elemento con ese texto que no sea el oficial
-                document.body.querySelectorAll('*').forEach(el => {
-                    if (el.id !== 'creepySign' && el.textContent.includes('TIENES UN MINUTO')) {
-                        el.remove(); // Eliminar del DOM por completo
+                // Limpieza SEGURA de duplicados: solo buscamos en elementos de texto específicos
+                const targetText = 'TIENES UN MINUTO PARA SALVAR EL MUNDO';
+                document.querySelectorAll('p, div, span, h1, h2, h3').forEach(el => {
+                    // Solo borramos si el texto es exacto (o casi) y NO es el elemento oficial, 
+                    // y nos aseguramos de que sea un elemento "hoja" (sin hijos div/p)
+                    if (el.id !== 'creepySign' && 
+                        el.textContent.trim() === targetText && 
+                        el.children.length === 0) {
+                        el.remove();
                     }
                 });
 
