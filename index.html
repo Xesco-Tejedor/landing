@@ -443,7 +443,7 @@
                 <div id="xesco-logo" class="pixel-art rainbow-snake" style="font-size: 10px; min-height: 60px;">
                     <!-- Se rellena vía JS -->
                 </div>
-                <h1>FILÓSOFO DIGITAL:<br>EL LEGADO DE XESCO TEJEDOR</h1>
+                <h1>PENSAR EL CÓDIGO:<br>EL VIAJE DE XESCO TEJEDOR</h1>
                 <p style="text-align: center;" class="accent">Francesc Adrià Perelló</p>
                 <p style="text-align: center;" class="highlight">"CURIOSO MULTIDISCIPLINAR"</p>
 
@@ -624,32 +624,32 @@
             if (!el) return;
             el.textContent = '';
             el.classList.remove('exit-right');
-            el.classList.add('cursor'); // Iniciamos el parpadeo
+            el.classList.add('cursor');
             
-            // Fase 1: Solo parpadeo inicial (1.5s)
+            // Pausa inicial con cursor parpadeando
             setTimeout(() => {
                 const lines = logoText.split('\n');
-                const maxLen = Math.max(...lines.map(l => l.length));
                 let col = 0;
+                const maxLen = Math.max(...lines.map(l => l.length));
                 
                 const interval = setInterval(() => {
-                    let currentFrame = '';
+                    let frame = '';
                     for (let r = 0; r < lines.length; r++) {
-                        currentFrame += lines[r].substring(0, col) + '\n';
+                        frame += lines[r].substring(0, col).padEnd(lines[r].length, ' ') + '\n';
                     }
-                    el.textContent = currentFrame;
+                    el.textContent = frame;
                     col++;
                     
                     if (col > maxLen) {
                         clearInterval(interval);
-                        el.classList.remove('cursor'); // Quitamos cursor al terminar
+                        el.classList.remove('cursor');
                         setTimeout(() => {
                             el.classList.add('exit-right');
                             setTimeout(typeLogo, 1500); 
                         }, 4000);
                     }
-                }, 30);
-            }, 1500);
+                }, 40); // Velocidad ligeramente más lenta para que se aprecie el "dibujo"
+            }, 1000);
         }
 
         window.addEventListener('DOMContentLoaded', typeLogo);
