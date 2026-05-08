@@ -1374,17 +1374,19 @@
             }
 
             if (!hitGhost) {
-                // Efecto de "quemado de tela": huecos irregulares y rasgados
+                // Efecto de "quemado de tela" mejorado
+                offCtx.save();
                 offCtx.globalCompositeOperation = 'destination-out';
+                
+                const burnX = mouseX;
+                const burnY = mouseY;
+                const radius = 20 + Math.random() * 20;
+                
+                // Dibujamos un círculo de borrado irregular
                 offCtx.beginPath();
-                const burnX = mouseX + (Math.random() - 0.5) * 40;
-                const burnY = mouseY + (Math.random() - 0.5) * 40;
-                const radius = 15 + Math.random() * 25;
-                const spikes = 8 + Math.floor(Math.random() * 8);
-
-                for (let i = 0; i < spikes; i++) {
-                    const angle = (i / spikes) * Math.PI * 2;
-                    const dist = radius * (0.6 + Math.random() * 0.8);
+                for (let i = 0; i < 12; i++) {
+                    const angle = (i / 12) * Math.PI * 2;
+                    const dist = radius * (0.8 + Math.random() * 0.4);
                     const px = burnX + Math.cos(angle) * dist;
                     const py = burnY + Math.sin(angle) * dist;
                     if (i === 0) offCtx.moveTo(px, py);
@@ -1392,46 +1394,24 @@
                 }
                 offCtx.closePath();
                 offCtx.fill();
-
-                // Añadir pequeños "agujeros de chispas" adicionales alrededor
-                for (let j = 0; j < 3; j++) {
-                    offCtx.beginPath();
-                    const sx = burnX + (Math.random() - 0.5) * 60;
-                    const sy = burnY + (Math.random() - 0.5) * 60;
-                    const sr = 2 + Math.random() * 5;
-                    offCtx.arc(sx, sy, sr, 0, Math.PI * 2);
-                    offCtx.fill();
-                }
-                offCtx.globalCompositeOperation = 'source-over';
-
-                // Glow en los bordes de la tela quemada (sobre offCanvas)
-                offCtx.save();
-                offCtx.globalCompositeOperation = 'source-atop'; // Solo dibuja sobre la tela existente
-                offCtx.strokeStyle = Math.random() > 0.5 ? 'var(--bright-red)' : 'var(--bright-yellow)';
-                offCtx.lineWidth = 4;
-                offCtx.filter = 'blur(4px)';
-                offCtx.beginPath();
-                // Dibujamos el mismo camino que el hueco pero como contorno
-                for (let i = 0; i < spikes; i++) {
-                    const angle = (i / spikes) * Math.PI * 2;
-                    const dist = radius * (0.6 + Math.random() * 0.8);
-                    const px = burnX + Math.cos(angle) * dist;
-                    const py = burnY + Math.sin(angle) * dist;
-                    if (i === 0) offCtx.moveTo(px, py);
-                    else offCtx.lineTo(px, py);
-                }
-                offCtx.closePath();
+                
+                // Borde de fuego en el propio offCanvas para que persista
+                offCtx.globalCompositeOperation = 'source-atop';
+                offCtx.strokeStyle = Math.random() > 0.5 ? '#FF4500' : '#FFD700';
+                offCtx.lineWidth = 2;
+                offCtx.stroke();
+                
                 offCtx.restore();
 
-                // Generar partículas de ceniza al disparar
-                for (let k = 0; k < 3; k++) {
+                // Ceniza persistente
+                for (let k = 0; k < 2; k++) {
                     particles.push({
-                        x: burnX + (Math.random() - 0.5) * 20,
-                        y: burnY + (Math.random() - 0.5) * 20,
-                        vx: (Math.random() - 0.5) * 80,
-                        vy: -Math.random() * 120, // La ceniza sube por el calor
-                        life: 0.8 + Math.random() * 0.7,
-                        color: Math.random() > 0.4 ? '#111' : '#333'
+                        x: burnX + (Math.random() - 0.5) * 30,
+                        y: burnY + (Math.random() - 0.5) * 30,
+                        vx: (Math.random() - 0.5) * 60,
+                        vy: -50 - Math.random() * 100,
+                        life: 1.5,
+                        color: '#111'
                     });
                 }
             }
@@ -1820,25 +1800,8 @@
                 offCtx.restore();
             }
 
-            // Perspective Countdown Animation (Last 10 Seconds)
-            if (gameTimer <= 10 && gameTimer > 0) {
-                let currentVal = Math.ceil(gameTimer);
-                let progress = 1 - (gameTimer % 1); // 0 to 1 over each second
-                let scale = progress * 400;
-                let alpha = 1 - progress;
-
-                ctx.save();
-                ctx.font = `${scale}px "Press Start 2P"`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-                ctx.strokeStyle = `rgba(255, 0, 0, ${alpha})`;
-                ctx.lineWidth = scale / 20;
-                ctx.strokeText(currentVal, canvas.width / 2, canvas.height / 2);
-                ctx.fillText(currentVal, canvas.width / 2, canvas.height / 2);
-                ctx.restore();
-            }
-
+            // El contador de rejilla ha sido eliminado por no encajar con la estética
+            
             requestAnimationFrame(gameLoop);
         }
 
