@@ -1800,17 +1800,27 @@
                 offCtx.restore();
             }
 
-            // Cuenta regresiva de los últimos 10 segundos (estilo limpio)
+            // Cuenta regresiva final con perspectiva y contorno rojo
             if (gameTimer <= 10 && gameTimer > 0) {
                 let currentVal = Math.ceil(gameTimer);
+                let progress = 1 - (gameTimer % 1); // De 0 a 1 cada segundo
+                let scale = progress * 350; // El número "crece" hacia el jugador
+                let alpha = 1 - progress; // Se desvanece al final del segundo
+                
                 ctx.save();
-                ctx.font = '80px "Press Start 2P"';
+                ctx.font = `${scale}px "Press Start 2P"`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'var(--bright-red)';
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = 'black';
+                
+                // Contorno Rojo (Borde)
+                ctx.strokeStyle = `rgba(255, 0, 0, ${alpha})`;
+                ctx.lineWidth = Math.max(2, scale / 30);
+                ctx.strokeText(currentVal, canvas.width / 2, canvas.height / 2);
+                
+                // Relleno Blanco
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
                 ctx.fillText(currentVal, canvas.width / 2, canvas.height / 2);
+                
                 ctx.restore();
             }
 
