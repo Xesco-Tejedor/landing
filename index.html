@@ -422,6 +422,18 @@
         .exit-right {
             animation: snake-exit 1s ease-in forwards !important;
         }
+
+        .cursor::after {
+            content: '█';
+            animation: cursor-blink 0.5s step-start infinite;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -612,28 +624,32 @@
             if (!el) return;
             el.textContent = '';
             el.classList.remove('exit-right');
+            el.classList.add('cursor'); // Iniciamos el parpadeo
             
-            const lines = logoText.split('\n');
-            const maxLen = Math.max(...lines.map(l => l.length));
-            let col = 0;
-            
-            const interval = setInterval(() => {
-                let currentFrame = '';
-                for (let r = 0; r < lines.length; r++) {
-                    // Añadimos el segmento de cada línea hasta la columna actual
-                    currentFrame += lines[r].substring(0, col) + '\n';
-                }
-                el.textContent = currentFrame;
-                col++;
+            // Fase 1: Solo parpadeo inicial (1.5s)
+            setTimeout(() => {
+                const lines = logoText.split('\n');
+                const maxLen = Math.max(...lines.map(l => l.length));
+                let col = 0;
                 
-                if (col > maxLen) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        el.classList.add('exit-right');
-                        setTimeout(typeLogo, 1500); 
-                    }, 4000);
-                }
-            }, 30); // Velocidad del barrido
+                const interval = setInterval(() => {
+                    let currentFrame = '';
+                    for (let r = 0; r < lines.length; r++) {
+                        currentFrame += lines[r].substring(0, col) + '\n';
+                    }
+                    el.textContent = currentFrame;
+                    col++;
+                    
+                    if (col > maxLen) {
+                        clearInterval(interval);
+                        el.classList.remove('cursor'); // Quitamos cursor al terminar
+                        setTimeout(() => {
+                            el.classList.add('exit-right');
+                            setTimeout(typeLogo, 1500); 
+                        }, 4000);
+                    }
+                }, 30);
+            }, 1500);
         }
 
         window.addEventListener('DOMContentLoaded', typeLogo);
