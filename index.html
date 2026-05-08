@@ -414,11 +414,13 @@
             100% { background-position: -200% center; }
         }
 
-        @keyframes snake-logic {
-            0% { clip-path: inset(0 100% 0 0); opacity: 0; transform: translateX(-10px); }
-            15% { clip-path: inset(0 0 0 0); opacity: 1; transform: translateX(0); } /* Se dibuja de izq a der */
-            85% { clip-path: inset(0 0 0 0); opacity: 1; transform: translateX(0); } /* Permanece 4s */
-            100% { clip-path: inset(0 0 0 100%); opacity: 0; transform: translateX(10px); } /* Se borra de izq a der, 'saliendo' por la derecha */
+        @keyframes snake-exit {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100vw); opacity: 0; }
+        }
+
+        .exit-right {
+            animation: snake-exit 1s ease-in forwards !important;
         }
     </style>
 </head>
@@ -426,12 +428,8 @@
     <div id="game-container">
         <div id="splash" class="screen active">
             <div class="content" style="display:flex; flex-direction:column;">
-                <div class="pixel-art rainbow-snake" style="font-size: 10px;">
- __  __  ____  ____  ____  _____ 
- \ \/ / / ___|/ ___|/ ___|/ _ \
-  \  / | _| |___ \| | | | | |
-  /  \ | |___ ___| | |___ | |_| |
- /_/\_\ \____|____/ \____|\_____/
+                <div id="xesco-logo" class="pixel-art rainbow-snake" style="font-size: 10px; min-height: 60px;">
+                    <!-- Se rellena vía JS -->
                 </div>
                 <h1>HUMANISTA DIGITAL:<br>EL LEGADO DE XESCO TEJEDOR</h1>
                 <p style="text-align: center;" class="accent">Francesc Adrià Perelló</p>
@@ -601,6 +599,34 @@
         let audioCtx;
         let isMusicPlaying = false;
         let activeOscillators = [];
+
+        // Typewriter Logo Logic
+        const logoText = ` __  __  ____  ____  ____  _____ 
+ \\ \\/ / / ___|/ ___|/ ___|/ _ \\
+  \\  / | _| |___ \\| | | | | |
+  /  \\ | |___ ___| | |___ | |_| |
+ /_/\\_\\ \\____|____/ \\____|\\_____/`;
+
+        function typeLogo() {
+            const el = document.getElementById('xesco-logo');
+            if (!el) return;
+            el.textContent = '';
+            el.classList.remove('exit-right');
+            let i = 0;
+            const interval = setInterval(() => {
+                el.textContent += logoText[i];
+                i++;
+                if (i >= logoText.length) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        el.classList.add('exit-right');
+                        setTimeout(typeLogo, 1500); // Reiniciar ciclo tras salida
+                    }, 4000); // 4 segundos de espera
+                }
+            }, 15); // Velocidad de escritura
+        }
+
+        window.addEventListener('DOMContentLoaded', typeLogo);
 
         function initAudio() {
             if (audioCtx) return;
