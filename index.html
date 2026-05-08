@@ -1024,12 +1024,22 @@
             }
             offCanvas.width = canvas.width;
             offCanvas.height = canvas.height;
-            if (bgLibrary.complete) {
-                offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                // Capa de oscuridad TOTALMENTE OPACA al inicio (descubrimiento real)
-                offCtx.fillStyle = 'rgba(0, 0, 0, 1.0)';
-                offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+
+            // Limpiamos y aseguramos opacidad inicial
+            offCtx.globalCompositeOperation = 'source-over';
+            offCtx.fillStyle = 'black';
+            offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+
+            function drawInitialLibrary() {
+                if (bgLibrary.complete && bgLibrary.naturalWidth > 0) {
+                    offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
+                } else {
+                    bgLibrary.onload = () => {
+                        offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
+                    };
+                }
             }
+            drawInitialLibrary();
 
             score = 0;
             health = 100;
