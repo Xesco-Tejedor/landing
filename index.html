@@ -415,11 +415,10 @@
         }
 
         @keyframes snake-logic {
-            0% { transform: translateX(-100vw); opacity: 0; clip-path: inset(0 0 0 100%); }
-            10% { transform: translateX(0); opacity: 1; clip-path: inset(0 0 0 0); } /* Entrada */
-            60% { transform: translateX(0); opacity: 1; clip-path: inset(0 0 0 0); } /* Pausa de 4s (aprox 50% del ciclo de 8s) */
-            70% { transform: translateX(100vw); opacity: 0; clip-path: inset(0 100% 0 0); } /* Salida */
-            100% { transform: translateX(100vw); opacity: 0; } /* Espera antes de reiniciar */
+            0% { clip-path: inset(0 100% 0 0); opacity: 0; transform: translateX(-10px); }
+            15% { clip-path: inset(0 0 0 0); opacity: 1; transform: translateX(0); } /* Se dibuja de izq a der */
+            85% { clip-path: inset(0 0 0 0); opacity: 1; transform: translateX(0); } /* Permanece 4s */
+            100% { clip-path: inset(0 0 0 100%); opacity: 0; transform: translateX(10px); } /* Se borra de izq a der, 'saliendo' por la derecha */
         }
     </style>
 </head>
