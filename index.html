@@ -1314,8 +1314,19 @@
                 else offCtx.lineTo(px, py);
             }
             offCtx.closePath();
-            offCtx.stroke();
             offCtx.restore();
+
+            // Generar partículas de ceniza al disparar
+            for (let k = 0; k < 3; k++) {
+                particles.push({
+                    x: burnX + (Math.random() - 0.5) * 20,
+                    y: burnY + (Math.random() - 0.5) * 20,
+                    vx: (Math.random() - 0.5) * 80,
+                    vy: -Math.random() * 120, // La ceniza sube por el calor
+                    life: 0.8 + Math.random() * 0.7,
+                    color: Math.random() > 0.4 ? '#111' : '#333'
+                });
+            }
             
             ctx.save();
             
@@ -1426,21 +1437,21 @@
                 if (phaseTimer > 240) gamePhase = 2; // 4 seconds total
             }
 
-            // Draw Background
-            ctx.fillStyle = 'black'; // Fondo base para que la transparencia de offCanvas se vea negra
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            if (gamePhase === 0 && bgLibrary.complete) {
-                ctx.drawImage(offCanvas, 0, 0);
-            } else if (gamePhase >= 1 && bgHell.complete) {
+            // Draw Background Base (Hell Scenario always behind)
+            if (bgHell.complete) {
                 ctx.drawImage(bgHell, 0, 0, canvas.width, canvas.height);
-                ctx.drawImage(offCanvas, 0, 0);
-                if (phaseTimer > 120 && phaseTimer < 130) { // Destello rojo en la transición
-                    ctx.fillStyle = `rgba(255, 0, 0, ${0.5 * (130 - phaseTimer) / 10})`;
-                    ctx.fillRect(0,0,canvas.width,canvas.height);
-                }
             } else {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Draw Library Layer (offCanvas with burns)
+            ctx.drawImage(offCanvas, 0, 0);
+
+            // Destello rojo en la transición de fase (para mantener el impacto visual)
+            if (gamePhase >= 1 && phaseTimer > 120 && phaseTimer < 140) {
+                ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (140 - phaseTimer) / 20})`;
+                ctx.fillRect(0,0,canvas.width,canvas.height);
             }
             
             // Draw Phase Text
