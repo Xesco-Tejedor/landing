@@ -386,32 +386,15 @@
             text-shadow: 2px 2px var(--black);
         }
 
-        /* 80s Rainbow Snake Effect */
-        .rainbow-snake {
-            background: linear-gradient(
-                90deg, 
-                var(--bright-cyan), 
-                var(--bright-magenta), 
-                var(--bright-yellow), 
-                var(--bright-green), 
-                var(--bright-cyan)
-            );
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
+        /* Electric Dreams / Edgar Style Logo */
+        .edgar-style {
+            color: var(--bright-green);
+            text-shadow: 
+                0 0 2px var(--bright-green),
+                0 0 8px rgba(0, 255, 65, 0.6);
             display: inline-block;
             white-space: pre;
-            /* Combinamos el ciclo de color con el movimiento de serpiente */
-            animation: 
-                thread-run 2s linear infinite,
-                snake-logic 8s ease-in-out infinite;
-        }
-
-        @keyframes thread-run {
-            0% { background-position: 0% center; }
-            100% { background-position: -200% center; }
+            font-family: monospace;
         }
 
         @keyframes snake-exit {
@@ -449,7 +432,7 @@
     <div id="game-container">
         <div id="splash" class="screen active">
             <div class="content" style="display:flex; flex-direction:column;">
-                <div id="xesco-logo" class="pixel-art rainbow-snake" style="font-size: 10px; min-height: 60px;">
+                <div id="xesco-logo" class="pixel-art edgar-style" style="font-size: 10px; min-height: 60px;">
                     <!-- Se rellena vía JS -->
                 </div>
                 <h1>XESCO TEJEDOR:<br>LEVEL UP EN CULTURA DIGITAL</h1>
