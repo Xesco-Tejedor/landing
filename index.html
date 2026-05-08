@@ -978,7 +978,7 @@
         let poisons = [];
         let particles = [];
         let bgLibrary = new Image(); bgLibrary.src = 'library.png';
-        let bgHell = new Image(); bgHell.src = 'libHell.png';
+        let bgHell = new Image(); bgHell.src = 'libHellUltimate.png';
         let gamePhase = 0;
         let phaseTimer = 0;
         let gameTimer = 60;
@@ -1360,19 +1360,21 @@
             }
 
             if (!hitGhost) {
-                // Efecto de "quemado de tela" mejorado
+                // Efecto de "quemado de papel" realista
                 offCtx.save();
-                offCtx.globalCompositeOperation = 'destination-out';
                 
                 const burnX = mouseX;
                 const burnY = mouseY;
-                const radius = 20 + Math.random() * 20;
+                const radius = 25 + Math.random() * 20;
+                const spikes = 15; // Más puntos para bordes más rasgados
                 
-                // Dibujamos un círculo de borrado irregular
+                // 1. Borrado de la biblioteca (destination-out)
+                offCtx.globalCompositeOperation = 'destination-out';
                 offCtx.beginPath();
-                for (let i = 0; i < 12; i++) {
-                    const angle = (i / 12) * Math.PI * 2;
-                    const dist = radius * (0.8 + Math.random() * 0.4);
+                for (let i = 0; i < spikes; i++) {
+                    const angle = (i / spikes) * Math.PI * 2;
+                    // Variación de distancia muy irregular para efecto "papel roto"
+                    const dist = radius * (0.7 + Math.random() * 0.6);
                     const px = burnX + Math.cos(angle) * dist;
                     const py = burnY + Math.sin(angle) * dist;
                     if (i === 0) offCtx.moveTo(px, py);
@@ -1381,23 +1383,34 @@
                 offCtx.closePath();
                 offCtx.fill();
                 
-                // Borde de fuego en el propio offCanvas para que persista
+                // 2. Borde de brasa incandescente (fuego persistente en la tela)
                 offCtx.globalCompositeOperation = 'source-atop';
-                offCtx.strokeStyle = Math.random() > 0.5 ? '#FF4500' : '#FFD700';
-                offCtx.lineWidth = 2;
+                offCtx.filter = 'blur(3px)';
+                offCtx.strokeStyle = Math.random() > 0.5 ? '#FF4500' : '#FFD700'; // Naranja o Dorado
+                offCtx.lineWidth = 6;
+                offCtx.beginPath();
+                for (let i = 0; i < spikes; i++) {
+                    const angle = (i / spikes) * Math.PI * 2;
+                    const dist = radius * (0.7 + Math.random() * 0.6);
+                    const px = burnX + Math.cos(angle) * dist;
+                    const py = burnY + Math.sin(angle) * dist;
+                    if (i === 0) offCtx.moveTo(px, py);
+                    else offCtx.lineTo(px, py);
+                }
+                offCtx.closePath();
                 offCtx.stroke();
                 
                 offCtx.restore();
 
-                // Ceniza persistente
-                for (let k = 0; k < 2; k++) {
+                // 3. Generación de ceniza negra y chispas
+                for (let k = 0; k < 4; k++) {
                     particles.push({
-                        x: burnX + (Math.random() - 0.5) * 30,
-                        y: burnY + (Math.random() - 0.5) * 30,
-                        vx: (Math.random() - 0.5) * 60,
-                        vy: -50 - Math.random() * 100,
-                        life: 1.5,
-                        color: '#111'
+                        x: burnX + (Math.random() - 0.5) * 40,
+                        y: burnY + (Math.random() - 0.5) * 40,
+                        vx: (Math.random() - 0.5) * 50,
+                        vy: -60 - Math.random() * 120, // La ceniza flota hacia arriba
+                        life: 1.2 + Math.random(),
+                        color: Math.random() > 0.3 ? '#111' : '#FF4500' // Mezcla de ceniza y chispas
                     });
                 }
             }
