@@ -649,18 +649,17 @@
                         
                         // FASE 3: ESPERAR (4 segundos)
                         setTimeout(() => {
-                            // FASE 4: BORRAR (Desaparecer por la derecha)
-                            let eraseIdx = 0;
+                            // FASE 4: BORRAR (Recorrido inverso / Backspace)
+                            let eraseIdx = fullText.length;
                             const eraseInterval = setInterval(() => {
-                                // Reemplazamos los caracteres desde el inicio por espacios para "empujar" a la derecha
-                                el.textContent = ' '.repeat(eraseIdx) + fullText.substring(eraseIdx);
-                                eraseIdx++;
+                                el.textContent = fullText.substring(0, eraseIdx) + '█';
+                                eraseIdx--;
                                 
-                                if (eraseIdx > fullText.length) {
+                                if (eraseIdx < 0) {
                                     clearInterval(eraseInterval);
-                                    setTimeout(typeLogo, 1000); // Reiniciar ciclo
+                                    setTimeout(typeLogo, 500); // Reiniciar ciclo tras breve pausa
                                 }
-                            }, 10); // Borrado rápido
+                            }, 5); // Borrado muy rápido (efecto retroceso)
                         }, 4000);
                     }
                 }, 10); // Velocidad de escritura rápida pero perceptible
