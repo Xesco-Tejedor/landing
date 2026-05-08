@@ -385,13 +385,37 @@
             font-size: 10px;
             text-shadow: 2px 2px var(--black);
         }
+
+        /* 80s Rainbow Thread Effect */
+        .rainbow-thread {
+            background: linear-gradient(
+                90deg, 
+                var(--bright-cyan), 
+                var(--bright-magenta), 
+                var(--bright-yellow), 
+                var(--bright-green), 
+                var(--bright-cyan)
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: thread-run 2s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes thread-run {
+            0% { background-position: 0% center; }
+            100% { background-position: -200% center; }
+        }
     </style>
 </head>
 <body>
     <div id="game-container">
         <div id="splash" class="screen active">
             <div class="content" style="display:flex; flex-direction:column;">
-                <div class="pixel-art" style="font-size: 10px; color: var(--bright-cyan);">
+                <div class="pixel-art rainbow-thread" style="font-size: 10px;">
  __  __  ____  ____  ____  _____ 
  \ \/ / / ___|/ ___|/ ___|/ _ \
   \  / | _| |___ \| | | | | |
@@ -563,6 +587,8 @@
     </div>
 
     <script>
+        let audioCtx;
+        let isMusicPlaying = false;
         let activeOscillators = [];
 
         function initAudio() {
