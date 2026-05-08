@@ -432,10 +432,11 @@
         }
 
         #xesco-logo {
-            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1), 
-                        clip-path 2s cubic-bezier(0.4, 0, 0.2, 1), 
-                        opacity 0.5s;
-            will-change: transform, clip-path;
+            opacity: 1;
+            transform: none !important;
+            clip-path: none !important;
+            margin: 0 auto;
+            text-align: center;
         }
 
         @keyframes cursor-blink {
@@ -631,31 +632,47 @@
             const el = document.getElementById('xesco-logo');
             if (!el) return;
             
-            // Estado Inicial: Fuera por la izquierda y recortado
-            el.style.transition = 'none';
-            el.style.opacity = '0';
-            el.style.transform = 'translateX(-100vw)';
-            el.style.clipPath = 'inset(0 0 0 100%)';
-            el.textContent = logoText.trim();
+            const lines = logoText.trim().split('\n');
+            const maxLen = Math.max(...lines.map(l => l.length));
+            const paddedLines = lines.map(l => l.padEnd(maxLen, ' '));
             
-            // Pequeño delay para que el navegador registre el estado inicial
-            setTimeout(() => {
-                // FASE 1: ENTRADA (Se desenrolla desde la izquierda)
-                el.style.transition = 'transform 2s cubic-bezier(0.4, 0, 0.2, 1), clip-path 2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s';
-                el.style.opacity = '1';
-                el.style.transform = 'translateX(0)';
-                el.style.clipPath = 'inset(0 0 0 0)';
+            let col = 0;
+            el.textContent = '';
+            el.style.opacity = '1';
+            
+            // FASE 1: ESCRIBIR (Izquierda a Derecha)
+            const typeInterval = setInterval(() => {
+                let frame = '';
+                for (let r = 0; r < paddedLines.length; r++) {
+                    frame += paddedLines[r].substring(0, col) + '\n';
+                }
+                el.textContent = frame;
+                col++;
                 
-                // FASE 2: PAUSA (4 segundos)
-                setTimeout(() => {
-                    // FASE 3: SALIDA (Se enrolla hacia la derecha)
-                    el.style.transform = 'translateX(100vw)';
-                    el.style.clipPath = 'inset(0 100% 0 0)';
+                if (col > maxLen) {
+                    clearInterval(typeInterval);
                     
-                    // Reiniciar el ciclo tras la salida
-                    setTimeout(typeLogo, 2500);
-                }, 4000);
-            }, 100);
+                    // FASE 2: ESPERAR (4 segundos)
+                    setTimeout(() => {
+                        // FASE 3: BORRAR (Desaparecer por la derecha)
+                        let eraseCol = 0;
+                        const eraseInterval = setInterval(() => {
+                            let eraseFrame = '';
+                            for (let r = 0; r < paddedLines.length; r++) {
+                                // Reemplazamos los caracteres de la izquierda por espacios
+                                eraseFrame += ' '.repeat(eraseCol) + paddedLines[r].substring(eraseCol) + '\n';
+                            }
+                            el.textContent = eraseFrame;
+                            eraseCol++;
+                            
+                            if (eraseCol > maxLen) {
+                                clearInterval(eraseInterval);
+                                setTimeout(typeLogo, 1000); // Reiniciar ciclo
+                            }
+                        }, 20); // Velocidad de borrado
+                    }, 4000);
+                }
+            }, 30); // Velocidad de escritura
         }
 
         window.addEventListener('DOMContentLoaded', typeLogo);
