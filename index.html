@@ -1800,8 +1800,20 @@
                 offCtx.restore();
             }
 
-            // El contador de rejilla ha sido eliminado por no encajar con la estética
-            
+            // Cuenta regresiva de los últimos 10 segundos (estilo limpio)
+            if (gameTimer <= 10 && gameTimer > 0) {
+                let currentVal = Math.ceil(gameTimer);
+                ctx.save();
+                ctx.font = '80px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = 'var(--bright-red)';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'black';
+                ctx.fillText(currentVal, canvas.width / 2, canvas.height / 2);
+                ctx.restore();
+            }
+
             requestAnimationFrame(gameLoop);
         }
 
