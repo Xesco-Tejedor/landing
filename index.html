@@ -1026,8 +1026,8 @@
             offCanvas.height = canvas.height;
             if (bgLibrary.complete) {
                 offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                // Oscuridad inicial reducida (antes 0.8)
-                offCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                // Capa de oscuridad TOTALMENTE OPACA al inicio (descubrimiento real)
+                offCtx.fillStyle = 'rgba(0, 0, 0, 1.0)';
                 offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
             }
 
@@ -1360,21 +1360,32 @@
             }
 
             if (!hitGhost) {
-                // Efecto de "quemado de papel" realista
+                // EFECTO DE DESINTEGRACIÓN POR PLASMA (Caótico y Destructivo)
                 offCtx.save();
                 
                 const burnX = mouseX;
                 const burnY = mouseY;
-                const radius = 25 + Math.random() * 20;
-                const spikes = 15; // Más puntos para bordes más rasgados
+                const radius = 25 + Math.random() * 25;
+                const spikes = 20; // Más detalle para caos
                 
-                // 1. Borrado de la biblioteca (destination-out)
+                // 1. ÁREA DE CALOR EXTREMO (Tostado previo a la desintegración)
+                offCtx.globalCompositeOperation = 'source-over';
+                let gradient = offCtx.createRadialGradient(burnX, burnY, radius * 0.5, burnX, burnY, radius * 1.5);
+                gradient.addColorStop(0, '#442200'); // Carbonizado profundo
+                gradient.addColorStop(1, 'rgba(34, 17, 0, 0)');
+                offCtx.fillStyle = gradient;
+                offCtx.beginPath();
+                offCtx.arc(burnX, burnY, radius * 1.5, 0, Math.PI * 2);
+                offCtx.fill();
+
+                // 2. DESINTEGRACIÓN (Destination-Out con bordes "mordidos")
                 offCtx.globalCompositeOperation = 'destination-out';
                 offCtx.beginPath();
                 for (let i = 0; i < spikes; i++) {
                     const angle = (i / spikes) * Math.PI * 2;
-                    // Variación de distancia muy irregular para efecto "papel roto"
-                    const dist = radius * (0.7 + Math.random() * 0.6);
+                    // Mucha más irregularidad en el radio
+                    const jitter = 0.5 + Math.random() * 1.0;
+                    const dist = radius * jitter;
                     const px = burnX + Math.cos(angle) * dist;
                     const py = burnY + Math.sin(angle) * dist;
                     if (i === 0) offCtx.moveTo(px, py);
@@ -1383,34 +1394,46 @@
                 offCtx.closePath();
                 offCtx.fill();
                 
-                // 2. Borde de brasa incandescente (fuego persistente en la tela)
-                offCtx.globalCompositeOperation = 'source-atop';
-                offCtx.filter = 'blur(3px)';
-                offCtx.strokeStyle = Math.random() > 0.5 ? '#FF4500' : '#FFD700'; // Naranja o Dorado
-                offCtx.lineWidth = 6;
+                // 3. ARCOS ELÉCTRICOS Y RESPLANDOR INCANDESCENTE (Energía residual)
+                offCtx.globalCompositeOperation = 'source-over';
+                offCtx.shadowBlur = 10;
+                offCtx.shadowColor = '#FF4500';
+                
+                // Borde de "fuego líquido"
+                offCtx.strokeStyle = Math.random() > 0.3 ? '#FF8C00' : '#FFFFFF'; 
+                offCtx.lineWidth = 2 + Math.random() * 4;
                 offCtx.beginPath();
                 for (let i = 0; i < spikes; i++) {
                     const angle = (i / spikes) * Math.PI * 2;
-                    const dist = radius * (0.7 + Math.random() * 0.6);
+                    const dist = radius * (0.7 + Math.random() * 0.5);
                     const px = burnX + Math.cos(angle) * dist;
                     const py = burnY + Math.sin(angle) * dist;
-                    if (i === 0) offCtx.moveTo(px, py);
-                    else offCtx.lineTo(px, py);
+                    
+                    // Pequeños arcos hacia afuera
+                    if (Math.random() < 0.2) {
+                        const ax = px + Math.cos(angle) * 15;
+                        const ay = py + Math.sin(angle) * 15;
+                        offCtx.lineTo(ax, ay);
+                        offCtx.lineTo(px, py);
+                    } else {
+                        if (i === 0) offCtx.moveTo(px, py);
+                        else offCtx.lineTo(px, py);
+                    }
                 }
                 offCtx.closePath();
                 offCtx.stroke();
                 
                 offCtx.restore();
 
-                // 3. Generación de ceniza negra y chispas
-                for (let k = 0; k < 4; k++) {
+                // 4. CHISPAS VIOLENTAS DE PLASMA
+                for (let k = 0; k < 6; k++) {
                     particles.push({
-                        x: burnX + (Math.random() - 0.5) * 40,
-                        y: burnY + (Math.random() - 0.5) * 40,
-                        vx: (Math.random() - 0.5) * 50,
-                        vy: -60 - Math.random() * 120, // La ceniza flota hacia arriba
-                        life: 1.2 + Math.random(),
-                        color: Math.random() > 0.3 ? '#111' : '#FF4500' // Mezcla de ceniza y chispas
+                        x: burnX + (Math.random() - 0.5) * 20,
+                        y: burnY + (Math.random() - 0.5) * 20,
+                        vx: (Math.random() - 0.5) * 150, // Más rápidas
+                        vy: (Math.random() - 0.5) * 150 - 50,
+                        life: 0.5 + Math.random() * 0.5, // Vida corta (destello)
+                        color: Math.random() > 0.5 ? '#FFF' : '#FFD700' 
                     });
                 }
             }
