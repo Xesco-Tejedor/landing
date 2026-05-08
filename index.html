@@ -1535,14 +1535,14 @@
                 return;
             }
 
-            // Handle Phases
+            // Handle Phases (Lógica de tiempo mantenida, pero sin textos en pantalla)
             if (gamePhase < 2) {
                 phaseTimer += timeScale;
                 if (Math.floor(phaseTimer) === 120 && typeof audioCtx !== 'undefined' && audioCtx) {
-                    createOsc(100, 'sawtooth', audioCtx.currentTime, 1.0, 0.2); // creepy sound when hell starts
+                    createOsc(100, 'sawtooth', audioCtx.currentTime, 1.0, 0.2); 
                 }
                 if (phaseTimer > 120) gamePhase = 1;
-                if (phaseTimer > 240) gamePhase = 2; // 4 seconds total
+                if (phaseTimer > 240) gamePhase = 2;
             }
 
             // Draw Background Base (Hell Scenario always behind)
@@ -1556,25 +1556,11 @@
             // Draw Library Layer (offCanvas with burns)
             ctx.drawImage(offCanvas, 0, 0);
 
-            // Destello rojo en la transición de fase (para mantener el impacto visual)
+            // Destello rojo en la transición de fase (mantenido sutilmente)
             if (gamePhase >= 1 && phaseTimer > 120 && phaseTimer < 140) {
                 ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (140 - phaseTimer) / 20})`;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-
-            // Draw Phase Text
-            if (gamePhase === 0) {
-                ctx.fillStyle = 'var(--white)';
-                ctx.font = '14px "Press Start 2P"';
-                ctx.textAlign = 'center';
-                ctx.fillText('ACCEDIENDO A LOS ARCHIVOS...', canvas.width / 2, canvas.height / 2);
-            } else if (gamePhase === 1) {
-                ctx.fillStyle = 'var(--bright-red)';
-                ctx.font = '14px "Press Start 2P"';
-                ctx.textAlign = 'center';
-                ctx.fillText('¡ANOMALÍA DETECTADA!', canvas.width / 2, canvas.height / 2);
-            }
-
             if (gamePhase === 2) {
                 spawnGhost(timeScale);
             }
