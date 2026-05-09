@@ -1711,14 +1711,15 @@
                 return;
             }
 
-            // Handle Phases (Lógica de tiempo mantenida, pero sin textos en pantalla)
+            // Handle Phases (Lógica de tiempo real en segundos)
             if (gamePhase < 2) {
-                phaseTimer += timeScale;
-                if (Math.floor(phaseTimer) === 120 && typeof audioCtx !== 'undefined' && audioCtx) {
+                phaseTimer += deltaTime;
+                // Fase 1 a los 2 segundos, Fase 2 (spawn) a los 4 segundos
+                if (gamePhase === 0 && phaseTimer >= 2.0 && typeof audioCtx !== 'undefined' && audioCtx) {
                     createOsc(100, 'sawtooth', audioCtx.currentTime, 1.0, 0.2); 
                 }
-                if (phaseTimer > 120) gamePhase = 1;
-                if (phaseTimer > 240) gamePhase = 2;
+                if (gamePhase === 0 && phaseTimer >= 2.0) gamePhase = 1;
+                if (gamePhase === 1 && phaseTimer >= 4.0) gamePhase = 2;
             }
 
             // Draw Background Base (Hell Scenario always behind)
