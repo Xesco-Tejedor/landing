@@ -30,6 +30,7 @@
         * {
             box-sizing: border-box;
             image-rendering: pixelated;
+            image-rendering: crisp-edges;
         }
 
         body,
@@ -50,7 +51,7 @@
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
-        /* Scanline effect */
+        /* Scanline effect - reduced for clarity on mobile */
         body::after {
             content: " ";
             display: block;
@@ -59,9 +60,9 @@
             left: 0;
             bottom: 0;
             right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
             z-index: 10;
-            background-size: 100% 4px, 3px 100%;
+            background-size: 100% 3px, 2px 100%;
             pointer-events: none;
         }
 
@@ -494,12 +495,163 @@
                 opacity: 0;
             }
         }
+        /* Login Screen Styles */
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .login-box {
+            border: 2px solid var(--blue);
+            padding: 30px;
+            background: rgba(0, 0, 215, 0.1);
+            box-shadow: 0 0 15px var(--blue);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            color: var(--bright-cyan);
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .login-field {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .login-label {
+            display: block;
+            font-size: 10px;
+            color: var(--bright-white);
+            margin-bottom: 10px;
+        }
+
+        .login-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--blue);
+            color: var(--bright-green);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 8px 0;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .login-input:focus {
+            border-bottom-color: var(--bright-green);
+            text-shadow: 0 0 5px var(--bright-green);
+        }
+
+        .login-status {
+            height: 20px;
+            margin-top: 20px;
+            font-size: 8px;
+            color: var(--bright-red);
+        }
+
+        .access-granted {
+            color: var(--bright-green) !important;
+        }
+
+        .system-msg {
+            color: var(--bright-magenta);
+            font-size: 8px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 600px) {
+            #game-container {
+                width: 100vw;
+                height: 100dvh;
+                max-width: none;
+                max-height: none;
+                border: none;
+                padding: 15px;
+                box-shadow: none;
+            }
+
+            h1 {
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 12px;
+            }
+
+            p, li {
+                font-size: 11px;
+            }
+
+            .btn {
+                padding: 12px;
+                font-size: 9px;
+            }
+
+            .login-box {
+                padding: 20px;
+            }
+
+            .login-header {
+                font-size: 12px;
+            }
+
+            .pixel-art {
+                font-size: 6px;
+            }
+
+            /* Reducir parpadeo en móvil para mayor claridad */
+            @keyframes flicker {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.98; }
+            }
+        }
+
+        @media (max-height: 500px) {
+            .menu {
+                gap: 5px;
+            }
+            .btn {
+                padding: 8px;
+            }
+            #xesco-logo {
+                display: none; /* Ahorrar espacio vertical en landscape móvil */
+            }
+        }
     </style>
 </head>
 
 <body>
     <div id="game-container">
-        <div id="splash" class="screen active">
+        <div id="login" class="screen active">
+            <div class="content login-screen">
+                <div class="login-box">
+                    <div class="login-header">SYSTEM ACCESS</div>
+                    <span class="system-msg" id="login-msg">> SECURE CONNECTION ESTABLISHED...</span>
+                    <span class="system-msg">> STANDBY FOR AUTHENTICATION...</span>
+
+                    <button class="btn" onclick="validateLogin()" style="width: 100%; margin-top: 20px;">AUTH_EXECUTE</button>
+                    
+                    <div id="login-status" class="login-status"></div>
+                </div>
+                <div style="margin-top: 30px; font-size: 8px; color: var(--blue);">
+                    SECURE_TERMINAL_V.84.05
+                </div>
+            </div>
+        </div>
+
+        <div id="splash" class="screen">
             <div class="content" style="display:flex; flex-direction:column;">
                 <div id="xesco-logo" class="pixel-art edgar-style" style="font-size: 10px; min-height: 60px;">
                     <!-- Se rellena vía JS -->
@@ -983,6 +1135,7 @@
         let phaseTimer = 0;
         let gameTimer = 60;
         let countdownValue = -1;
+        const dpr = window.devicePixelRatio || 1;
 
         function startGhostGame() {
             document.getElementById('ghostMenu').style.display = 'none';
@@ -1045,6 +1198,16 @@
                     };
                 }
             }
+            
+            // Ajuste de resolución para pantallas de alta densidad
+            canvas.width = canvas.offsetWidth * dpr;
+            canvas.height = canvas.offsetHeight * dpr;
+            ctx.scale(dpr, dpr);
+            
+            offCanvas.width = canvas.width;
+            offCanvas.height = canvas.height;
+            offCtx.scale(dpr, dpr);
+
             drawInitialLibrary();
 
             score = 0;
@@ -1547,14 +1710,14 @@
 
             // Draw Background Base (Hell Scenario always behind)
             if (bgHell.complete) {
-                ctx.drawImage(bgHell, 0, 0, canvas.width, canvas.height);
+                ctx.drawImage(bgHell, 0, 0, canvas.width / dpr, canvas.height / dpr);
             } else {
                 ctx.fillStyle = 'black';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
             }
 
             // Draw Library Layer (offCanvas with burns)
-            ctx.drawImage(offCanvas, 0, 0);
+            ctx.drawImage(offCanvas, 0, 0, canvas.width / dpr, canvas.height / dpr);
 
             // Destello rojo en la transición de fase (mantenido sutilmente)
             if (gamePhase >= 1 && phaseTimer > 120 && phaseTimer < 140) {
@@ -1827,21 +1990,78 @@
             requestAnimationFrame(gameLoop);
         }
 
+        // Login Logic
+        function validateLogin() {
+            const statusEl = document.getElementById('login-status');
+            const msgEl = document.getElementById('login-msg');
+
+            statusEl.textContent = '';
+            statusEl.classList.remove('access-granted');
+            
+            msgEl.textContent = '> AUTHENTICATING...';
+
+            // Instant access for atmosphere
+            setTimeout(() => {
+                statusEl.textContent = 'ACCESS GRANTED';
+                statusEl.style.textShadow = '0 0 8px var(--bright-green)';
+                statusEl.classList.add('access-granted');
+                msgEl.textContent = '> HANDSHAKE SUCCESSFUL';
+                
+                if (audioCtx) {
+                    createOsc(440, 'sine', audioCtx.currentTime, 0.1, 0.1);
+                    createOsc(880, 'sine', audioCtx.currentTime + 0.1, 0.2, 0.1);
+                }
+
+                setTimeout(() => {
+                    showScreen('splash');
+                }, 1000);
+            }, 800);
+        }
+
+        // Allow Enter key to login
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const loginScreen = document.getElementById('login');
+                if (loginScreen.classList.contains('active')) {
+                    validateLogin();
+                }
+            }
+        });
+
         // Listener para adaptar el juego si el usuario gira el móvil o redimensiona la pantalla
         window.addEventListener('resize', () => {
             if (ghostGameActive && canvas) {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
+                const oldWidth = canvas.width;
+                const oldHeight = canvas.height;
+                
+                // Guardar estado actual de las quemaduras antes de redimensionar
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = oldWidth;
+                tempCanvas.height = oldHeight;
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCtx.drawImage(offCanvas, 0, 0);
+
+                canvas.width = canvas.offsetWidth * dpr;
+                canvas.height = canvas.offsetHeight * dpr;
+                ctx.scale(dpr, dpr);
+                
                 if (offCanvas) {
-                    // Ideally we'd scale offCanvas, but re-init is safer to prevent stretching bugs
-                    // Note: previous burns will be lost on resize, which is acceptable
                     offCanvas.width = canvas.width;
                     offCanvas.height = canvas.height;
+                    offCtx.scale(dpr, dpr);
+                    
+                    // Restaurar el estado escalado para que no se pierdan las quemaduras
+                    offCtx.save();
+                    offCtx.setTransform(1, 0, 0, 1, 0, 0); // Reset scale temporalmente para el drawImage
+                    offCtx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
+                    offCtx.restore();
+                    
+                    // Si el fondo no se ha cargado bien (ej. primera vez), asegurar que hay biblioteca
                     if (bgLibrary.complete) {
-                        offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                        // Mantenemos opacidad TOTAL en el resize
-                        offCtx.fillStyle = 'rgba(0, 0, 0, 1.0)';
-                        offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+                        // Usamos destination-over para que la biblioteca solo se dibuje donde NO hay quemaduras (agujeros)
+                        offCtx.globalCompositeOperation = 'destination-over';
+                        offCtx.drawImage(bgLibrary, 0, 0, canvas.width / dpr, canvas.height / dpr);
+                        offCtx.globalCompositeOperation = 'source-over';
                     }
                 }
             }
