@@ -1136,6 +1136,9 @@
         let gameTimer = 60;
         let countdownValue = -1;
         const dpr = window.devicePixelRatio || 1;
+        let spawnAccumulator = 0;
+        let powerupAccumulator = 0;
+        let poisonAccumulator = 0;
 
         function startGhostGame() {
             document.getElementById('ghostMenu').style.display = 'none';
@@ -1267,51 +1270,57 @@
             crosshair.style.top = (e.touches[0].clientY - rect.top + 20) + 'px';
         }
 
-        function spawnGhost(timeScale = 1) {
-            let effScore = Math.min(score, 50); // Cap difficulty at score 50
-            let spawnChance = (0.003 + (effScore * 0.0002)) * timeScale;
-            // Si no hay ningún monstruo en pantalla, aumentamos mucho la probabilidad para que no haya tiempos muertos
-            if (ghosts.length === 0) spawnChance += 0.05 * timeScale;
+        function spawnGhost(deltaTime) {
+            let effScore = Math.min(score, 50);
+            
+            // Definimos tasas por segundo en lugar de por frame
+            const spawnRatePerSec = 0.5 + (effScore * 0.05); // Aumenta con el score
+            const powerupRatePerSec = 0.1;
+            const poisonRatePerSec = 0.05;
 
-            if (Math.random() < spawnChance) {
-                let isAdvanced = score >= 50 && Math.random() < 0.4; // Aparece a partir de 50 puntos (40% de chance)
+            spawnAccumulator += deltaTime;
+            powerupAccumulator += deltaTime;
+            poisonAccumulator += deltaTime;
+
+            // Spawning de fantasmas
+            if (spawnAccumulator >= 1 / spawnRatePerSec || (ghosts.length === 0 && spawnAccumulator > 0.5)) {
+                let isAdvanced = score >= 50 && Math.random() < 0.4;
                 ghosts.push({
                     type: isAdvanced ? 2 : 1,
-                    x: canvas.width / 2 + (Math.random() - 0.5) * 150,
-                    y: canvas.height / 2 + (Math.random() - 0.5) * 100,
+                    x: canvas.width / (2 * dpr) + (Math.random() - 0.5) * 150,
+                    y: canvas.height / (2 * dpr) + (Math.random() - 0.5) * 100,
                     size: 10,
-                    // El monstruo avanzado se mueve un 50% más rápido
                     vx: (Math.random() - 0.5) * (1 + effScore * 0.01) * (isAdvanced ? 1.5 : 1),
                     vy: (Math.random() - 0.5) * (1 + effScore * 0.01) * (isAdvanced ? 1.5 : 1),
-                    // Salud inicial y escalado (el avanzado tiene un bono de salud extra)
                     hp: 20 + effScore * 1.5 + (isAdvanced ? 30 : 0)
                 });
+                spawnAccumulator = 0;
             }
 
-            // Generación del Power-Up (Vida)
-            if (Math.random() < spawnChance * 0.15) { // Aproximadamente 15% de probabilidad en relación a los fantasmas
+            // Spawning de Power-Ups
+            if (powerupAccumulator >= 1 / powerupRatePerSec) {
                 powerups.push({
-                    x: canvas.width / 2 + (Math.random() - 0.5) * 150,
-                    y: canvas.height / 2 + (Math.random() - 0.5) * 100,
+                    x: canvas.width / (2 * dpr) + (Math.random() - 0.5) * 150,
+                    y: canvas.height / (2 * dpr) + (Math.random() - 0.5) * 100,
                     size: 10,
-                    // El doble de rápidos que los monstruos base
                     vx: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
                     vy: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
-                    hp: 5 // Fácil de romper
+                    hp: 5
                 });
+                powerupAccumulator = 0;
             }
 
-            // Generación del Veneno (Trampa)
-            if (Math.random() < spawnChance * 0.05) { // 5% de probabilidad (aparece menos que el powerUp)
+            // Spawning de Venenos
+            if (poisonAccumulator >= 1 / poisonRatePerSec) {
                 poisons.push({
-                    x: canvas.width / 2 + (Math.random() - 0.5) * 150,
-                    y: canvas.height / 2 + (Math.random() - 0.5) * 100,
+                    x: canvas.width / (2 * dpr) + (Math.random() - 0.5) * 150,
+                    y: canvas.height / (2 * dpr) + (Math.random() - 0.5) * 100,
                     size: 10,
-                    // El doble de rápidos que los monstruos base
                     vx: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
                     vy: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
-                    hp: 5 // Fácil de romper para defenderse
+                    hp: 5
                 });
+                poisonAccumulator = 0;
             }
         }
 
@@ -1675,7 +1684,11 @@
         function gameLoop(timestamp) {
             if (!ghostGameActive) return;
 
-            if (!lastTime) lastTime = timestamp;
+            if (!lastTime) {
+                lastTime = timestamp;
+                requestAnimationFrame(gameLoop);
+                return;
+            }
             let deltaTime = (timestamp - lastTime) / 1000;
             if (deltaTime > 0.1) deltaTime = 0.1;
             lastTime = timestamp;
@@ -1725,7 +1738,7 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
             if (gamePhase === 2) {
-                spawnGhost(timeScale);
+                spawnGhost(deltaTime);
             }
 
             for (let i = ghosts.length - 1; i >= 0; i--) {
