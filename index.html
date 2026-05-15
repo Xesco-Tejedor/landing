@@ -49,18 +49,26 @@
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
-        /* Scanline effect */
+        /* Scanline and CRT effects */
         body::after {
             content: " ";
             display: block;
             position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 1000;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+        }
+
+        #game-container::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: radial-gradient(circle, rgba(18, 16, 16, 0) 40%, rgba(0, 0, 0, 0.4) 100%);
             z-index: 10;
-            background-size: 100% 3px, 2px 100%;
             pointer-events: none;
         }
 
@@ -370,6 +378,62 @@
             p, li { font-size: 11px; }
             .btn { padding: 12px; font-size: 9px; }
         }
+
+        /* Mission 6.310 Specific Styles */
+        .terminal-text {
+            color: var(--bright-cyan);
+            border-left: 2px solid var(--bright-cyan);
+            padding-left: 10px;
+            margin: 20px 0;
+            font-size: 9px;
+            line-height: 1.6;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .data-node {
+            border: 1px solid var(--bright-cyan);
+            padding: 10px;
+            background: rgba(0, 215, 215, 0.05);
+        }
+
+        .data-node h3 {
+            font-size: 10px;
+            color: var(--bright-yellow);
+            margin-bottom: 8px;
+        }
+
+        .data-node p {
+            font-size: 8px;
+            margin: 0;
+        }
+
+        .mission-header {
+            text-align: center;
+            border: 2px solid var(--bright-cyan);
+            padding: 15px;
+            margin-bottom: 25px;
+            background: rgba(0, 215, 215, 0.1);
+            animation: mission-pulse 2s infinite;
+        }
+
+        @keyframes mission-pulse {
+            0%, 100% { box-shadow: 0 0 5px var(--bright-cyan); }
+            50% { box-shadow: 0 0 15px var(--bright-cyan); }
+        }
+
+        .critical-stat {
+            font-size: 24px;
+            color: var(--bright-red);
+            text-shadow: 0 0 10px var(--bright-red);
+            display: block;
+            margin: 10px 0;
+        }
     </style>
 </head>
 
@@ -384,6 +448,7 @@
 
                 <div class="menu">
                     <button class="btn" data-screen="level1">INICIAR AVENTURA (Perfil)</button>
+                    <button class="btn" data-screen="mission6310" style="border-color: var(--bright-cyan); color: var(--bright-cyan);">MISIÓN 6.310 (Operación Rescate)</button>
                     <button class="btn" data-screen="achievements">LOGROS (Experiencia)</button>
                     <button class="btn" data-screen="ghostgame" style="border-color: var(--bright-magenta); color: var(--bright-magenta);">DESAFÍO ESPECTRAL (Bonus)</button>
                     <button class="btn" data-screen="gameover">FIN DE PARTIDA (Contacto)</button>
@@ -484,6 +549,58 @@
             <canvas id="gameCanvas"></canvas>
             <div id="crosshair"></div>
             <div id="pauseOverlay"><h2>PAUSA</h2><p>HAZ CLICK PARA REANUDAR</p></div>
+        </div>
+
+        <div id="mission6310" class="screen">
+            <div class="mission-header">
+                <div class="level-badge" style="background-color: var(--bright-cyan);">MISIÓN CRÍTICA</div>
+                <h1 style="color: var(--bright-cyan); text-shadow: none; font-size: 14px;">OPERACIÓN RESCATE DEL SILICIO</h1>
+                <p class="accent" style="font-size: 8px;">"No permitas que el 87% de nuestra historia se convierta en ruido"</p>
+            </div>
+            
+            <div class="content">
+                <p class="terminal-text">
+                    <span class="critical-stat">87%</span>
+                    De los videojuegos clásicos producidos antes de 2010 ya son <span class="accent">inaccesibles</span> para el público. En España, la BNE identifica un "agujero negro" de <span class="highlight">6.310 títulos</span>.
+                </p>
+
+                <h2>EL MANIFIESTO</h2>
+                <p>Mi TFM en la UC3M construye la infraestructura técnica y legal para revertir este desastre. Una arquitectura operativa para instituciones que lideran la continuidad digital.</p>
+
+                <div class="data-grid">
+                    <div class="data-node">
+                        <h3>1. REGISTRO ADN DIGITAL</h3>
+                        <p>Inventario dinámico de activos de Propiedad Intelectual listos para ser recuperados mediante SPA en Vanilla JS.</p>
+                    </div>
+                    <div class="data-node">
+                        <h3>2. ARQUEOLOGÍA DE CÓDIGO</h3>
+                        <p>Extracción de listados impresos (MicroHobby) para reanimar programas desaparecidos. Papel en Patrimonio Vivo.</p>
+                    </div>
+                    <div class="data-node">
+                        <h3>3. EMULACIÓN (EaaS)</h3>
+                        <p>Estrategias de virtualización (EaaSI) para asegurar que el software sea re-ejecutable con su look original.</p>
+                    </div>
+                    <div class="data-node">
+                        <h3>4. BIOMETRÍA SENSORIAL</h3>
+                        <p>Uso de eye-tracking y frecuencia cardíaca para certificar el impacto sensorial original del rescate.</p>
+                    </div>
+                </div>
+
+                <div class="terminal-text" style="border-color: var(--bright-yellow); margin-top: 30px;">
+                    <h3 style="color: var(--bright-yellow);">VALOR PARA INVERSORES</h3>
+                    <ul>
+                        <li><span class="highlight">SEGURIDAD JURÍDICA:</span> Protocolo para software huérfano (Ley 8/2022).</li>
+                        <li><span class="highlight">SOSTENIBILIDAD:</span> Arquitectura Canvas/Web Audio de bajo coste y residuo cero.</li>
+                        <li><span class="highlight">RETORNO CULTURAL:</span> Transformación de "zombie media" en activos culturales operativos.</li>
+                    </ul>
+                </div>
+
+                <p style="text-align: center; margin-top: 40px;" class="accent">Francesc Adrià Perelló<br>Arquitecto de la Memoria</p>
+            </div>
+
+            <div class="navigation">
+                <button class="btn" data-screen="splash">VOLVER AL INICIO</button>
+            </div>
         </div>
 
         <div id="gameover" class="screen">
@@ -749,6 +866,17 @@
         let powerups = [], poisons = [], particles = [], gamePhase = 0, phaseTimer = 0, gameTimer = 60, gameScale = 1, cachedRect = null;
         const dpr = window.devicePixelRatio || 1, BASE_WIDTH = 800, BASE_HEIGHT = 600;
         let spawnAcc = 0, itemAcc = 0, beamPartAcc = 0;
+        let shake = 0; // Screen shake intensity
+
+        function applyShake() {
+            if (shake > 0) {
+                const sx = (Math.random() - 0.5) * shake;
+                const sy = (Math.random() - 0.5) * shake;
+                ctx.translate(sx, sy);
+                shake *= 0.9; // Decay
+                if (shake < 0.5) shake = 0;
+            }
+        }
 
         function startGhostGame() {
             document.getElementById('ghostMenu').style.display = 'none';
@@ -832,13 +960,18 @@
                 if (vX > g.x-g.size/2 && vX < g.x+g.size/2 && vY > g.y-g.size/2 && vY < g.y+g.size/2) {
                     g.hp -= 400 * dt; hit = true;
                     particles.push({x:g.x, y:g.y, vx:(Math.random()-0.5)*300, vy:(Math.random()-0.5)*300, life:0.4, color:'#FFF', virtual:true});
+                    if (g.hp <= 0 && !g.dead) {
+                        g.dead = true;
+                        shake = 10; // Shake on kill
+                        particles.push({x:g.x, y:g.y, vx:0, vy:-100, life:1, color: '#0FF', virtual: true, text: '+10'});
+                    }
                 }
             });
             for(let i=powerups.length-1; i>=0; i--) {
-                let p = powerups[i]; if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) { health = Math.min(100, health + 20); powerups.splice(i,1); hit = true; }
+                let p = powerups[i]; if (vX > p.x-p.size/2 && vX < p.x+p.size/2 && vY > p.y-p.size/2 && vY < p.y+p.size/2) { health = Math.min(100, health + 20); powerups.splice(i,1); hit = true; }
             }
             for(let i=poisons.length-1; i>=0; i--) {
-                let p = poisons[i]; if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) { health -= 15; poisons.splice(i,1); hit = true; }
+                let p = poisons[i]; if (vX > p.x-p.size/2 && vX < p.x+p.size/2 && vY > p.y-p.size/2 && vY < p.y+p.size/2) { health -= 15; poisons.splice(i,1); hit = true; }
             }
 
             if (!hit && gamePhase === 2) {
@@ -875,7 +1008,9 @@
             if (gamePhase === 0 && phaseTimer > 3) gamePhase = 1;
             if (gamePhase === 1 && phaseTimer > 6) gamePhase = 2;
 
-            ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr); ctx.clearRect(0,0,cachedRect.width, cachedRect.height);
+            ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr); 
+            applyShake();
+            ctx.clearRect(-20,-20,cachedRect.width+40, cachedRect.height+40);
 
             if (gamePhase === 0) drawImageCover(ctx, assets.lib, 0, 0, cachedRect.width, cachedRect.height);
             else if (gamePhase === 1) {
@@ -883,7 +1018,19 @@
                 ctx.save(); ctx.globalAlpha = a; drawImageCover(ctx, assets.hell, 0, 0, cachedRect.width, cachedRect.height); ctx.restore();
             } else {
                 drawImageCover(ctx, assets.hellUlt, 0, 0, cachedRect.width, cachedRect.height);
+                // Mask with flashlight effect
+                ctx.save();
+                ctx.globalAlpha = 0.85; // Slightly less opaque mask for better visibility
                 ctx.drawImage(offCanvas, 0, 0, cachedRect.width * dpr, cachedRect.height * dpr, 0, 0, cachedRect.width, cachedRect.height);
+                
+                // Flashlight hole (temporary, not saved to offCanvas)
+                ctx.globalCompositeOperation = 'destination-out';
+                let flashlightGrad = ctx.createRadialGradient(mouseX, mouseY, 10, mouseX, mouseY, 120);
+                flashlightGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                flashlightGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = flashlightGrad;
+                ctx.beginPath(); ctx.arc(mouseX, mouseY, 120, 0, Math.PI*2); ctx.fill();
+                ctx.restore();
             }
 
             const gW = BASE_WIDTH * gameScale, gH = BASE_HEIGHT * gameScale;
@@ -895,18 +1042,46 @@
                     ghosts.push({x:BASE_WIDTH/2+(Math.random()-0.5)*400, y:BASE_HEIGHT/2+(Math.random()-0.5)*300, size:10, vx:(Math.random()-0.5)*120, vy:(Math.random()-0.5)*120, hp:100, type: Math.random()>0.5?1:2}); spawnAcc = 0; 
                 }
                 itemAcc += dt; if (itemAcc > 4) {
-                    if (Math.random() > 0.4) powerups.push({x: Math.random()*BASE_WIDTH, y: Math.random()*BASE_HEIGHT, life: 5});
-                    else poisons.push({x: Math.random()*BASE_WIDTH, y: Math.random()*BASE_HEIGHT, life: 5}); itemAcc = 0;
+                    let itm = {
+                        x: BASE_WIDTH/2 + (Math.random()-0.5)*300, 
+                        y: BASE_HEIGHT/2 + (Math.random()-0.5)*200, 
+                        size: 5, 
+                        vx: (Math.random()-0.5)*140, 
+                        vy: (Math.random()-0.5)*140, 
+                        life: 6
+                    };
+                    if (Math.random() > 0.4) powerups.push(itm);
+                    else poisons.push(itm); itemAcc = 0;
                 }
                 for (let i = ghosts.length-1; i >= 0; i--) {
                     let g = ghosts[i]; g.x += g.vx * dt; g.y += g.vy * dt; g.size += 18 * dt;
                     ctx.drawImage(g.type===1?assets.ghost:assets.ghost2, g.x-g.size/2, g.y-g.size/2, g.size, g.size);
-                    if (g.hp <= 0) { ghosts.splice(i, 1); score += 10; } else if (g.size > 240) { ghosts.splice(i, 1); health -= 20; }
+                    if (g.hp <= 0) { ghosts.splice(i, 1); score += 10; } else if (g.size > 240) { ghosts.splice(i, 1); health -= 20; shake = 15; }
                 }
-                powerups.forEach((p, i) => { p.life -= dt; if (p.life <= 0) powerups.splice(i,1); else ctx.drawImage(assets.pUp, p.x-20, p.y-20, 40, 40); });
-                poisons.forEach((p, i) => { p.life -= dt; if (p.life <= 0) poisons.splice(i,1); else ctx.drawImage(assets.psn, p.x-20, p.y-20, 40, 40); });
+                powerups.forEach((p, i) => { 
+                    p.x += p.vx * dt; p.y += p.vy * dt; p.size += 14 * dt; p.life -= dt; 
+                    if (p.life <= 0) powerups.splice(i,1); 
+                    else ctx.drawImage(assets.pUp, p.x-p.size/2, p.y-p.size/2, p.size, p.size); 
+                });
+                poisons.forEach((p, i) => { 
+                    p.x += p.vx * dt; p.y += p.vy * dt; p.size += 14 * dt; p.life -= dt; 
+                    if (p.life <= 0) poisons.splice(i,1); 
+                    else ctx.drawImage(assets.psn, p.x-p.size/2, p.y-p.size/2, p.size, p.size); 
+                });
             }
-            particles.forEach((p, i) => { if (!p.virtual) return; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; if (p.life <= 0) particles.splice(i,1); else { ctx.globalAlpha = p.life; ctx.fillStyle=p.color; ctx.fillRect(p.x-1, p.y-1, 2, 2); }});
+            particles.forEach((p, i) => { 
+                if (!p.virtual) return; 
+                p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; 
+                if (p.life <= 0) particles.splice(i,1); 
+                else { 
+                    ctx.globalAlpha = p.life; 
+                    if (p.text) {
+                        ctx.fillStyle = p.color; ctx.font = 'bold 12px monospace'; ctx.fillText(p.text, p.x, p.y);
+                    } else {
+                        ctx.fillStyle=p.color; ctx.fillRect(p.x-1, p.y-1, 2, 2); 
+                    }
+                }
+            });
             ctx.restore();
             particles.forEach((p, i) => { if (p.virtual) return; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; if (p.life <= 0) particles.splice(i,1); else { ctx.globalAlpha = p.life; ctx.fillStyle=p.color; ctx.fillRect(p.x-1, p.y-1, 2, 2); }});
             drawProtonBeam(dt);
@@ -917,45 +1092,58 @@
             const bCont = document.getElementById('badgeContainer'), hsText = document.getElementById('highScoreText'), bCanvas = document.getElementById('badgeCanvas'), dBtn = document.getElementById('downloadBadgeBtn'), localMsg = document.getElementById('localDownloadMsg');
             if (!bCont || !hsText || !bCanvas || !dBtn) return;
             bCont.style.display = 'block'; hsText.innerText = "CALCULANDO TU LEYENDA...";
-            const bCtx = bCanvas.getContext('2d'); bCanvas.width = 600; bCanvas.height = 600;
+            const bCtx = bCanvas.getContext('2d'); bCanvas.width = 600; bCanvas.height = 840; // Card aspect ratio
             const icons = ['badge_art_1.png', 'badge_art_2.png', 'badge_art_3.png', 'badge_art_4.png', 'badge_art_5.png', 'badge_art_6.png'];
             const badgeIcon = new Image();
             badgeIcon.onload = () => {
-                bCtx.fillStyle = '#000'; bCtx.fillRect(0, 0, 600, 600);
-                const hueShift = Math.floor(Math.random() * 360);
-                bCtx.filter = `hue-rotate(${hueShift}deg) contrast(1.1) brightness(1.1)`;
-                bCtx.drawImage(badgeIcon, 0, 0, 600, 600); bCtx.filter = 'none';
-                const grad = bCtx.createRadialGradient(300, 300, 100, 300, 300, 450);
-                grad.addColorStop(0, 'rgba(0,0,0,0)'); grad.addColorStop(1, 'rgba(0,0,0,0.8)');
-                bCtx.fillStyle = grad; bCtx.fillRect(0,0,600,600);
-                bCtx.fillStyle = 'rgba(20, 20, 20, 0.85)'; bCtx.strokeStyle = '#FFD700'; bCtx.lineWidth = 3;
-                bCtx.beginPath(); bCtx.moveTo(50, 480); bCtx.lineTo(550, 480); bCtx.lineTo(570, 500); bCtx.lineTo(570, 560); bCtx.lineTo(550, 580); bCtx.lineTo(50, 580); bCtx.lineTo(30, 560); bCtx.lineTo(30, 500); bCtx.closePath();
-                bCtx.fill(); bCtx.stroke();
+                // Background & Frame
+                const cardGrad = bCtx.createLinearGradient(0, 0, 600, 840);
+                cardGrad.addColorStop(0, '#2c3e50'); cardGrad.addColorStop(1, '#000000');
+                bCtx.fillStyle = cardGrad; bCtx.fillRect(0, 0, 600, 840);
+                
+                bCtx.strokeStyle = '#FFD700'; bCtx.lineWidth = 15;
+                bCtx.strokeRect(20, 20, 560, 800);
+                bCtx.strokeStyle = '#000'; bCtx.lineWidth = 5;
+                bCtx.strokeRect(25, 25, 550, 790);
+
+                // Header (Title Box)
                 let rank = 'RECLUTA DEL ABISMO'; if (finalScore > 50) rank = 'GUERRERO OBSIDIANA'; if (finalScore > 150) rank = 'CAUDILLO DEL CAOS'; if (finalScore > 300) rank = 'DIOS DEL METAL';
+                bCtx.fillStyle = 'rgba(255, 255, 255, 0.15)'; bCtx.strokeStyle = '#FFD700'; bCtx.lineWidth = 3;
+                bCtx.beginPath(); bCtx.roundRect(40, 40, 520, 60, 10); bCtx.fill(); bCtx.stroke();
+                bCtx.fillStyle = '#FFF'; bCtx.shadowBlur = 10; bCtx.shadowColor = '#0FF';
+                bCtx.font = '16px "Press Start 2P"'; bCtx.textAlign = 'center'; bCtx.textBaseline = 'middle';
+                bCtx.fillText(rank, 300, 70); bCtx.shadowBlur = 0;
+
+                // Main Art Box
+                bCtx.save();
+                bCtx.strokeStyle = '#FFD700'; bCtx.lineWidth = 4;
+                bCtx.strokeRect(50, 120, 500, 400);
+                const hueShift = Math.floor(Math.random() * 360);
+                bCtx.filter = `hue-rotate(${hueShift}deg) contrast(1.2) brightness(1.1)`;
+                bCtx.drawImage(badgeIcon, 50, 120, 500, 400);
+                bCtx.restore();
+
+                // Text Box (Flavor)
                 const phrases = ["¡TU ALMA PERTENECE AL METAL!", "EL ABISMO TIEMBLA ANTE TI.", "FORJADO EN LAS LLAMAS ETERNAS.", "¡NI LA MUERTE TE DETIENE!", "ERES EL AZOTE DE LOS ESPECTROS.", "¡TU LEYENDA ESTÁ ESCRITA EN SANGRE!", "EL DESTINO TE HA ELEGIDO."];
                 const phrase = phrases[Math.floor(Math.random() * phrases.length)];
-                bCtx.shadowBlur = 10; bCtx.shadowColor = '#F0F'; bCtx.fillStyle = '#0FF'; bCtx.font = '14px "Press Start 2P"'; bCtx.textAlign = 'center'; bCtx.fillText(rank, 300, 515);
-                bCtx.shadowBlur = 5; bCtx.shadowColor = '#000'; bCtx.fillStyle = '#FFD700'; bCtx.font = '9px "Press Start 2P"'; bCtx.fillText(phrase, 300, 535);
-                // Score Display - Ultra Sharp and Epic
-                bCtx.shadowBlur = 15; bCtx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-                const scoreGrad = bCtx.createLinearGradient(0, 520, 0, 580);
-                scoreGrad.addColorStop(0, '#FFFFFF');
-                scoreGrad.addColorStop(0.5, '#FFD700');
-                scoreGrad.addColorStop(1, '#FFA500');
+                bCtx.fillStyle = 'rgba(0, 0, 0, 0.6)'; bCtx.strokeStyle = '#FFD700';
+                bCtx.beginPath(); bCtx.roundRect(40, 530, 520, 180, 10); bCtx.fill(); bCtx.stroke(); // Reduced height to separate from score
                 
-                bCtx.font = '64px "Press Start 2P"';
-                bCtx.textBaseline = 'middle';
-                bCtx.textAlign = 'center';
-                
-                // Thick Black Stroke for perfect contrast
-                bCtx.strokeStyle = '#000000';
-                bCtx.lineWidth = 8;
-                bCtx.strokeText(finalScore, 300, 550);
-                
-                // Fill with metallic gradient
-                bCtx.fillStyle = scoreGrad;
-                bCtx.fillText(finalScore, 300, 550);
-                
+                bCtx.fillStyle = '#FFD700'; bCtx.font = '10px "Press Start 2P"'; bCtx.textAlign = 'center';
+                const words = phrase.split(' '); let line = '', y = 570;
+                words.forEach(w => {
+                    let test = line + w + ' ';
+                    if (bCtx.measureText(test).width > 480) { bCtx.fillText(line, 300, y); line = w + ' '; y += 25; }
+                    else line = test;
+                });
+                bCtx.fillText(line, 300, y);
+
+                // Score Box (Power/Toughness Style) - MOVED LOWER AND SEPARATED
+                bCtx.fillStyle = '#FFF'; bCtx.strokeStyle = '#000'; bCtx.lineWidth = 4;
+                bCtx.beginPath(); bCtx.roundRect(400, 720, 160, 90, 5); bCtx.fill(); bCtx.stroke();
+                bCtx.fillStyle = '#000'; bCtx.font = '32px "Press Start 2P"'; bCtx.textAlign = 'center'; bCtx.textBaseline = 'middle';
+                bCtx.fillText(finalScore, 480, 765);
+
                 bCtx.shadowBlur = 0; hsText.innerText = "VEREDICTO FINAL";
                 try { dBtn.href = bCanvas.toDataURL('image/png'); dBtn.style.display = 'inline-block'; if (localMsg) localMsg.style.display = 'none'; } catch (e) { dBtn.style.display = 'none'; if (localMsg) localMsg.style.display = 'block'; }
             };

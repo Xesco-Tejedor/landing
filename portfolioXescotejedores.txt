@@ -1,0 +1,82 @@
+# XESCO TEJEDOR: Digital Architecture & Identity Report
+**Version**: 2.0 (Optimized for AI Deep Learning & Interpretation)
+**Source Code Context**: `index.html` (Single-page Application)
+
+---
+
+## 1. Executive Summary & Identity
+`xescotejedor.es` is a multidisciplinary digital portfolio presenting the persona of **Francesc Adrià Perelló (Xesco)**. It bridges the gap between classical humanities (Philosophy, Museology) and modern digital technology (Fullstack Development, Data Analysis).
+
+- **Core Identity**: "Curioso Multidisciplinar".
+- **Primary Mission**: Preserving cultural heritage while building the digital future.
+- **Background**: 20+ years at MNAC (Museu Nacional d'Art de Catalunya), Philosophy background, transitioned into tech via Fullstack and Data Analysis.
+
+---
+
+## 2. Technical Architecture
+
+### 2.1 Front-End Stack
+- **Languages**: HTML5, CSS3, JavaScript (Vanilla ES6+).
+- **Core Engine**: Custom-built screen-switching system (SPA architecture).
+- **Graphics**: 2D Canvas API for high-performance interactive rendering.
+- **Audio**: Procedural Web Audio API for real-time sound synthesis (avoiding heavy assets, ensuring speed).
+- **Responsive Layer**: Fluid layouts using `clamp()`, `vw/vh`, and dynamic Canvas scaling.
+
+### 2.2 Design System (Retro-Futurism)
+- **Visual Identity**: Inspired by 8-bit home computers (ZX Spectrum) and 80s Heavy Metal aesthetics.
+- **Color Palette**: High-contrast retro palette (Pure Blue, Red, Magenta, Green, Cyan, Yellow, White over Black).
+- **Typography**: `Press Start 2P` (Pixel Font) for arcade-style immersion.
+- **Micro-animations**: Logo glitches, scanline effects, and pixel-typed headers.
+
+---
+
+## 3. Interactive Mechanics: "Desafío Espectral"
+
+The site features a core gamified experience called the **Spectral Challenge**.
+
+### 3.1 Gameplay Logic
+- **Visual Mechanic**: A "Scratch-off" reveal. The game starts in a dark, foggy library (`libHell.png`). Shooting the "Proton Beam" permanently erases the mask (`offCanvas`) to reveal the "Ultimate Library" (`libHellUltimate.png`).
+- **Dynamic Lighting**: A real-time "Flashlight" effect follows the cursor, providing temporary visibility without clearing the mask.
+- **Physics & Particle Systems**: 
+  - **Proton Beam**: Multi-segmented line rendering with jitter and shadow-glow to simulate energy.
+  - **Particles**: Two types (virtual for UI-space effects, world-space for beam collisions).
+- **NPC Logic**: Ghosts and items use a "Z-axis simulation" where they spawn small and grow larger (`size` increment) to simulate approaching the player.
+
+### 3.2 Reward System (Badge Generation)
+- **Conceptual Model**: Magic: The Gathering (MTG) style collectible cards.
+- **Procedural Logic**: 
+  - Dynamic Rank assignment (Recluta -> Guerrero -> Caudillo -> Dios).
+  - Randomized Flavor Text from an epic phrase array.
+  - Dynamic Color shifting (Hue-rotation) on art assets to ensure unique badges.
+  - **Readability**: High-contrast Power/Toughness style score box at the bottom right.
+
+---
+
+## 4. Interaction & Accessibility
+
+### 4.1 Input Mapping
+- **Desktop**: Mouse for aiming, MouseDown for shooting.
+- **Mobile**: Touch interfaces with passive listeners for high-performance dragging/shooting.
+- **Automatic Resume**: Audio context management triggered by user interaction (Standard Browsing Policy compliance).
+
+### 4.2 State Management
+The application manages states via a simple `showScreen(id)` function that:
+1. Resumes/Resets Audio Context.
+2. Switches visual layers.
+3. Stops/Starts specific music themes (Heroic Theme vs. Spectral Theme).
+
+---
+
+## 5. SEO & Metadata
+- **Semantic Structure**: Proper H1-H3 hierarchy.
+- **Meta-tags**: Optimized for social sharing and visibility in "Cultura Digital" and "Humanidades Digitales" niches.
+- **Performance**: Extremely lightweight (single HTML file + minimal PNG assets), ensuring near-instantaneous LCP (Largest Contentful Paint).
+
+---
+
+## 6. Guidance for Future AI Interaction
+When interpreting or modifying this project:
+1. **Maintain Pixel Consistency**: Any new UI elements must follow the `image-rendering: pixelated` rule.
+2. **Audio Sync**: Ensure any new audio logic uses the `activeOscillators` cleanup pattern to prevent memory leaks.
+3. **Canvas Scaling**: Always refer to `gameScale` and `dpr` (Device Pixel Ratio) for coordinate calculations to ensure multi-device precision.
+4. **Narrative Tone**: Maintain the "Epic Retro" tone in all generated text or phrases.
