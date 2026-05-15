@@ -583,60 +583,42 @@
         }
 
         let musicTimer;
-        function playEpicMusic() {
+        function playGameMusic() {
             if (isMusicPlaying) return;
             isMusicPlaying = true;
-            
             const tempo = 120;
             const beat = 60 / tempo;
-            
-            // Eerie Delay for "Ghostly" atmosphere
             const delay = audioCtx.createDelay(1.0);
             delay.delayTime.value = beat * 1.5;
             const feedback = audioCtx.createGain();
             feedback.gain.value = 0.4;
             delay.connect(feedback);
             feedback.connect(delay);
-            
             const musicGain = audioCtx.createGain();
             musicGain.gain.value = 0.35;
             musicGain.connect(audioCtx.destination);
             musicGain.connect(delay);
             delay.connect(audioCtx.destination);
-
-            // Spooky Arpeggio: Am -> G#dim
-            const pattern = [
-                220, 261.63, 329.63, 440, // A3, C4, E4, A4
-                207.65, 246.94, 311.13, 415.30 // G#3, B3, D#4, G#4
-            ];
+            const pattern = [220, 261.63, 329.63, 440, 207.65, 246.94, 311.13, 415.30];
             let stepIndex = 0;
-
             const schedule = (startTime) => {
                 if (!isMusicPlaying) return;
-                
                 const now = startTime;
                 const freq = pattern[stepIndex % pattern.length];
-                
-                // Spectral Lead (Theremin-like)
                 const osc = audioCtx.createOscillator();
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(freq, now);
-                // Subtle vibrato
                 osc.frequency.exponentialRampToValueAtTime(freq * 1.02, now + beat * 0.5);
                 osc.frequency.exponentialRampToValueAtTime(freq, now + beat);
-                
                 const g = audioCtx.createGain();
                 g.gain.setValueAtTime(0, now);
                 g.gain.linearRampToValueAtTime(0.15, now + 0.1);
                 g.gain.exponentialRampToValueAtTime(0.001, now + beat * 2);
-                
                 osc.connect(g);
                 g.connect(musicGain);
                 osc.start(now);
                 osc.stop(now + beat * 2);
                 activeOscillators.push(osc);
-
-                // Deep Pulse Bass
                 if (stepIndex % 4 === 0) {
                     const bass = audioCtx.createOscillator();
                     bass.type = 'sine';
@@ -650,8 +632,6 @@
                     bass.stop(now + beat * 4);
                     activeOscillators.push(bass);
                 }
-
-                // Ghostly Heartbeat
                 if (stepIndex % 2 === 0) {
                     const k = audioCtx.createOscillator();
                     k.frequency.setValueAtTime(60, now);
@@ -665,13 +645,71 @@
                     k.stop(now + 0.3);
                     activeOscillators.push(k);
                 }
-
                 stepIndex++;
                 const nextTime = now + beat;
                 const delayUntilNext = (nextTime - audioCtx.currentTime) * 1000;
                 musicTimer = setTimeout(() => schedule(nextTime), Math.max(0, delayUntilNext - 40));
             };
+            schedule(audioCtx.currentTime + 0.1);
+        }
+
+        function playPortfolioMusic() {
+            if (isMusicPlaying) return;
+            isMusicPlaying = true;
+            const tempo = 100;
+            const beat = 60 / tempo;
+            const musicGain = audioCtx.createGain();
+            musicGain.gain.value = 0.3;
+            musicGain.connect(audioCtx.destination);
             
+            // Heroic Theme: Am -> F -> C -> G
+            const melody = [440, 349.23, 523.25, 392]; // A4, F4, C5, G4
+            const bass = [110, 87.31, 130.81, 98]; // A2, F2, C3, G2
+            let stepIndex = 0;
+
+            const schedule = (startTime) => {
+                if (!isMusicPlaying) return;
+                const now = startTime;
+                const mFreq = melody[stepIndex % melody.length];
+                const bFreq = bass[stepIndex % bass.length];
+
+                // Lead
+                const osc = audioCtx.createOscillator();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(mFreq, now);
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(1000, now);
+                const g = audioCtx.createGain();
+                g.gain.setValueAtTime(0, now);
+                g.gain.linearRampToValueAtTime(0.1, now + 0.2);
+                g.gain.exponentialRampToValueAtTime(0.001, now + beat * 4);
+                osc.connect(filter);
+                filter.connect(g);
+                g.connect(musicGain);
+                osc.start(now);
+                osc.stop(now + beat * 4);
+                activeOscillators.push(osc);
+
+                // Bass
+                const bOsc = audioCtx.createOscillator();
+                bOsc.type = 'triangle';
+                bOsc.frequency.setValueAtTime(bFreq, now);
+                const bg = audioCtx.createGain();
+                bg.gain.setValueAtTime(0, now);
+                bg.gain.linearRampToValueAtTime(0.2, now + 0.1);
+                bg.gain.exponentialRampToValueAtTime(0.001, now + beat * 4);
+                bOsc.connect(bg);
+                bg.connect(musicGain);
+                bOsc.start(now);
+                bOsc.stop(now + beat * 4);
+                activeOscillators.push(bOsc);
+
+                stepIndex++;
+                const nextTime = now + beat * 4;
+                const delayUntilNext = (nextTime - audioCtx.currentTime) * 1000;
+                musicTimer = setTimeout(() => schedule(nextTime), Math.max(0, delayUntilNext - 50));
+            };
             schedule(audioCtx.currentTime + 0.1);
         }
 
@@ -688,7 +726,10 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             const target = document.getElementById(screenId);
             if (target) target.classList.add('active');
-            if (screenId === 'ghostgame') playEpicMusic(); else stopAllMusic();
+            
+            stopAllMusic();
+            if (screenId === 'ghostgame') playGameMusic();
+            else playPortfolioMusic();
         }
 
         window.addEventListener('click', (e) => {
