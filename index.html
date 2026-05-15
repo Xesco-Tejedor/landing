@@ -583,7 +583,7 @@
         const assets = {
             ghost: new Image(), ghost2: new Image(), lib: new Image(), hell: new Image(), hellUlt: new Image(), pUp: new Image(), psn: new Image()
         };
-        assets.ghost.src = 'ghost.jpg'; assets.ghost2.src = 'monstuo2.png'; assets.lib.src = 'library.png';
+        assets.ghost.src = 'ghost.png'; assets.ghost2.src = 'monstuo2.png'; assets.lib.src = 'library.png';
         assets.hell.src = 'libHell.png'; assets.hellUlt.src = 'libHellUltimate.png'; assets.pUp.src = 'powerUp.png'; assets.psn.src = 'poison.png';
         
         let powerups = [], poisons = [], particles = [], gamePhase = 0, phaseTimer = 0, gameTimer = 60, gameScale = 1, cachedRect = null;
@@ -609,10 +609,20 @@
             offCanvas.width = canvas.width; offCanvas.height = canvas.height;
             
             const resetOffCanvas = () => {
+                if (!cachedRect) return;
                 offCtx.setTransform(1, 0, 0, 1, 0, 0); offCtx.scale(dpr, dpr);
                 offCtx.globalCompositeOperation = 'source-over';
-                offCtx.fillStyle = '#000'; offCtx.fillRect(0,0,cachedRect.width, cachedRect.height);
-                drawImageCover(offCtx, assets.hell, 0, 0, cachedRect.width, cachedRect.height);
+                // Use a fallback color while loading so it's not pure black
+                offCtx.fillStyle = '#110505'; 
+                offCtx.fillRect(0,0,cachedRect.width, cachedRect.height);
+                
+                if (assets.hell.complete && assets.hell.naturalWidth > 0) {
+                    drawImageCover(offCtx, assets.hell, 0, 0, cachedRect.width, cachedRect.height);
+                } else {
+                    assets.hell.onload = () => {
+                        if (ghostGameActive) resetOffCanvas();
+                    };
+                }
             };
             resetOffCanvas();
 
