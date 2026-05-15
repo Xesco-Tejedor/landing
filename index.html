@@ -43,15 +43,13 @@
             color: var(--bright-white);
             font-family: 'Press Start 2P', cursive;
             overflow: hidden;
-            /* Mantener oculto el scroll principal para simular una terminal fija */
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Soporte para dispositivos con notch */
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
-        /* Scanline effect - reduced for clarity on mobile */
+        /* Scanline effect */
         body::after {
             content: " ";
             display: block;
@@ -77,10 +75,13 @@
             padding: clamp(10px, 2vw, 20px);
             position: relative;
             background-color: var(--black);
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 20px var(--blue);
             transition: all 0.3s ease;
+            z-index: 50;
         }
 
         .screen {
@@ -94,8 +95,7 @@
             display: flex;
         }
 
-        h1,
-        h2 {
+        h1, h2 {
             text-align: center;
             text-transform: uppercase;
             margin-bottom: 20px;
@@ -121,40 +121,20 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .content::-webkit-scrollbar {
-            width: 8px;
-        }
+        .content::-webkit-scrollbar { width: 8px; }
+        .content::-webkit-scrollbar-track { background: var(--black); border-left: 2px solid var(--blue); }
+        .content::-webkit-scrollbar-thumb { background: var(--bright-cyan); }
 
-        .content::-webkit-scrollbar-track {
-            background: var(--black);
-            border-left: 2px solid var(--blue);
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: var(--bright-cyan);
-        }
-
-        .content::-webkit-scrollbar-thumb:hover {
-            background: var(--bright-yellow);
-        }
-
-        p,
-        li {
+        p, li {
             font-size: 10px;
             line-height: 1.8;
             margin-bottom: 15px;
             color: var(--white);
         }
 
-        .highlight {
-            color: var(--bright-green);
-        }
+        .highlight { color: var(--bright-green); }
+        .accent { color: var(--bright-magenta); }
 
-        .accent {
-            color: var(--bright-magenta);
-        }
-
-        /* Menu / Buttons */
         .menu {
             display: flex;
             flex-direction: column;
@@ -181,9 +161,7 @@
             transform: scale(1.05);
         }
 
-        .btn:active {
-            transform: scale(0.95);
-        }
+        .btn:active { transform: scale(0.95); }
 
         .navigation {
             display: flex;
@@ -192,38 +170,18 @@
             padding-top: 20px;
         }
 
-        /* Retro Animations */
         @keyframes flicker {
-            0% {
-                opacity: 0.99;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0.99;
-            }
+            0%, 100% { opacity: 0.99; }
+            50% { opacity: 1; }
         }
 
         @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
-        .blink {
-            animation: blink 0.8s infinite;
-        }
+        .blink { animation: blink 0.8s infinite; }
 
-        /* Level Specific Styles */
         .level-badge {
             background-color: var(--red);
             padding: 5px;
@@ -251,35 +209,12 @@
             font-size: 8px;
         }
 
-        /* Achievement Pulse Animation */
-        @keyframes pulse-yellow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
-            }
-        }
-
-        .pulse-reward {
-            animation: pulse-yellow 2s infinite;
-            border-color: var(--bright-yellow) !important;
-            color: var(--bright-yellow) !important;
-            font-weight: bold;
-        }
-
         .achievement-banner {
             background-color: var(--bright-yellow);
             color: var(--black);
             padding: 5px;
             font-size: 10px;
             margin-bottom: 15px;
-            text-shadow: none;
             display: inline-block;
             transform: rotate(-2deg);
         }
@@ -296,11 +231,6 @@
             height: auto;
             max-height: 250px;
             object-fit: contain;
-        }
-
-        /* Ghost Game Styles */
-        #ghostgame {
-            position: relative;
         }
 
         #gameCanvas {
@@ -320,10 +250,13 @@
             top: 10px;
             left: 10px;
             right: 10px;
-            z-index: 2;
+            z-index: 20;
+            flex-wrap: wrap;
+            gap: 10px;
             justify-content: space-between;
+            align-items: center;
             pointer-events: none;
-            font-size: 10px;
+            font-size: clamp(7px, 2vw, 10px);
             text-shadow: 2px 2px var(--black);
         }
 
@@ -351,50 +284,20 @@
             transform: translate(-50%, -50%);
         }
 
-        #crosshair::before,
-        #crosshair::after {
+        #crosshair::before, #crosshair::after {
             content: '';
             position: absolute;
             background: var(--bright-red);
         }
 
-        #crosshair::before {
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            margin-top: -1px;
-        }
+        #crosshair::before { top: 50%; left: 0; width: 100%; height: 2px; margin-top: -1px; }
+        #crosshair::after { left: 50%; top: 0; height: 100%; width: 2px; margin-left: -1px; }
 
-        #crosshair::after {
-            left: 50%;
-            top: 0;
-            height: 100%;
-            width: 2px;
-            margin-left: -1px;
-        }
+        .contact-list { list-style: none; padding: 0; }
+        .contact-list li { margin-bottom: 20px; }
+        .contact-list a { color: var(--bright-cyan); text-decoration: none; }
+        .contact-list a:hover { color: var(--bright-yellow); text-decoration: underline; }
 
-        /* Contact Links */
-        .contact-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .contact-list li {
-            margin-bottom: 20px;
-        }
-
-        .contact-list a {
-            color: var(--bright-cyan);
-            text-decoration: none;
-        }
-
-        .contact-list a:hover {
-            color: var(--bright-yellow);
-            text-decoration: underline;
-        }
-
-        /* Creepy Sign */
         #creepySign {
             position: absolute;
             top: 50%;
@@ -405,77 +308,43 @@
             text-align: center;
             z-index: 100;
             display: none;
-            /* Solo letras con un ligero resplandor oscuro */
             text-shadow: 0 0 5px var(--black); 
             pointer-events: none;
-            animation: creepy-flicker 0.5s infinite; /* Frecuencia mucho menor */
+            animation: creepy-flicker 0.5s infinite;
             width: 90%;
             line-height: 1.6;
         }
 
         @keyframes creepy-flicker {
-            0%, 100% {
-                opacity: 0.9;
-                transform: translate(-50%, -50%) translate(0, 0);
-            }
-            25% {
-                transform: translate(-50%, -50%) translate(-2px, 1px);
-            }
-            50% {
-                opacity: 0.7;
-                transform: translate(-50%, -50%) translate(2px, -1px);
-            }
-            75% {
-                transform: translate(-50%, -50%) translate(-1px, -2px);
-            }
+            0%, 100% { opacity: 0.9; transform: translate(-50%, -50%) translate(0, 0); }
+            25% { transform: translate(-50%, -50%) translate(-2px, 1px); }
+            50% { opacity: 0.7; transform: translate(-50%, -50%) translate(2px, -1px); }
         }
 
-        #timerUI {
-            color: var(--bright-yellow);
-            font-size: 10px;
-            text-shadow: 2px 2px var(--black);
+        #pauseOverlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            pointer-events: all;
         }
 
-        /* Electric Dreams / Edgar Style Logo */
         .edgar-style {
             color: var(--bright-green);
-            text-shadow:
-                0 0 2px var(--bright-green),
-                0 0 8px rgba(0, 255, 65, 0.6);
+            text-shadow: 0 0 2px var(--bright-green), 0 0 8px rgba(0, 255, 65, 0.6);
             display: inline-block;
             white-space: pre;
             font-family: monospace;
         }
 
-        @keyframes snake-exit {
-            0% {
-                transform: translateX(0);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateX(100vw);
-                opacity: 0;
-            }
-        }
-
-        .exit-right {
-            animation: snake-exit 1s ease-in forwards !important;
-        }
-
-        .cursor::after {
-            content: '█';
-            animation: cursor-blink 0.5s step-start infinite;
-            margin-left: 5px;
-            vertical-align: middle;
-            display: none;
-            /* Solo lo mostraremos si es necesario */
-        }
-
         #xesco-logo {
-            opacity: 1;
-            transform: none !important;
-            clip-path: none !important;
             margin: 0 auto;
             text-align: center;
             min-height: 80px;
@@ -484,189 +353,30 @@
             justify-content: center;
         }
 
-        @keyframes cursor-blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
-        }
-        /* Login Screen Styles */
-        .login-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            text-align: center;
-        }
-
-        .login-box {
-            border: 2px solid var(--blue);
-            padding: 30px;
-            background: rgba(0, 0, 215, 0.1);
-            box-shadow: 0 0 15px var(--blue);
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .login-header {
-            color: var(--bright-cyan);
-            font-size: 14px;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .login-field {
-            margin-bottom: 25px;
-            text-align: left;
-        }
-
-        .login-label {
-            display: block;
-            font-size: 10px;
-            color: var(--bright-white);
-            margin-bottom: 10px;
-        }
-
-        .login-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid var(--blue);
-            color: var(--bright-green);
-            font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
-            padding: 8px 0;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .login-input:focus {
-            border-bottom-color: var(--bright-green);
-            text-shadow: 0 0 5px var(--bright-green);
-        }
-
-        .login-status {
-            height: 20px;
-            margin-top: 20px;
-            font-size: 8px;
-            color: var(--bright-red);
-        }
-
-        .access-granted {
-            color: var(--bright-green) !important;
-        }
-
-        .system-msg {
-            color: var(--bright-magenta);
-            font-size: 8px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* Responsive Fixes */
         @media (max-width: 600px) {
-            #game-container {
-                width: 100vw;
-                height: 100dvh;
-                max-width: none;
-                max-height: none;
-                border: none;
-                padding: 15px;
-                box-shadow: none;
-            }
-
-            h1 {
-                font-size: 14px;
-            }
-
-            h2 {
-                font-size: 12px;
-            }
-
-            p, li {
-                font-size: 11px;
-            }
-
-            .btn {
-                padding: 12px;
-                font-size: 9px;
-            }
-
-            .login-box {
-                padding: 20px;
-            }
-
-            .login-header {
-                font-size: 12px;
-            }
-
-            .pixel-art {
-                font-size: 6px;
-            }
-
-            /* Reducir parpadeo en móvil para mayor claridad */
-            @keyframes flicker {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.98; }
-            }
-        }
-
-        @media (max-height: 500px) {
-            .menu {
-                gap: 5px;
-            }
-            .btn {
-                padding: 8px;
-            }
-            #xesco-logo {
-                display: none; /* Ahorrar espacio vertical en landscape móvil */
-            }
+            #game-container { width: 100%; height: 100dvh; max-width: none; max-height: none; border: none; padding: clamp(10px, 4vw, 20px); box-shadow: none; }
+            h1 { font-size: 14px; }
+            h2 { font-size: 12px; }
+            p, li { font-size: 11px; }
+            .btn { padding: 12px; font-size: 9px; }
         }
     </style>
 </head>
 
 <body>
     <div id="game-container">
-        <div id="login" class="screen active">
-            <div class="content login-screen">
-                <div class="login-box">
-                    <div class="login-header">SYSTEM ACCESS</div>
-                    <span class="system-msg" id="login-msg">> SECURE CONNECTION ESTABLISHED...</span>
-                    <span class="system-msg">> STANDBY FOR AUTHENTICATION...</span>
-
-                    <button class="btn" onclick="validateLogin()" style="width: 100%; margin-top: 20px;">AUTH_EXECUTE</button>
-                    
-                    <div id="login-status" class="login-status"></div>
-                </div>
-                <div style="margin-top: 30px; font-size: 8px; color: var(--blue);">
-                    SECURE_TERMINAL_V.84.05
-                </div>
-            </div>
-        </div>
-
-        <div id="splash" class="screen">
+        <div id="splash" class="screen active">
             <div class="content" style="display:flex; flex-direction:column;">
-                <div id="xesco-logo" class="pixel-art edgar-style" style="font-size: 10px; min-height: 60px;">
-                    <!-- Se rellena vía JS -->
-                </div>
+                <div id="xesco-logo" class="pixel-art edgar-style" style="font-size: 10px; min-height: 60px;"></div>
                 <h1>XESCO TEJEDOR:<br>LEVEL UP EN CULTURA DIGITAL</h1>
                 <p style="text-align: center;" class="accent">Francesc Adrià Perelló</p>
                 <p style="text-align: center;" class="highlight">"CURIOSO MULTIDISCIPLINAR"</p>
 
                 <div class="menu">
-                    <button class="btn" onclick="showScreen('level1')">INICIAR AVENTURA (Perfil)</button>
-                    <button class="btn" onclick="showScreen('achievements')">LOGROS (Experiencia)</button>
-                    <button class="btn" onclick="showScreen('ghostgame')"
-                        style="border-color: var(--bright-magenta); color: var(--bright-magenta);">DESAFÍO ESPECTRAL
-                        (Bonus)</button>
-                    <button class="btn" onclick="showScreen('gameover')">FIN DE PARTIDA (Contacto)</button>
+                    <button class="btn" data-screen="level1">INICIAR AVENTURA (Perfil)</button>
+                    <button class="btn" data-screen="achievements">LOGROS (Experiencia)</button>
+                    <button class="btn" data-screen="ghostgame" style="border-color: var(--bright-magenta); color: var(--bright-magenta);">DESAFÍO ESPECTRAL (Bonus)</button>
+                    <button class="btn" data-screen="gameover">FIN DE PARTIDA (Contacto)</button>
                 </div>
 
                 <div style="margin-top: 20px; text-align: center; font-size: 8px;">
@@ -683,23 +393,16 @@
                 <ul>
                     <li><span class="highlight">IDENTIDAD REAL:</span> Francesc Adrià Perelló</li>
                     <li><span class="highlight">MISIÓN:</span> Preservar el patrimonio artístico y bibliográfico.</li>
-                    <li><span class="highlight">EXPERIENCIA:</span> +20 AÑOS en el <span class="accent">MNAC</span>.
-                    </li>
-                    <li><span class="highlight">ESTUDIOS:</span> Licenciatura y Máster en <span
-                            class="accent">Filosofía</span> (UNED/UB).</li>
-                    <li><span class="highlight">MISIÓN ACTUAL:</span> Cursando el <span class="accent">MUBACD</span>
-                        (Máster en Bibliotecas, Archivos y Continuidad Digital).</li>
+                    <li><span class="highlight">EXPERIENCIA:</span> +20 AÑOS en el <span class="accent">MNAC</span>.</li>
+                    <li><span class="highlight">ESTUDIOS:</span> Licenciatura y Máster en <span class="accent">Filosofía</span> (UNED/UB).</li>
+                    <li><span class="highlight">MISIÓN ACTUAL:</span> Cursando el <span class="accent">MUBACD</span>.</li>
                 </ul>
             </div>
             <div class="navigation">
-                <button class="btn" onclick="showScreen('splash')">ATRÁS</button>
-                <button class="btn" onclick="showScreen('level2')">NIVEL 2</button>
+                <button class="btn" data-screen="splash">ATRÁS</button>
+                <button class="btn" data-screen="level2">NIVEL 2</button>
             </div>
-            <div class="stats">
-                <span>INTEL: 99</span>
-                <span>WIS: 95</span>
-                <span>ART: 80</span>
-            </div>
+            <div class="stats"><span>INTEL: 99</span><span>WIS: 95</span><span>ART: 80</span></div>
         </div>
 
         <div id="level2" class="screen">
@@ -708,64 +411,38 @@
             <div class="content">
                 <p>El código fluye como tinta digital. La transformación ha comenzado.</p>
                 <ul>
-                    <li><span class="highlight">BOOTCAMP:</span> Fullstack Developer en <span class="accent">The
-                            Bridge</span> (2022).</li>
-                    <li><span class="highlight">POWER-UPS:</span> <br>- Certificación <span class="accent">Python</span>
-                        ("Programming for Everybody"). <br>- Especialista en <span class="accent">Análisis de
-                            Datos</span>. </li>
-                    <li><span class="highlight">DIGITAL ASSETS:</span> Aplicando <span class="accent">MUBACD</span> a la
-                        preservación digital.</li>
+                    <li><span class="highlight">BOOTCAMP:</span> Fullstack Developer en <span class="accent">The Bridge</span>.</li>
+                    <li><span class="highlight">POWER-UPS:</span> Python & Data Analysis.</li>
                 </ul>
             </div>
             <div class="navigation">
-                <button class="btn" onclick="showScreen('level1')">NIVEL 1</button>
-                <button class="btn" onclick="showScreen('level3')">NIVEL 3</button>
+                <button class="btn" data-screen="level1">NIVEL 1</button>
+                <button class="btn" data-screen="level3">NIVEL 3</button>
             </div>
-            <div class="stats">
-                <span>CODE: 85</span>
-                <span>DATA: 90</span>
-                <span>LOGIC: 92</span>
-            </div>
+            <div class="stats"><span>CODE: 85</span><span>DATA: 90</span><span>LOGIC: 92</span></div>
         </div>
 
         <div id="level3" class="screen">
             <div class="level-badge">NIVEL 3</div>
             <h2>RESILIENCIA Y PROPÓSITO</h2>
             <div class="content">
-                <p>El jefe final es la incertidumbre, pero el <span class="highlight">FACTOR HUMANO</span> es
-                    invencible.</p>
-                <p>Fusionando mundos: Conectando personas con la tecnología para disfrutar del conocimiento.</p>
-                <ul>
-                    <li><span class="highlight">RETO:</span> Diagnóstico de <span class="accent">Esclerosis
-                            Múltiple</span> (EMRR) en 1996.</li>
-                    <li><span class="highlight">LOGRO:</span> Transformación de la adversidad en adaptabilidad radical.
-                    </li>
-                    <li><span class="highlight">CONTINUIDAD:</span> Integrando <span class="accent">Cultura, Código y
-                            Archivo</span>.</li>
-                </ul>
+                <p>El jefe final es la incertidumbre, pero el <span class="highlight">FACTOR HUMANO</span> es invencible.</p>
                 <p class="accent">"Preservar el pasado, construir el futuro."</p>
             </div>
             <div class="navigation">
-                <button class="btn" onclick="showScreen('level2')">NIVEL 2</button>
-                <button class="btn" onclick="showScreen('achievements')">LOGROS</button>
+                <button class="btn" data-screen="level2">NIVEL 2</button>
+                <button class="btn" data-screen="achievements">LOGROS</button>
             </div>
-            <div class="stats">
-                <span>RES: MAX</span>
-                <span>STR: 88</span>
-                <span>WILL: 100</span>
-            </div>
+            <div class="stats"><span>RES: MAX</span><span>STR: 88</span><span>WILL: 100</span></div>
         </div>
 
         <div id="achievements" class="screen">
             <h2>RESUMEN DE LOGROS</h2>
             <div class="content">
                 <p><span class="highlight">[X]</span> +20 Años Gestión Cultural.</p>
-                <p><span class="highlight">[X]</span> Experto en Humanidades Digitales.</p>
-                <p><span class="highlight">[X]</span> Desarrollador Fullstack & Python.</p>
-                <p><span class="highlight">[X]</span> Candidato MUBACD (Continuidad Digital).</p>
-                <p><span class="highlight">[X]</span> Superviviente y Adaptador Nato.</p>
-                <p style="font-size: 8px; margin-top: 20px; color: var(--bright-cyan);">AUTENTICADO COMO: FRANCESC ADRIÀ
-                    PERELLÓ</p>
+                <p><span class="highlight">[X]</span> Humanidades Digitales.</p>
+                <p><span class="highlight">[X]</span> Desarrollador Fullstack.</p>
+                <p><span class="highlight">[X]</span> Adaptador Nato.</p>
             </div>
             <div class="navigation">
                 <button class="btn" onclick="showScreen('splash')">INICIO</button>
@@ -778,81 +455,62 @@
                 <div class="level-badge" style="background-color: var(--bright-magenta);">NIVEL SECRETO</div>
                 <h2 style="color: var(--bright-magenta);">EL ESPECTRO DEL CÓDIGO</h2>
                 <div class="content" style="text-align: center;">
-                    <img src="ghost.png"
-                        style="width: 200px; filter: contrast(120%) brightness(110%); border: 4px solid var(--white); box-shadow: 0 0 15px var(--bright-magenta); margin-bottom: 15px;"
-                        alt="Fantasma Amenazante">
-                    <p class="blink" style="color: var(--bright-red); font-size: 12px;">¡ADVERTENCIA: ENTIDAD DETECTADA!
-                    </p>
-                    <p>Un guardián espectral custodia los archivos antiguos. ¿Deseas investigar el fenómeno o prefieres
-                        retroceder?</p>
+                    <img src="ghost.png" style="width: 200px; border: 4px solid var(--white); box-shadow: 0 0 15px var(--bright-magenta); margin-bottom: 15px;" alt="Ghost">
+                    <p class="blink" style="color: var(--bright-red); font-size: 12px;">¡ADVERTENCIA: ENTIDAD DETECTADA!</p>
                 </div>
                 <div class="navigation">
                     <button class="btn" onclick="showScreen('splash')">RETROCEDER</button>
                     <button class="btn" onclick="startGhostGame()">INVESTIGAR (Jugar)</button>
-                </div>
-                <div class="stats">
-                    <span>SPIRIT: 99</span>
-                    <span>AGGRO: 100</span>
-                    <span>LUCK: ??</span>
                 </div>
             </div>
 
             <div id="gameUI">
                 <div>SCORE: <span id="gameScore">0</span></div>
                 <div id="timerUI">TIEMPO: <span id="gameTimerUI">60</span>s</div>
-                <div>
-                    SALUD:
-                    <div class="health-bar-container">
-                        <div id="healthBar"></div>
-                    </div>
-                </div>
+                <div>SALUD: <div class="health-bar-container"><div id="healthBar"></div></div></div>
             </div>
+            <div id="countdownOverlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Press Start 2P'; font-size: 100px; z-index: 100; pointer-events: none; text-shadow: 0 0 20px #F00; color: #F00;"></div>
+            <div id="creepySign" style="display: none; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-family: 'Press Start 2P'; font-size: 32px; color: var(--bright-red); text-shadow: 0 0 15px #F00; z-index: 100; pointer-events: none; transition: opacity 1s; text-align: center;">¿TE ATREVES?</div>
             <canvas id="gameCanvas"></canvas>
-            <div id="creepySign">TIENES UN MINUTO PARA SALVAR EL MUNDO</div>
             <div id="crosshair"></div>
+            <div id="pauseOverlay"><h2>PAUSA</h2><p>HAZ CLICK PARA REANUDAR</p></div>
         </div>
 
         <div id="gameover" class="screen">
             <h1 style="color: var(--bright-red);">FIN DE PARTIDA</h1>
-            <h2 class="accent">¿CONTINUAR?</h2>
             <div class="content">
-                <div id="badgeContainer"
-                    style="display: none; text-align: center; margin-bottom: 25px; border: 2px solid var(--bright-blue); padding: 15px; background: rgba(0,0,215,0.1);">
+                <div id="badgeContainer" style="display: none; text-align: center; margin-bottom: 25px;">
                     <div class="achievement-banner">¡LOGRO DESBLOQUEADO!</div>
-                    <h3 id="highScoreText" style="color: var(--bright-green); font-size: 12px; margin-bottom: 15px;">
-                    </h3>
-                    <img id="badgeImage"
-                        style="max-width: 100%; border: 4px double var(--bright-yellow); margin-bottom: 20px; image-rendering: pixelated; background: var(--black);"
-                        alt="Insignia de Puntuación">
+                    <h3 id="highScoreText"></h3>
+                    <canvas id="badgeCanvas" style="width:100%; max-width:400px; background: #000; border: 2px solid #FFD700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); display: block; margin: 0 auto;"></canvas>
                     <br>
-                    <a id="downloadBadgeBtn" class="btn pulse-reward"
-                        style="display:inline-block; position:relative; z-index:100; text-decoration:none;"
-                        download="cazador_de_espectros.png" target="_blank">DESCARGAR INSIGNIA</a>
-                    <p style="font-size: 8px; margin-top: 10px; color: var(--bright-cyan);">* Pulsa para guardar tu
-                        hazaña</p>
+                    <a id="downloadBadgeBtn" class="btn" download="badge.png" style="display:none;">DESCARGAR</a>
+                    <p id="localDownloadMsg" style="font-size: 10px; color: #888; margin-top: 10px; display: none;">(La descarga requiere un servidor web como GitHub Pages)</p>
                 </div>
                 <ul class="contact-list">
-                    <li><span class="highlight">EMAIL:</span> <a
-                            href="mailto:xesco@xescotejedor.es">xesco@xescotejedor.es</a></li>
-                    <li><span class="highlight">LINKEDIN:</span> <a href="https://www.linkedin.com/in/xesco"
-                            target="_blank">linkedin.com/in/xesco</a></li>
+                    <li><span class="highlight">EMAIL:</span> <a href="mailto:xesco@xescotejedor.es">xesco@xescotejedor.es</a></li>
+                    <li><span class="highlight">LINKEDIN:</span> <a href="https://www.linkedin.com/in/xesco" target="_blank">linkedin.com/in/xesco</a></li>
                 </ul>
             </div>
-            <div class="menu">
-                <button class="btn" onclick="location.reload()">REINTENTAR (Reiniciar)</button>
-            </div>
-            <div style="margin-top: auto; text-align: center; font-size: 8px;">
-                © 1980-2026 XESCO TEJEDOR SOFTWARE
-            </div>
+            <div class="menu"><button class="btn" onclick="location.reload()">REINTENTAR</button></div>
         </div>
     </div>
 
     <script>
-        let audioCtx;
-        let isMusicPlaying = false;
-        let activeOscillators = [];
+        function drawImageCover(ctx, img, x, y, w, h, offsetX = 0.5, offsetY = 0.5) {
+            if (!img.complete || img.naturalWidth === 0) return;
+            const iw = img.naturalWidth, ih = img.naturalHeight;
+            const r = Math.min(w / iw, h / ih);
+            let nw = iw * r, nh = ih * r, cx, cy, cw, ch, ar = 1;
+            if (nw < w) ar = w / nw;
+            if (Math.abs(ar - 1) < 1e-14 && nh < h) ar = h / nh;
+            nw *= ar; nh *= ar;
+            cw = iw / (nw / w); ch = ih / (nh / h);
+            cx = Math.max(0, (iw - cw) * offsetX); cy = Math.max(0, (ih - ch) * offsetY);
+            ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
+        }
 
-        // Typewriter Logo Logic
+        let audioCtx, isMusicPlaying = false, activeOscillators = [];
         const logoText = ` __  __  ____  ____  ____  _____ 
  \\ \\/ / / ___|/ ___|/ ___|/ _ \\
   \\  / | _| |___ \\| | | | | |
@@ -862,54 +520,13 @@
         function typeLogo() {
             const el = document.getElementById('xesco-logo');
             if (!el) return;
-
-            const fullText = logoText.trim();
-            el.style.opacity = '1';
             el.textContent = '';
-
             let i = 0;
-            let blinkCount = 0;
-
-            // FASE 1: PARPADEO INICIAL (1.5s)
-            const initialBlink = setInterval(() => {
-                el.textContent = (blinkCount % 2 === 0) ? '█' : '';
-                blinkCount++;
-                if (blinkCount > 6) {
-                    clearInterval(initialBlink);
-                    startTyping();
-                }
-            }, 250);
-
-            function startTyping() {
-                // FASE 2: ESCRIBIR CARÁCTER A CARÁCTER
-                const typeInterval = setInterval(() => {
-                    // Texto actual + cursor al final
-                    el.textContent = fullText.substring(0, i) + '█';
-                    i++;
-
-                    if (i > fullText.length) {
-                        clearInterval(typeInterval);
-                        el.textContent = fullText; // Quitar cursor al terminar
-
-                        // FASE 3: ESPERAR (4 segundos)
-                        setTimeout(() => {
-                            // FASE 4: BORRAR (Recorrido inverso / Backspace)
-                            let eraseIdx = fullText.length;
-                            const eraseInterval = setInterval(() => {
-                                el.textContent = fullText.substring(0, eraseIdx) + '█';
-                                eraseIdx--;
-
-                                if (eraseIdx < 0) {
-                                    clearInterval(eraseInterval);
-                                    setTimeout(typeLogo, 500); // Reiniciar ciclo tras breve pausa
-                                }
-                            }, 5); // Borrado muy rápido (efecto retroceso)
-                        }, 4000);
-                    }
-                }, 10); // Velocidad de escritura rápida pero perceptible
-            }
+            const typeInterval = setInterval(() => {
+                el.textContent = logoText.trim().substring(0, i) + '█';
+                if (i++ > logoText.length) { clearInterval(typeInterval); el.textContent = logoText.trim(); }
+            }, 10);
         }
-
         window.addEventListener('DOMContentLoaded', typeLogo);
 
         function initAudio() {
@@ -917,1170 +534,357 @@
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
-        function createOsc(freq, type, startTime, duration, volume, detune = 0) {
+        function createOsc(freq, type, startTime, duration, volume) {
             if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, startTime);
-            osc.detune.setValueAtTime(detune, startTime);
-
-            gain.gain.setValueAtTime(0, startTime);
-            gain.gain.linearRampToValueAtTime(volume, startTime + 0.02);
-            gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start(startTime);
-            osc.stop(startTime + duration);
-
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(0, startTime); gain.gain.linearRampToValueAtTime(volume, startTime+0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, startTime+duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(startTime); osc.stop(startTime+duration);
             activeOscillators.push(osc);
-            osc.onended = () => {
-                activeOscillators = activeOscillators.filter(o => o !== osc);
-            };
-        }
-
-        let currentTempo = 130;
-        let musicTimeout = null;
-        let fanfareTimeout = null;
-        let isFanfarePlaying = false;
-
-        function stopAllMusic() {
-            isMusicPlaying = false;
-            isFanfarePlaying = false;
-            if (musicTimeout) clearTimeout(musicTimeout);
-            if (fanfareTimeout) clearTimeout(fanfareTimeout);
-
-            // Detener todos los osciladores activos inmediatamente
-            activeOscillators.forEach(osc => {
-                try {
-                    osc.stop();
-                    osc.disconnect();
-                } catch (e) { }
-            });
-            activeOscillators = [];
         }
 
         function playEpicMusic() {
             if (isMusicPlaying) return;
             isMusicPlaying = true;
-
-            const notes = {
-                C3: 130.81, G3: 196.00, A3: 220.00, F3: 174.61,
-                C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
-                C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99
-            };
-
-            const melody = [
-                { f: notes.A4, t: 0, d: 1 }, { f: notes.E5, t: 1, d: 1 },
-                { f: notes.D5, t: 2, d: 0.5 }, { f: notes.C5, t: 2.5, d: 0.5 },
-                { f: notes.B4, t: 3, d: 1 }, { f: notes.A4, t: 4, d: 1 },
-                { f: notes.C5, t: 5, d: 1 }, { f: notes.G4, t: 6, d: 2 },
-                { f: notes.F4, t: 8, d: 1 }, { f: notes.A4, t: 9, d: 1 },
-                { f: notes.G4, t: 10, d: 1 }, { f: notes.F4, t: 11, d: 1 },
-                { f: notes.E4, t: 12, d: 4 }
-            ];
-
-            const bass = [
-                { f: notes.A3, t: 0 }, { f: notes.A3, t: 0.5 }, { f: notes.A3, t: 1 }, { f: notes.A3, t: 1.5 },
-                { f: notes.F3, t: 2 }, { f: notes.F3, t: 2.5 }, { f: notes.G3, t: 3 }, { f: notes.G3, t: 3.5 },
-                { f: notes.A3, t: 4 }, { f: notes.A3, t: 4.5 }, { f: notes.A3, t: 5 }, { f: notes.A3, t: 5.5 },
-                { f: notes.C3, t: 6 }, { f: notes.C3, t: 6.5 }, { f: notes.G3, t: 7 }, { f: notes.G3, t: 7.5 }
-            ];
-
-            function playArp(startTime, baseFreq, step) {
-                const arp = [1, 1.25, 1.5, 2];
-                arp.forEach((r, i) => {
-                    createOsc(baseFreq * r, 'square', startTime + i * (step / 4), step / 4, 0.03);
-                });
-            }
-
-            function scheduleLoop(startTime) {
+            const step = 60 / 130;
+            const loop = (t) => {
                 if (!isMusicPlaying) return;
-                const step = 60 / currentTempo;
-                const loopDuration = 16 * step;
-
-                melody.forEach(n => createOsc(n.f, 'sawtooth', startTime + n.t * step, n.d * step, 0.08, 5));
-                bass.forEach(n => createOsc(n.f, 'triangle', startTime + n.t * step, 0.4 * step, 0.15));
-
-                for (let i = 0; i < 16; i += 2) {
-                    const freq = i < 8 ? notes.A3 : notes.F3;
-                    playArp(startTime + i * step, freq, step);
-                }
-
-                musicTimeout = setTimeout(() => {
-                    scheduleLoop(audioCtx.currentTime + 0.1);
-                }, loopDuration * 1000 - 100);
-            }
-
-            scheduleLoop(audioCtx.currentTime + 0.1);
+                createOsc(220, 'sawtooth', t, step, 0.05);
+                setTimeout(() => loop(audioCtx.currentTime + 0.1), step * 1000);
+            };
+            loop(audioCtx.currentTime);
         }
 
-        function playVictoryFanfare() {
-            if (isFanfarePlaying) return;
-            isFanfarePlaying = true;
-
-            const step = 0.15;
-            const notes = { C4: 261.63, E4: 329.63, G4: 392.00, C5: 523.25, G5: 783.99 };
-
-            function scheduleFanfare(startTime) {
-                if (!isFanfarePlaying) return;
-
-                // Melodía heroica / Fanfarria
-                const sequence = [
-                    { f: notes.C4, t: 0, d: 1 }, { f: notes.G4, t: 1, d: 1 },
-                    { f: notes.C5, t: 2, d: 2 }, { f: notes.E4, t: 4, d: 1 },
-                    { f: notes.G4, t: 5, d: 1 }, { f: notes.C5, t: 6, d: 4 },
-                    { f: notes.G4, t: 10, d: 1 }, { f: notes.C5, t: 11, d: 1 },
-                    { f: notes.G5, t: 12, d: 4 }
-                ];
-
-                sequence.forEach(n => {
-                    createOsc(n.f, 'triangle', startTime + n.t * step, n.d * step, 0.15);
-                    createOsc(n.f * 1.01, 'square', startTime + n.t * step, n.d * step, 0.05); // Brillo metálico
-                });
-
-                // Acompañamiento
-                for (let i = 0; i < 16; i++) {
-                    if (i % 4 === 0) createOsc(notes.C4 / 2, 'sawtooth', startTime + i * step, step * 2, 0.1);
-                }
-
-                fanfareTimeout = setTimeout(() => {
-                    scheduleFanfare(audioCtx.currentTime + 0.1);
-                }, 16 * step * 1000);
-            }
-
-            scheduleFanfare(audioCtx.currentTime + 0.1);
+        function stopAllMusic() {
+            isMusicPlaying = false;
+            activeOscillators.forEach(o => { try{o.stop();}catch(e){} });
+            activeOscillators = [];
         }
-
-        let comingFromGameEnd = false;
 
         function showScreen(screenId) {
             initAudio();
-            if (typeof ghostGameActive !== 'undefined' && ghostGameActive && screenId !== 'ghostgame') {
-                stopGhostGame();
-            }
-
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(s => s.classList.remove('active'));
-            const target = document.getElementById(screenId);
-            if (target) target.classList.add('active');
-
-            // Gestión de música por pantalla
-            if (screenId === 'gameover') {
-                stopAllMusic();
-                playVictoryFanfare();
-
-                // Mostrar/Ocultar el badge dependiendo de si venimos de una partida terminada
-                const badgeCont = document.getElementById('badgeContainer');
-                if (!comingFromGameEnd) {
-                    badgeCont.style.display = 'none';
-                }
-                comingFromGameEnd = false; // Resetear para la próxima navegación
-            } else if (screenId === 'ghostgame') {
-                stopAllMusic();
-                currentTempo = 130;
-                playEpicMusic();
-            } else {
-                if (isFanfarePlaying) {
-                    stopAllMusic();
-                    playEpicMusic();
-                }
-            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            if (screenId === 'ghostgame') playEpicMusic(); else stopAllMusic();
         }
 
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (audioCtx) {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.1);
-                }
-            });
+        window.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn');
+            if (btn && btn.dataset.screen) showScreen(btn.dataset.screen);
         });
 
-        // Ghost Game Logic
-        let ghostGameActive = false;
-        let ghosts = [];
-        let score = 0;
-        let health = 100;
-        let canvas, ctx;
-        let offCanvas, offCtx;
-        let mouseX = 0, mouseY = 0;
-        let isShooting = false;
-        let lastTime = 0;
-        let ghostImage = new Image();
-        ghostImage.src = 'ghost.png';
-        let ghostImage2 = new Image();
-        ghostImage2.src = 'monstuo2.png';
-        let powerUpImage = new Image();
-        powerUpImage.src = 'powerUp.png';
-        let poisonImage = new Image();
-        poisonImage.src = 'poison.png';
-        let powerups = [];
-        let poisons = [];
-        let particles = [];
+        // GHOST GAME CORE
+        let ghostGameActive = false, gamePaused = false, ghosts = [], score = 0, health = 100;
+        let canvas, ctx, offCanvas, offCtx, mouseX = 0, mouseY = 0, isShooting = false, lastTime = 0;
+        let ghostImage = new Image(); ghostImage.src = 'ghost.png';
+        let ghostImage2 = new Image(); ghostImage2.src = 'monstuo2.png';
         let bgLibrary = new Image(); bgLibrary.src = 'library.png';
-        let bgHell = new Image(); bgHell.src = 'libHellUltimate.png';
-        let gamePhase = 0;
-        let phaseTimer = 0;
-        let gameTimer = 60;
-        let countdownValue = -1;
-        const dpr = window.devicePixelRatio || 1;
-        let spawnAccumulator = 0;
-        let powerupAccumulator = 0;
-        let poisonAccumulator = 0;
+        let bgHell = new Image(); bgHell.src = 'libHell.png';
+        let bgHellUltimate = new Image(); bgHellUltimate.src = 'libHellUltimate.png';
+        let powerUpImg = new Image(); powerUpImg.src = 'powerUp.png';
+        let poisonImg = new Image(); poisonImg.src = 'poison.png';
+        
+        let powerups = [], poisons = [], particles = [], gamePhase = 0, phaseTimer = 0, gameTimer = 60, gameScale = 1, cachedRect = null;
+        const dpr = window.devicePixelRatio || 1, BASE_WIDTH = 800, BASE_HEIGHT = 600;
+        let spawnAcc = 0, itemAcc = 0, beamPartAcc = 0;
 
         function startGhostGame() {
             document.getElementById('ghostMenu').style.display = 'none';
             document.getElementById('gameCanvas').style.display = 'block';
             document.getElementById('gameUI').style.display = 'flex';
             document.getElementById('crosshair').style.display = 'block';
-
-            // Creepy Sign Logic
-            const sign = document.getElementById('creepySign');
-            if (sign) {
-                // Eliminar posibles duplicados "normales" que puedan haber quedado
-                // Limpieza SEGURA de duplicados: solo buscamos en elementos de texto específicos
-                const targetText = 'TIENES UN MINUTO PARA SALVAR EL MUNDO';
-                document.querySelectorAll('p, div, span, h1, h2, h3').forEach(el => {
-                    // Solo borramos si el texto es exacto (o casi) y NO es el elemento oficial, 
-                    // y nos aseguramos de que sea un elemento "hoja" (sin hijos div/p)
-                    if (el.id !== 'creepySign' && 
-                        el.textContent.trim() === targetText && 
-                        el.children.length === 0) {
-                        el.remove();
-                    }
-                });
-
-                sign.style.display = 'block';
-                sign.style.opacity = '1';
-                setTimeout(() => {
-                    sign.style.opacity = '0';
-                    setTimeout(() => {
-                        sign.style.display = 'none';
-                        sign.style.opacity = '1';
-                    }, 1000);
-                }, 3000);
-            }
-
-            canvas = document.getElementById('gameCanvas');
-            ctx = canvas.getContext('2d');
-
-            const container = document.getElementById('game-container');
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-
-            if (!offCanvas) {
-                offCanvas = document.createElement('canvas');
-                offCtx = offCanvas.getContext('2d');
-            }
-            offCanvas.width = canvas.width;
-            offCanvas.height = canvas.height;
-
-            // Limpiamos y aseguramos opacidad inicial
-            offCtx.globalCompositeOperation = 'source-over';
-            offCtx.fillStyle = 'black';
-            offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
-
-            function drawInitialLibrary() {
-                if (bgLibrary.complete && bgLibrary.naturalWidth > 0) {
-                    offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                } else {
-                    bgLibrary.onload = () => {
-                        offCtx.drawImage(bgLibrary, 0, 0, offCanvas.width, offCanvas.height);
-                    };
-                }
-            }
             
-            // Ajuste de resolución para pantallas de alta densidad
-            canvas.width = canvas.offsetWidth * dpr;
-            canvas.height = canvas.offsetHeight * dpr;
-            ctx.scale(dpr, dpr);
+            const sign = document.getElementById('creepySign'); sign.style.display = 'block'; sign.style.opacity = '1';
+            setTimeout(() => { sign.style.opacity = '0'; setTimeout(() => sign.style.display = 'none', 1000); }, 3000);
+
+            canvas = document.getElementById('gameCanvas'); ctx = canvas.getContext('2d');
+            const updateSize = () => {
+                cachedRect = canvas.getBoundingClientRect();
+                canvas.width = cachedRect.width * dpr; canvas.height = cachedRect.height * dpr;
+                gameScale = Math.min(cachedRect.width / BASE_WIDTH, cachedRect.height / BASE_HEIGHT);
+                if (offCanvas) { offCanvas.width = canvas.width; offCanvas.height = canvas.height; }
+            };
+            updateSize();
+
+            if (!offCanvas) { offCanvas = document.createElement('canvas'); offCtx = offCanvas.getContext('2d'); }
+            offCanvas.width = canvas.width; offCanvas.height = canvas.height;
+            offCtx.setTransform(1, 0, 0, 1, 0, 0); offCtx.scale(dpr, dpr);
             
-            offCanvas.width = canvas.width;
-            offCanvas.height = canvas.height;
-            offCtx.scale(dpr, dpr);
+            const initOff = () => {
+                if (!offCtx) return;
+                offCtx.setTransform(1, 0, 0, 1, 0, 0); offCtx.scale(dpr, dpr);
+                offCtx.globalCompositeOperation = 'source-over';
+                offCtx.fillStyle = '#111'; offCtx.fillRect(0,0,cachedRect.width, cachedRect.height);
+                if (bgHell.complete && bgHell.naturalWidth > 0) drawImageCover(offCtx, bgHell, 0, 0, cachedRect.width, cachedRect.height);
+            };
+            initOff();
+            bgHell.onload = initOff;
 
-            drawInitialLibrary();
-
-            score = 0;
-            health = 100;
-            gameTimer = 60;
-            currentTempo = 130;
-            ghosts = [];
-            powerups = [];
-            poisons = [];
-            particles = [];
-            ghostGameActive = true;
-            gamePhase = 0;
-            phaseTimer = 0;
-            lastTime = performance.now();
+            score = 0; health = 100; gameTimer = 60; ghosts = []; powerups = []; poisons = []; particles = []; gamePhase = 0; phaseTimer = 0; lastTime = 0; ghostGameActive = true;
             updateUI();
 
-            container.addEventListener('mousemove', handleMouseMove);
-            container.addEventListener('mousedown', () => isShooting = true);
-            container.addEventListener('mouseup', () => isShooting = false);
-            container.addEventListener('mouseleave', () => isShooting = false);
-
-            container.addEventListener('touchmove', (e) => {
-                if (!ghostGameActive) return;
-                e.preventDefault();
-                handleTouchMove(e);
-            }, { passive: false });
-            container.addEventListener('touchstart', (e) => {
-                if (!ghostGameActive) return;
-                e.preventDefault();
-                handleTouchMove(e);
-                isShooting = true;
-            }, { passive: false });
-            container.addEventListener('touchend', () => isShooting = false);
+            if (!window.ghostListenersAdded) {
+                window.addEventListener('mousemove', (e) => {
+                    if (!ghostGameActive) return;
+                    const r = canvas.getBoundingClientRect();
+                    mouseX = e.clientX - r.left; mouseY = e.clientY - r.top;
+                    document.getElementById('crosshair').style.left = mouseX + 'px';
+                    document.getElementById('crosshair').style.top = mouseY + 'px';
+                });
+                window.addEventListener('mousedown', () => { if (ghostGameActive) isShooting = true; });
+                window.addEventListener('mouseup', () => isShooting = false);
+                window.addEventListener('touchstart', (e) => { if (ghostGameActive) isShooting = true; }, {passive: false});
+                window.addEventListener('touchend', () => isShooting = false);
+                window.ghostListenersAdded = true;
+            }
+            window.addEventListener('resize', updateSize);
 
             requestAnimationFrame(gameLoop);
-        }
-
-        function handleMouseMove(e) {
-            if (!ghostGameActive) return;
-            const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
-
-            const crosshair = document.getElementById('crosshair');
-            crosshair.style.left = (e.clientX - rect.left + 20) + 'px';
-            crosshair.style.top = (e.clientY - rect.top + 20) + 'px';
-        }
-
-        function handleTouchMove(e) {
-            if (!ghostGameActive) return;
-            const rect = canvas.getBoundingClientRect();
-            mouseX = e.touches[0].clientX - rect.left;
-            mouseY = e.touches[0].clientY - rect.top;
-
-            const crosshair = document.getElementById('crosshair');
-            crosshair.style.left = (e.touches[0].clientX - rect.left + 20) + 'px';
-            crosshair.style.top = (e.touches[0].clientY - rect.top + 20) + 'px';
-        }
-
-        function spawnGhost(deltaTime) {
-            let effScore = Math.min(score, 50);
-            
-            // Definimos tasas por segundo en lugar de por frame
-            const spawnRatePerSec = 0.5 + (effScore * 0.05); // Aumenta con el score
-            const powerupRatePerSec = 0.1;
-            const poisonRatePerSec = 0.05;
-
-            spawnAccumulator += deltaTime;
-            powerupAccumulator += deltaTime;
-            poisonAccumulator += deltaTime;
-
-            // Spawning de fantasmas
-            if (spawnAccumulator >= 1 / spawnRatePerSec || (ghosts.length === 0 && spawnAccumulator > 0.5)) {
-                let isAdvanced = score >= 50 && Math.random() < 0.4;
-                ghosts.push({
-                    type: isAdvanced ? 2 : 1,
-                    x: canvas.width / (2 * dpr) + (Math.random() - 0.5) * 150,
-                    y: canvas.height / (2 * dpr) + (Math.random() - 0.5) * 100,
-                    size: 10,
-                    vx: (Math.random() - 0.5) * (1 + effScore * 0.01) * (isAdvanced ? 1.5 : 1),
-                    vy: (Math.random() - 0.5) * (1 + effScore * 0.01) * (isAdvanced ? 1.5 : 1),
-                    hp: 20 + effScore * 1.5 + (isAdvanced ? 30 : 0)
-                });
-                spawnAccumulator = 0;
-            }
-
-            // Spawning de Power-Ups
-            if (powerupAccumulator >= 1 / powerupRatePerSec) {
-                powerups.push({
-                    x: canvas.width / (2 * dpr) + (Math.random() - 0.5) * 150,
-                    y: canvas.height / (2 * dpr) + (Math.random() - 0.5) * 100,
-                    size: 10,
-                    vx: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
-                    vy: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
-                    hp: 5
-                });
-                powerupAccumulator = 0;
-            }
-
-            // Spawning de Venenos
-            if (poisonAccumulator >= 1 / poisonRatePerSec) {
-                poisons.push({
-                    x: canvas.width / (2 * dpr) + (Math.random() - 0.5) * 150,
-                    y: canvas.height / (2 * dpr) + (Math.random() - 0.5) * 100,
-                    size: 10,
-                    vx: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
-                    vy: (Math.random() - 0.5) * (2.0 + effScore * 0.02),
-                    hp: 5
-                });
-                poisonAccumulator = 0;
-            }
-        }
-
-        function generateBadge(finalScore) {
-            // High Score Logic
-            let highScore = localStorage.getItem('ghostGameHighScore') || 0;
-            let isNewRecord = false;
-            if (finalScore > highScore) {
-                highScore = finalScore;
-                localStorage.setItem('ghostGameHighScore', highScore);
-                isNewRecord = true;
-            }
-
-            const hsText = document.getElementById('highScoreText');
-            if (hsText) {
-                hsText.innerText = isNewRecord ? `¡NUEVO RÉCORD INFERNAL: ${highScore}!` : `RÉCORD INFERNAL: ${highScore}`;
-                hsText.style.color = isNewRecord ? 'var(--bright-yellow)' : 'var(--bright-green)';
-            }
-
-            if (isNewRecord && finalScore > 0 && typeof audioCtx !== 'undefined' && audioCtx) {
-                let t = audioCtx.currentTime;
-                const riff = [
-                    { f: 329.63, d: 0.1 }, { f: 329.63, d: 0.1 }, { f: 392.00, d: 0.1 },
-                    { f: 329.63, d: 0.1 }, { f: 440.00, d: 0.1 }, { f: 329.63, d: 0.1 },
-                    { f: 493.88, d: 0.15 }, { f: 392.00, d: 0.15 }, { f: 587.33, d: 0.4 }
-                ];
-                let offset = 0;
-                riff.forEach(note => {
-                    createOsc(note.f, 'sawtooth', t + offset, note.d, 0.15, 0);
-                    createOsc(note.f * 1.01, 'square', t + offset, note.d, 0.1, 0); // Distortion/Chorus
-                    offset += note.d + 0.02;
-                });
-            }
-
-            // Canvas Setup
-            const bCanvas = document.createElement('canvas');
-            bCanvas.width = 400; bCanvas.height = 400;
-            const bCtx = bCanvas.getContext('2d');
-
-            // Hardcore Metal Colors
-            const metalColors = ['#1A1A1A', '#4D4D4D', '#8B0000', '#2F4F4F', '#333333'];
-            const brightMetal = ['#C0C0C0', '#FF0000', '#FF4500', '#FFFFFF', '#FFD700'];
-
-            let color1 = metalColors[Math.floor(Math.random() * metalColors.length)];
-            let color2 = metalColors[Math.floor(Math.random() * metalColors.length)];
-            while (color1 === color2) color2 = metalColors[Math.floor(Math.random() * metalColors.length)];
-
-            // Black Background
-            bCtx.fillStyle = '#000000';
-            bCtx.fillRect(0, 0, 400, 400);
-
-            // Translate to center
-            bCtx.save();
-            bCtx.translate(200, 180);
-
-            // SHIELD SHAPES
-            const shapeType = Math.floor(Math.random() * 4);
-            bCtx.beginPath();
-            if (shapeType === 0) { // Spiked Pointy
-                bCtx.moveTo(0, 150);
-                bCtx.bezierCurveTo(140, 100, 150, 0, 150, -110);
-                bCtx.lineTo(-150, -110);
-                bCtx.bezierCurveTo(-150, 0, -140, 100, 0, 150);
-            } else if (shapeType === 1) { // Hardcore Spiked
-                bCtx.moveTo(0, 160);
-                bCtx.lineTo(60, 110); bCtx.lineTo(150, 130); bCtx.lineTo(130, 0); bCtx.lineTo(160, -120);
-                bCtx.lineTo(0, -90);
-                bCtx.lineTo(-160, -120); bCtx.lineTo(-130, 0); bCtx.lineTo(-150, 130); bCtx.lineTo(-60, 110);
-            } else if (shapeType === 2) { // Bat-Wing Style
-                bCtx.moveTo(0, 150);
-                bCtx.quadraticCurveTo(80, 120, 150, 150); bCtx.quadraticCurveTo(120, 50, 160, -50); bCtx.quadraticCurveTo(80, -80, 0, -120);
-                bCtx.quadraticCurveTo(-80, -80, -160, -50); bCtx.quadraticCurveTo(-120, 50, -150, 150); bCtx.quadraticCurveTo(-80, 120, 0, 150);
-            } else { // Pointed Gothic
-                bCtx.moveTo(0, 170);
-                bCtx.lineTo(140, 50); bCtx.lineTo(140, -110); bCtx.lineTo(70, -130); bCtx.lineTo(0, -100);
-                bCtx.lineTo(-70, -130); bCtx.lineTo(-140, -110); bCtx.lineTo(-140, 50);
-            }
-            bCtx.closePath();
-
-            // Background Pattern
-            bCtx.clip();
-            bCtx.fillStyle = color1;
-            bCtx.fill();
-
-            bCtx.fillStyle = color2;
-            const patternType = Math.floor(Math.random() * 6);
-            if (patternType === 0) bCtx.fillRect(0, -200, 200, 400);
-            else if (patternType === 1) bCtx.fillRect(-200, -200, 400, 100);
-            else if (patternType === 2) { bCtx.beginPath(); bCtx.moveTo(-200, -200); bCtx.lineTo(200, 200); bCtx.lineTo(200, -200); bCtx.fill(); }
-            else if (patternType === 3) { for (let i = -200; i < 200; i += 30) bCtx.fillRect(i, -200, 10, 400); }
-            else if (patternType === 4) { // Blood Splatter
-                bCtx.fillStyle = '#8B0000';
-                for (let i = 0; i < 15; i++) {
-                    bCtx.beginPath();
-                    bCtx.arc((Math.random() - 0.5) * 250, (Math.random() - 0.5) * 250, Math.random() * 30, 0, Math.PI * 2);
-                    bCtx.fill();
-                }
-            } else { // Rivets / Cross
-                bCtx.fillRect(-10, -200, 20, 400);
-                bCtx.fillRect(-200, -10, 400, 20);
-            }
-
-            // Outline with Rivets
-            bCtx.lineWidth = 10;
-            const outlineColor = brightMetal[Math.floor(Math.random() * brightMetal.length)];
-            bCtx.strokeStyle = outlineColor;
-            bCtx.stroke();
-
-            // Rivets along the edge
-            bCtx.fillStyle = '#C0C0C0';
-            for (let a = 0; a < Math.PI * 2; a += 0.4) {
-                bCtx.beginPath();
-                bCtx.arc(Math.cos(a) * 140, Math.sin(a) * 100, 4, 0, Math.PI * 2);
-                bCtx.fill();
-            }
-
-            // Central Charge (Icon)
-            const charges = ['💀', '🤘', '🩸', '🗡️', '⛓️', '🔥', '🦇', '⚡', '⛓️‍💥'];
-            let charge = charges[Math.floor(Math.random() * charges.length)];
-
-            bCtx.font = '110px monospace';
-            bCtx.textAlign = 'center';
-            bCtx.textBaseline = 'middle';
-            // Chrome effect
-            bCtx.fillStyle = '#000000'; bCtx.fillText(charge, 6, 6);
-            bCtx.fillStyle = '#FFFFFF'; bCtx.fillText(charge, 0, 0);
-            bCtx.strokeStyle = '#4D4D4D'; bCtx.lineWidth = 2; bCtx.strokeText(charge, 0, 0);
-
-            bCtx.restore();
-
-            // Tattered Ribbon
-            bCtx.fillStyle = '#333333';
-            bCtx.strokeStyle = '#8B0000';
-            bCtx.lineWidth = 3;
-            bCtx.beginPath();
-            bCtx.moveTo(40, 330); bCtx.lineTo(360, 330);
-            bCtx.lineTo(380, 350); bCtx.lineTo(360, 370); bCtx.lineTo(380, 390);
-            bCtx.lineTo(40, 390); bCtx.lineTo(20, 370); bCtx.lineTo(40, 350);
-            bCtx.closePath();
-            bCtx.fill(); bCtx.stroke();
-
-            // Rank Logic
-            let rank = 'ESPECTRO ERRANTE';
-            if (finalScore > 20) rank = 'RECLUTA DEL ABISMO';
-            if (finalScore > 50) rank = 'CAZADOR DE ÉLITE';
-            if (finalScore > 100) rank = 'EXORCISTA BINARIO';
-            if (finalScore > 250) rank = 'MAESTRO DEL ECTOPLASMA';
-            if (finalScore > 500) rank = 'SOBERANO DEL INFRAMUNDO';
-
-            bCtx.fillStyle = '#FF0000';
-            bCtx.font = '14px "Press Start 2P", monospace';
-            bCtx.textAlign = 'center';
-            bCtx.textBaseline = 'middle';
-            bCtx.fillText(`${rank}: ${finalScore}`, 200, 365);
-
-            // New Record (Spiked Plate)
-            if (isNewRecord && finalScore > 0) {
-                bCtx.fillStyle = '#1A1A1A';
-                bCtx.strokeStyle = '#FF4500';
-                bCtx.lineWidth = 2;
-                bCtx.beginPath();
-                bCtx.moveTo(80, 10); bCtx.lineTo(320, 10); bCtx.lineTo(330, 25); bCtx.lineTo(320, 40); bCtx.lineTo(80, 40); bCtx.lineTo(70, 25); bCtx.closePath();
-                bCtx.fill(); bCtx.stroke();
-
-                bCtx.fillStyle = '#FF4500';
-                bCtx.font = '10px "Press Start 2P", monospace';
-                bCtx.textAlign = 'center';
-                bCtx.fillText('NUEVO RECORD INFERNAL', 200, 28);
-            }
-
-            const imgData = bCanvas.toDataURL('image/png');
-            const bImg = document.getElementById('badgeImage');
-            const dBtn = document.getElementById('downloadBadgeBtn');
-            const bCont = document.getElementById('badgeContainer');
-
-            if (bImg && dBtn && bCont) {
-                bImg.src = imgData;
-                dBtn.href = imgData;
-                bCont.style.display = 'block';
-                dBtn.style.display = 'inline-block';
-                console.log("Badge generated and displayed successfully.");
-            } else {
-                console.error("Badge elements not found in DOM.");
-            }
         }
 
         function updateUI() {
             document.getElementById('gameScore').innerText = score;
-            document.getElementById('gameTimerUI').innerText = Math.ceil(gameTimer);
-            const hb = document.getElementById('healthBar');
-            hb.style.width = Math.max(0, health) + '%';
-            if (health < 30) hb.style.backgroundColor = 'var(--bright-red)';
-            else if (health < 60) hb.style.backgroundColor = 'var(--bright-yellow)';
-            else hb.style.backgroundColor = 'var(--bright-green)';
+            const timerEl = document.getElementById('gameTimerUI');
+            timerEl.innerText = Math.ceil(gameTimer);
+            
+            // DOM Countdown Overlay
+            const overlay = document.getElementById('countdownOverlay');
+            if (gameTimer < 10 && gameTimer > 0) {
+                overlay.style.display = 'block';
+                overlay.innerText = Math.ceil(gameTimer);
+                overlay.style.color = (Math.ceil(gameTimer) % 2 === 0) ? '#FF0000' : '#FFF';
+            } else {
+                overlay.style.display = 'none';
+            }
+
+            if (gameTimer < 10) timerEl.style.color = 'var(--bright-red)'; else timerEl.style.color = 'var(--bright-cyan)';
+            document.getElementById('healthBar').style.width = health + '%';
         }
 
-        function drawProtonBeam() {
+        function drawProtonBeam(deltaTime) {
             if (!isShooting) return;
+            const rect = cachedRect;
+            const startX = rect.width / 2;
+            const startY = rect.height;
+            const gX = (rect.width - BASE_WIDTH * gameScale) / 2;
+            const gY = (rect.height - BASE_HEIGHT * gameScale) / 2;
+            const vX = (mouseX - gX) / gameScale, vY = (mouseY - gY) / gameScale;
 
-            const startX = canvas.width / 2;
-            const startY = canvas.height;
-
-            let hitGhost = false;
-            for (let g of ghosts) {
-                if (mouseX > g.x - g.size / 2 && mouseX < g.x + g.size / 2 &&
-                    mouseY > g.y - g.size / 2 && mouseY < g.y + g.size / 2) {
-                    hitGhost = true; break;
+            let hit = false;
+            ghosts.forEach(g => {
+                if (vX > g.x-g.size/2 && vX < g.x+g.size/2 && vY > g.y-g.size/2 && vY < g.y+g.size/2) {
+                    g.hp -= 300 * deltaTime; hit = true;
+                    for(let i=0; i<2; i++) particles.push({x: g.x, y: g.y, vx: (Math.random()-0.5)*300, vy: (Math.random()-0.5)*300, life: 0.5, color: '#FFF', virtual: true});
+                }
+            });
+            for(let i=powerups.length-1; i>=0; i--) {
+                let p = powerups[i];
+                if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) {
+                    health = Math.min(100, health + 20); powerups.splice(i,1); hit = true;
                 }
             }
-            if (!hitGhost) {
-                for (let p of powerups) {
-                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
-                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
-                        hitGhost = true; break;
-                    }
-                }
-            }
-            if (!hitGhost) {
-                for (let p of poisons) {
-                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
-                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
-                        hitGhost = true; break;
-                    }
-                }
-            }
-
-            if (!hitGhost) {
-                // 1. DESINTEGRACIÓN LIMPIA EN LA CAPA SUPERFICIAL
-                offCtx.save();
-                const burnX = mouseX;
-                const burnY = mouseY;
-                const radius = 25 + Math.random() * 20;
-                const spikes = 15;
-
-                offCtx.globalCompositeOperation = 'destination-out';
-                offCtx.beginPath();
-                for (let i = 0; i < spikes; i++) {
-                    const angle = (i / spikes) * Math.PI * 2;
-                    const dist = radius * (0.8 + Math.random() * 0.4);
-                    const px = burnX + Math.cos(angle) * dist;
-                    const py = burnY + Math.sin(angle) * dist;
-                    if (i === 0) offCtx.moveTo(px, py);
-                    else offCtx.lineTo(px, py);
-                }
-                offCtx.closePath();
-                offCtx.fill();
-                offCtx.restore();
-
-                // 2. EFECTOS VISUALES DE ENERGÍA (Sobre el agujero en el lienzo principal)
-                ctx.save();
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#FF4500';
-                
-                // Borde de plasma incandescente
-                ctx.strokeStyle = Math.random() > 0.5 ? '#FFD700' : '#FFFFFF';
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                for (let i = 0; i < spikes; i++) {
-                    const angle = (i / spikes) * Math.PI * 2;
-                    const dist = radius * (0.8 + Math.random() * 0.4);
-                    const px = burnX + Math.cos(angle) * dist;
-                    const py = burnY + Math.sin(angle) * dist;
-                    
-                    // Pequeños arcos eléctricos
-                    if (Math.random() < 0.3) {
-                        ctx.lineTo(px + (Math.random()-0.5)*20, py + (Math.random()-0.5)*20);
-                    }
-                    
-                    if (i === 0) ctx.moveTo(px, py);
-                    else ctx.lineTo(px, py);
-                }
-                ctx.closePath();
-                ctx.stroke();
-                ctx.restore();
-
-                // 3. CHISPAS DE ALTA VELOCIDAD
-                for (let k = 0; k < 5; k++) {
-                    particles.push({
-                        x: burnX, y: burnY,
-                        vx: (Math.random() - 0.5) * 200,
-                        vy: (Math.random() - 0.5) * 200 - 50,
-                        life: 0.6 + Math.random() * 0.4,
-                        color: Math.random() > 0.5 ? '#FFD700' : '#FFF'
-                    });
+            for(let i=poisons.length-1; i>=0; i--) {
+                let p = poisons[i];
+                if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) {
+                    health -= 15; poisons.splice(i,1); hit = true;
                 }
             }
 
+            if (!hit && gamePhase === 2) {
+                offCtx.save(); offCtx.globalCompositeOperation = 'destination-out';
+                offCtx.beginPath(); offCtx.arc(mouseX, mouseY, 25 + Math.random()*20, 0, Math.PI*2); offCtx.fill(); offCtx.restore();
+                beamPartAcc += deltaTime;
+                if (beamPartAcc > 0.01) { particles.push({x:mouseX, y:mouseY, vx:(Math.random()-0.5)*200, vy:(Math.random()-0.5)*200, life:1, color:'#FF4500', virtual: false}); beamPartAcc = 0; }
+            }
+
+            // GHOSTBUSTERS STYLE BEAM (Restored & Improved)
             ctx.save();
-
-            // 1. Núcleo principal del rayo (Naranja/Amarillo/Blanco)
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = 'var(--bright-red)';
-            ctx.lineWidth = 12;
-            ctx.strokeStyle = 'rgba(255, 100, 0, 0.8)';
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(mouseX, mouseY);
-            ctx.stroke();
-
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = 'var(--bright-yellow)';
-            ctx.lineWidth = 6;
-            ctx.strokeStyle = 'var(--bright-yellow)';
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(mouseX, mouseY);
-            ctx.stroke();
-
-            ctx.shadowBlur = 5;
-            ctx.shadowColor = 'var(--bright-white)';
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = 'var(--bright-white)';
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(mouseX, mouseY);
-            ctx.stroke();
-
-            ctx.restore();
-
-            // 2. Rayos eléctricos inestables (Cian/Azul) que envuelven el núcleo
-            const numArcs = 2;
-            for (let a = 0; a < numArcs; a++) {
-                ctx.lineWidth = 3;
-                ctx.strokeStyle = Math.random() > 0.5 ? 'var(--bright-cyan)' : 'var(--bright-blue)';
-                ctx.beginPath();
-                ctx.moveTo(startX, startY);
-
-                let steps = 12;
-                let dx = (mouseX - startX) / steps;
-                let dy = (mouseY - startY) / steps;
-
-                let currentX = startX;
-                let currentY = startY;
-
-                for (let i = 1; i <= steps; i++) {
-                    let jitterX = (Math.random() - 0.5) * 50; // Gran dispersión
-                    let jitterY = (Math.random() - 0.5) * 50;
-                    if (i === steps) { jitterX = 0; jitterY = 0; } // Debe terminar justo en la mirilla
-
-                    ctx.lineTo(currentX + dx + jitterX, currentY + dy + jitterY);
-                    currentX += dx;
-                    currentY += dy;
+            ctx.shadowBlur = 20; ctx.shadowColor = '#FF0000';
+            
+            // 1. Wavy Core
+            ctx.beginPath(); ctx.moveTo(startX, startY);
+            let steps = 15;
+            for (let i = 1; i <= steps; i++) {
+                let tx = startX + (mouseX - startX) * (i / steps);
+                let ty = startY + (mouseY - startY) * (i / steps);
+                if (i < steps) {
+                    tx += (Math.random()-0.5) * 30;
+                    ty += (Math.random()-0.5) * 30;
+                }
+                ctx.lineTo(tx, ty);
+            }
+            ctx.lineWidth = 12; ctx.strokeStyle = 'rgba(255, 69, 0, 0.3)'; ctx.stroke();
+            ctx.lineWidth = 4; ctx.strokeStyle = '#FFD700'; ctx.stroke();
+            ctx.lineWidth = 1.5; ctx.strokeStyle = '#FFF'; ctx.stroke();
+            
+            // 2. Electric Arcs (Cyan Jitter)
+            for (let i = 0; i < 2; i++) {
+                ctx.lineWidth = 1; ctx.strokeStyle = '#0FF';
+                ctx.beginPath(); ctx.moveTo(startX, startY);
+                for (let j = 1; j <= steps; j++) {
+                    let tx = startX + (mouseX - startX) * (j / steps);
+                    let ty = startY + (mouseY - startY) * (j / steps);
+                    if (j < steps) { tx += (Math.random()-0.5)*60; ty += (Math.random()-0.5)*60; }
+                    ctx.lineTo(tx, ty);
                 }
                 ctx.stroke();
             }
-
-            // Sonido más grave y constante para el rayo
-            if (Math.random() < 0.3 && typeof audioCtx !== 'undefined' && audioCtx) {
-                createOsc(250 + Math.random() * 100, 'sawtooth', audioCtx.currentTime, 0.1, 0.08);
-            }
-        }
-
-        function stopGhostGame() {
-            ghostGameActive = false;
-            document.getElementById('ghostMenu').style.display = 'flex';
-            document.getElementById('gameCanvas').style.display = 'none';
-            document.getElementById('gameUI').style.display = 'none';
-            document.getElementById('crosshair').style.display = 'none';
+            ctx.restore();
         }
 
         function gameLoop(timestamp) {
             if (!ghostGameActive) return;
+            if (!lastTime) lastTime = timestamp;
+            let dt = (timestamp - lastTime) / 1000; if (dt > 0.1) dt = 0.1; lastTime = timestamp;
 
-            if (!lastTime) {
-                lastTime = timestamp;
-                requestAnimationFrame(gameLoop);
-                return;
-            }
-            let deltaTime = (timestamp - lastTime) / 1000;
-            if (deltaTime > 0.1) deltaTime = 0.1;
-            lastTime = timestamp;
-            const timeScale = deltaTime * 60;
+            gameTimer -= dt; updateUI();
+            if (gameTimer <= 0 || health <= 0) { stopGhostGame(); showScreen('gameover'); return; }
 
-            // Timer Logic
-            gameTimer -= deltaTime;
-            updateUI();
+            phaseTimer += dt;
+            if (gamePhase === 0 && phaseTimer > 2) gamePhase = 1;
+            if (gamePhase === 1 && phaseTimer > 5) gamePhase = 2;
 
-            // Music Speed Up at 15 seconds remaining
-            if (gameTimer <= 15) {
-                currentTempo = 180;
-            }
+            ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.scale(dpr, dpr);
 
-            if (gameTimer <= 0) {
-                stopGhostGame();
-                generateBadge(score);
-                comingFromGameEnd = true;
-                showScreen('gameover');
-                return;
-            }
-
-            // Handle Phases (Lógica de tiempo real en segundos)
-            if (gamePhase < 2) {
-                phaseTimer += deltaTime;
-                // Fase 1 a los 2 segundos, Fase 2 (spawn) a los 4 segundos
-                if (gamePhase === 0 && phaseTimer >= 2.0 && typeof audioCtx !== 'undefined' && audioCtx) {
-                    createOsc(100, 'sawtooth', audioCtx.currentTime, 1.0, 0.2); 
-                }
-                if (gamePhase === 0 && phaseTimer >= 2.0) gamePhase = 1;
-                if (gamePhase === 1 && phaseTimer >= 4.0) gamePhase = 2;
-            }
-
-            // Draw Background Base (Hell Scenario always behind)
-            if (bgHell.complete) {
-                ctx.drawImage(bgHell, 0, 0, canvas.width / dpr, canvas.height / dpr);
+            if (gamePhase === 0) drawImageCover(ctx, bgLibrary, 0, 0, cachedRect.width, cachedRect.height);
+            else if (gamePhase === 1) {
+                let alpha = (phaseTimer-2)/3; drawImageCover(ctx, bgLibrary, 0, 0, cachedRect.width, cachedRect.height);
+                ctx.save(); ctx.globalAlpha = alpha; drawImageCover(ctx, bgHell, 0, 0, cachedRect.width, cachedRect.height); ctx.restore();
             } else {
-                ctx.fillStyle = 'black';
-                ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+                drawImageCover(ctx, bgHellUltimate, 0, 0, cachedRect.width, cachedRect.height);
+                ctx.drawImage(offCanvas, 0, 0, cachedRect.width, cachedRect.height);
             }
 
-            // Draw Library Layer (offCanvas with burns)
-            ctx.drawImage(offCanvas, 0, 0, canvas.width / dpr, canvas.height / dpr);
+            const gW = BASE_WIDTH * gameScale, gH = BASE_HEIGHT * gameScale;
+            const oX = (cachedRect.width - gW)/2, oY = (cachedRect.height - gH)/2;
 
-            // Destello rojo en la transición de fase (mantenido sutilmente)
-            if (gamePhase >= 1 && phaseTimer > 120 && phaseTimer < 140) {
-                ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (140 - phaseTimer) / 20})`;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
+            ctx.save(); ctx.translate(oX, oY); ctx.scale(gameScale, gameScale);
             if (gamePhase === 2) {
-                spawnGhost(deltaTime);
+                spawnAcc += dt; 
+                if (spawnAcc > 1) { 
+                    ghosts.push({x:BASE_WIDTH/2+(Math.random()-0.5)*400, y:BASE_HEIGHT/2+(Math.random()-0.5)*300, size:10, vx:(Math.random()-0.5)*100, vy:(Math.random()-0.5)*100, hp:100, type: Math.random()>0.5?1:2}); 
+                    spawnAcc = 0; 
+                }
+                itemAcc += dt;
+                if (itemAcc > 3) {
+                    if (Math.random() > 0.4) powerups.push({x: Math.random()*BASE_WIDTH, y: Math.random()*BASE_HEIGHT, life: 5});
+                    else poisons.push({x: Math.random()*BASE_WIDTH, y: Math.random()*BASE_HEIGHT, life: 5});
+                    itemAcc = 0;
+                }
+
+                for (let i = ghosts.length-1; i >= 0; i--) {
+                    let g = ghosts[i]; g.x += g.vx * dt; g.y += g.vy * dt; g.size += 15 * dt;
+                    ctx.drawImage(g.type===1?ghostImage:ghostImage2, g.x-g.size/2, g.y-g.size/2, g.size, g.size);
+                    if (g.hp <= 0) { ghosts.splice(i, 1); score += 10; }
+                    else if (g.size > 220) { ghosts.splice(i, 1); health -= 20; }
+                }
+                for (let i = powerups.length-1; i >= 0; i--) { let p = powerups[i]; p.life -= dt; if (p.life <= 0) powerups.splice(i,1); else ctx.drawImage(powerUpImg, p.x-20, p.y-20, 40, 40); }
+                for (let i = poisons.length-1; i >= 0; i--) { let p = poisons[i]; p.life -= dt; if (p.life <= 0) poisons.splice(i,1); else ctx.drawImage(poisonImg, p.x-20, p.y-20, 40, 40); }
             }
+            particles.forEach((p, i) => { if (!p.virtual) return; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; if (p.life <= 0) particles.splice(i,1); else { ctx.globalAlpha = p.life; ctx.fillStyle=p.color; ctx.fillRect(p.x-1, p.y-1, 2, 2); }});
+            ctx.restore();
 
-            for (let i = ghosts.length - 1; i >= 0; i--) {
-                let g = ghosts[i];
-
-                g.x += g.vx * timeScale;
-                g.y += g.vy * timeScale;
-                // Crecen/Se acercan MUCHO más despacio
-                g.size += (0.08 + (score * 0.001)) * timeScale;
-
-                // Fantasmas hululan al azar
-                if (Math.random() < 0.005 * timeScale && typeof audioCtx !== 'undefined' && audioCtx) {
-                    let freq = 200 + Math.random() * 100;
-                    createOsc(freq, 'sine', audioCtx.currentTime, 0.5, 0.02);
-                    createOsc(freq + 20, 'sine', audioCtx.currentTime + 0.1, 0.5, 0.02);
-                }
-
-                let currentImg = g.type === 2 ? ghostImage2 : ghostImage;
-                try {
-                    if (currentImg.complete && currentImg.naturalWidth > 0) {
-                        ctx.drawImage(currentImg, g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
-                    } else {
-                        ctx.fillStyle = g.type === 2 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
-                        ctx.fillRect(g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
-                    }
-                } catch (e) {
-                    console.error("Error drawing image: ", e);
-                    ctx.fillStyle = g.type === 2 ? 'rgba(0, 255, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
-                    ctx.fillRect(g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
-                }
-
-                if (isShooting) {
-                    if (mouseX > g.x - g.size / 2 && mouseX < g.x + g.size / 2 &&
-                        mouseY > g.y - g.size / 2 && mouseY < g.y + g.size / 2) {
-                        // El rayo hace muchísimo daño
-                        g.hp -= 10 * timeScale;
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                        ctx.fillRect(g.x - g.size / 2, g.y - g.size / 2, g.size, g.size);
-
-                        // Chillido al ser alcanzado
-                        if (Math.random() < 0.3 * timeScale && typeof audioCtx !== 'undefined' && audioCtx) {
-                            createOsc(800 + Math.random() * 400, 'triangle', audioCtx.currentTime, 0.08, 0.03);
-                        }
-                    }
-                }
-
-                if (g.hp <= 0) {
-                    // Explosión de ectoplasma/sangre roja
-                    const ghostExplosionColors = ['#FF0000', '#D70000', '#8B0000', '#FF4500', '#B22222'];
-                    for (let k = 0; k < 30; k++) {
-                        particles.push({
-                            x: g.x,
-                            y: g.y,
-                            vx: (Math.random() - 0.5) * 350,
-                            vy: (Math.random() - 0.5) * 350,
-                            life: 1.2,
-                            color: ghostExplosionColors[Math.floor(Math.random() * ghostExplosionColors.length)]
-                        });
-                    }
-
-                    ghosts.splice(i, 1);
-                    score += 10;
-                    updateUI();
-                    if (typeof audioCtx !== 'undefined' && audioCtx) createOsc(800, 'square', audioCtx.currentTime, 0.1, 0.05);
-                    continue;
-                }
-
-                if (g.size > 200) {
-                    ghosts.splice(i, 1);
-                    health -= 20;
-                    updateUI();
-
-                    ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                    if (typeof audioCtx !== 'undefined' && audioCtx) createOsc(100, 'sawtooth', audioCtx.currentTime, 0.3, 0.1);
-
-                    if (health <= 0) {
-                        stopGhostGame();
-                        generateBadge(score);
-                        comingFromGameEnd = true;
-                        showScreen('gameover');
-                        return;
-                    }
-                }
-            }
-
-            // Loop de Power-Ups
-            for (let i = powerups.length - 1; i >= 0; i--) {
-                let p = powerups[i];
-                p.x += p.vx * timeScale;
-                p.y += p.vy * timeScale;
-                p.size += (0.05 + (score * 0.0005)) * timeScale;
-
-                try {
-                    if (powerUpImage.complete && powerUpImage.naturalWidth > 0) {
-                        ctx.drawImage(powerUpImage, p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-                    } else {
-                        ctx.fillStyle = '#00FF00';
-                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-                    }
-                } catch (e) { }
-
-                if (isShooting) {
-                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
-                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
-                        p.hp -= 10 * timeScale;
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-                    }
-                }
-
-                if (p.hp <= 0) {
-                    health = Math.min(100, health + 80);
-                    updateUI();
-
-                    if (typeof audioCtx !== 'undefined' && audioCtx) {
-                        createOsc(600, 'sine', audioCtx.currentTime, 0.1, 0.1);
-                        createOsc(800, 'sine', audioCtx.currentTime + 0.1, 0.2, 0.1);
-                        createOsc(1200, 'sine', audioCtx.currentTime + 0.3, 0.4, 0.1);
-                    }
-
-                    const pColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFFFFF'];
-                    for (let k = 0; k < 30; k++) {
-                        particles.push({
-                            x: p.x, y: p.y,
-                            vx: (Math.random() - 0.5) * 300,
-                            vy: (Math.random() - 0.5) * 300,
-                            life: 1.0,
-                            color: pColors[Math.floor(Math.random() * pColors.length)]
-                        });
-                    }
-
-                    powerups.splice(i, 1);
-                    continue;
-                }
-
-                if (p.size > 200) {
-                    powerups.splice(i, 1); // Desaparece sin hacer daño
-                }
-            }
-
-            // Loop de Venenos
-            for (let i = poisons.length - 1; i >= 0; i--) {
-                let p = poisons[i];
-                p.x += p.vx * timeScale;
-                p.y += p.vy * timeScale;
-                p.size += (0.05 + (score * 0.0005)) * timeScale;
-
-                try {
-                    if (poisonImage.complete && poisonImage.naturalWidth > 0) {
-                        ctx.drawImage(poisonImage, p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-                    } else {
-                        ctx.fillStyle = '#800080';
-                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-                    }
-                } catch (e) { }
-
-                if (isShooting) {
-                    if (mouseX > p.x - p.size / 2 && mouseX < p.x + p.size / 2 &&
-                        mouseY > p.y - p.size / 2 && mouseY < p.y + p.size / 2) {
-                        p.hp -= 10 * timeScale;
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-                    }
-                }
-
-                if (p.hp <= 0) {
-                    // Sonido de quejido (groan) al reventar el veneno
-                    if (typeof audioCtx !== 'undefined' && audioCtx) {
-                        let t = audioCtx.currentTime;
-                        createOsc(150, 'sawtooth', t, 0.2, 0.1);
-                        createOsc(100, 'sawtooth', t + 0.15, 0.3, 0.1);
-                        createOsc(60, 'sawtooth', t + 0.3, 0.4, 0.05);
-                    }
-
-                    // Explosión de sangre/fuego
-                    const pColors = ['#8B0000', '#FF0000', '#FF4500', '#FF8C00', '#B22222'];
-                    for (let k = 0; k < 30; k++) {
-                        particles.push({
-                            x: p.x, y: p.y,
-                            vx: (Math.random() - 0.5) * 300,
-                            vy: (Math.random() - 0.5) * 300,
-                            life: 1.0,
-                            color: pColors[Math.floor(Math.random() * pColors.length)]
-                        });
-                    }
-
-                    poisons.splice(i, 1);
-                    continue;
-                }
-
-                if (p.size > 200) {
-                    // Causa daño letal (40 puntos, el doble que un fantasma normal)
-                    poisons.splice(i, 1);
-                    health -= 40;
-                    updateUI();
-
-                    // Flash morado/rojo de daño
-                    ctx.fillStyle = 'rgba(128, 0, 128, 0.4)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                    if (typeof audioCtx !== 'undefined' && audioCtx) createOsc(50, 'sawtooth', audioCtx.currentTime, 0.5, 0.1);
-
-                    if (health <= 0) {
-                        stopGhostGame();
-                        generateBadge(score);
-                        showScreen('gameover');
-                        return;
-                    }
-                }
-            }
-
-            // Loop de Partículas
-            for (let i = particles.length - 1; i >= 0; i--) {
-                let part = particles[i];
-                part.x += part.vx * deltaTime;
-                part.y += part.vy * deltaTime;
-                part.life -= deltaTime * 1.5; // Desaparecen rápido
-
-                if (part.life <= 0) {
-                    particles.splice(i, 1);
-                } else {
-                    ctx.fillStyle = part.color;
-                    ctx.globalAlpha = part.life;
-                    ctx.fillRect(part.x - 2, part.y - 2, 4, 4);
-                    ctx.globalAlpha = 1.0;
-                }
-            }
-
-            drawProtonBeam();
-
-            /* 
-               Eliminamos la expansión automática del fuego para que el descubrimiento 
-               sea 100% manual y no haya un "fade out" accidental de la biblioteca.
-            */
-
-            // Cuenta regresiva final con perspectiva y contorno rojo
-            if (gameTimer <= 10 && gameTimer > 0) {
-                let currentVal = Math.ceil(gameTimer);
-                let progress = 1 - (gameTimer % 1); // De 0 a 1 cada segundo
-                let scale = progress * 350; // El número "crece" hacia el jugador
-                let alpha = 1 - progress; // Se desvanece al final del segundo
-                
-                ctx.save();
-                ctx.font = `${scale}px "Press Start 2P"`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                
-                // Contorno Rojo (Borde)
-                ctx.strokeStyle = `rgba(255, 0, 0, ${alpha})`;
-                ctx.lineWidth = Math.max(2, scale / 30);
-                ctx.strokeText(currentVal, canvas.width / 2, canvas.height / 2);
-                
-                // Relleno Blanco
-                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-                ctx.fillText(currentVal, canvas.width / 2, canvas.height / 2);
-                
-                ctx.restore();
-            }
-
+            ctx.globalAlpha = 1;
+            particles.forEach((p, i) => { if (p.virtual) return; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; if (p.life <= 0) particles.splice(i,1); else { ctx.globalAlpha = p.life; ctx.fillStyle=p.color; ctx.fillRect(p.x-1, p.y-1, 2, 2); }});
+            drawProtonBeam(dt);
             requestAnimationFrame(gameLoop);
         }
 
-        // Login Logic
-        function validateLogin() {
-            const statusEl = document.getElementById('login-status');
-            const msgEl = document.getElementById('login-msg');
-
-            statusEl.textContent = '';
-            statusEl.classList.remove('access-granted');
+        function generateBadge(finalScore) {
+            const bCont = document.getElementById('badgeContainer');
+            const hsText = document.getElementById('highScoreText');
+            const bCanvas = document.getElementById('badgeCanvas');
+            const dBtn = document.getElementById('downloadBadgeBtn');
+            const localMsg = document.getElementById('localDownloadMsg');
             
-            msgEl.textContent = '> AUTHENTICATING...';
+            if (!bCont || !hsText || !bCanvas || !dBtn) return;
+            
+            bCont.style.display = 'block';
+            hsText.innerText = "CALCULANDO TU LEYENDA...";
 
-            // Instant access for atmosphere
-            setTimeout(() => {
-                statusEl.textContent = 'ACCESS GRANTED';
-                statusEl.style.textShadow = '0 0 8px var(--bright-green)';
-                statusEl.classList.add('access-granted');
-                msgEl.textContent = '> HANDSHAKE SUCCESSFUL';
+            const bCtx = bCanvas.getContext('2d');
+            bCanvas.width = 600; bCanvas.height = 600;
+
+            const icons = ['badge_art_1.png', 'badge_art_2.png', 'badge_art_3.png', 'badge_art_4.png', 'badge_art_5.png', 'badge_art_6.png'];
+            const badgeIcon = new Image();
+            
+            badgeIcon.onload = () => {
+                bCtx.fillStyle = '#000'; bCtx.fillRect(0, 0, 600, 600);
                 
-                if (audioCtx) {
-                    createOsc(440, 'sine', audioCtx.currentTime, 0.1, 0.1);
-                    createOsc(880, 'sine', audioCtx.currentTime + 0.1, 0.2, 0.1);
-                }
+                // Dynamic mutation: Random color shift for uniqueness
+                const hueShift = Math.floor(Math.random() * 360);
+                bCtx.filter = `hue-rotate(${hueShift}deg) contrast(1.1) brightness(1.1)`;
+                bCtx.drawImage(badgeIcon, 0, 0, 600, 600);
+                bCtx.filter = 'none'; // Reset filter for text/elements
 
-                setTimeout(() => {
-                    showScreen('splash');
-                }, 1000);
-            }, 800);
+                const grad = bCtx.createRadialGradient(300, 300, 100, 300, 300, 450);
+                grad.addColorStop(0, 'rgba(0,0,0,0)'); grad.addColorStop(1, 'rgba(0,0,0,0.8)');
+                bCtx.fillStyle = grad; bCtx.fillRect(0,0,600,600);
+                
+                bCtx.fillStyle = 'rgba(20, 20, 20, 0.85)'; bCtx.strokeStyle = '#FFD700'; bCtx.lineWidth = 3;
+                bCtx.beginPath(); bCtx.moveTo(50, 480); bCtx.lineTo(550, 480); bCtx.lineTo(570, 500); bCtx.lineTo(570, 560); bCtx.lineTo(550, 580); bCtx.lineTo(50, 580); bCtx.lineTo(30, 560); bCtx.lineTo(30, 500); bCtx.closePath();
+                bCtx.fill(); bCtx.stroke();
+                
+                let rank = 'RECLUTA DEL ABISMO';
+                if (finalScore > 50) rank = 'GUERRERO OBSIDIANA';
+                if (finalScore > 150) rank = 'CAUDILLO DEL CAOS';
+                if (finalScore > 300) rank = 'DIOS DEL METAL';
+
+                const phrases = [
+                    "¡TU ALMA PERTENECE AL METAL!",
+                    "EL ABISMO TIEMBLA ANTE TI.",
+                    "FORJADO EN LAS LLAMAS ETERNAS.",
+                    "¡NI LA MUERTE TE DETIENE!",
+                    "ERES EL AZOTE DE LOS ESPECTROS.",
+                    "¡TU LEYENDA ESTÁ ESCRITA EN SANGRE!",
+                    "EL DESTINO TE HA ELEGIDO."
+                ];
+                const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+                bCtx.shadowBlur = 10; bCtx.shadowColor = '#FF00FF'; bCtx.fillStyle = '#0FF'; bCtx.font = '14px "Press Start 2P"'; bCtx.textAlign = 'center'; bCtx.fillText(rank, 300, 515);
+                bCtx.shadowBlur = 5; bCtx.shadowColor = '#000'; bCtx.fillStyle = '#FFD700'; bCtx.font = '9px "Press Start 2P"'; bCtx.fillText(phrase, 300, 535);
+                bCtx.shadowBlur = 10; bCtx.shadowColor = '#FFF';
+                const scoreGrad = bCtx.createLinearGradient(0, 535, 0, 565);
+                scoreGrad.addColorStop(0, '#FFF'); scoreGrad.addColorStop(0.45, '#BBB'); scoreGrad.addColorStop(0.5, '#444'); scoreGrad.addColorStop(1, '#666');
+                bCtx.fillStyle = scoreGrad; bCtx.font = '32px "Press Start 2P"'; bCtx.textBaseline = 'middle'; bCtx.fillText(finalScore, 300, 550);
+                bCtx.shadowBlur = 0; // Reset
+
+                hsText.innerText = "VEREDICTO FINAL";
+
+                // Try to enable download (will work on web server, fail on file://)
+                try {
+                    dBtn.href = bCanvas.toDataURL('image/png');
+                    dBtn.style.display = 'inline-block';
+                    if (localMsg) localMsg.style.display = 'none';
+                } catch (e) {
+                    dBtn.style.display = 'none';
+                    if (localMsg) localMsg.style.display = 'block';
+                    console.log("Local security: Download disabled on file:// origin.");
+                }
+            };
+            badgeIcon.onerror = () => {
+                bCtx.fillStyle = '#111'; bCtx.fillRect(0, 0, 600, 600); bCtx.fillStyle='#FFF'; bCtx.font = '80px serif'; bCtx.textAlign = 'center'; bCtx.textBaseline = 'middle'; bCtx.fillText('💀', 300, 300);
+                hsText.innerText = "FIN DE PARTIDA";
+            };
+            badgeIcon.src = icons[Math.floor(Math.random() * icons.length)];
         }
 
-        // Allow Enter key to login
-        document.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const loginScreen = document.getElementById('login');
-                if (loginScreen.classList.contains('active')) {
-                    validateLogin();
-                }
-            }
-        });
-
-        // Listener para adaptar el juego si el usuario gira el móvil o redimensiona la pantalla
-        window.addEventListener('resize', () => {
-            if (ghostGameActive && canvas) {
-                const oldWidth = canvas.width;
-                const oldHeight = canvas.height;
-                
-                // Guardar estado actual de las quemaduras antes de redimensionar
-                const tempCanvas = document.createElement('canvas');
-                tempCanvas.width = oldWidth;
-                tempCanvas.height = oldHeight;
-                const tempCtx = tempCanvas.getContext('2d');
-                tempCtx.drawImage(offCanvas, 0, 0);
-
-                canvas.width = canvas.offsetWidth * dpr;
-                canvas.height = canvas.offsetHeight * dpr;
-                ctx.scale(dpr, dpr);
-                
-                if (offCanvas) {
-                    offCanvas.width = canvas.width;
-                    offCanvas.height = canvas.height;
-                    offCtx.scale(dpr, dpr);
-                    
-                    // Restaurar el estado escalado para que no se pierdan las quemaduras
-                    offCtx.save();
-                    offCtx.setTransform(1, 0, 0, 1, 0, 0); // Reset scale temporalmente para el drawImage
-                    offCtx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
-                    offCtx.restore();
-                    
-                    // Si el fondo no se ha cargado bien (ej. primera vez), asegurar que hay biblioteca
-                    if (bgLibrary.complete) {
-                        // Usamos destination-over para que la biblioteca solo se dibuje donde NO hay quemaduras (agujeros)
-                        offCtx.globalCompositeOperation = 'destination-over';
-                        offCtx.drawImage(bgLibrary, 0, 0, canvas.width / dpr, canvas.height / dpr);
-                        offCtx.globalCompositeOperation = 'source-over';
-                    }
-                }
-            }
-        });
+        function stopGhostGame() { 
+            ghostGameActive = false; 
+            isShooting = false;
+            document.getElementById('gameCanvas').style.display = 'none'; 
+            document.getElementById('gameUI').style.display = 'none';
+            document.getElementById('crosshair').style.display = 'none';
+            
+            showScreen('gameover');
+            setTimeout(() => {
+                generateBadge(score);
+            }, 300);
+        }
     </script>
 </body>
-
 </html>
