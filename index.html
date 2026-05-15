@@ -500,13 +500,10 @@
         function drawImageCover(ctx, img, x, y, w, h, offsetX = 0.5, offsetY = 0.5) {
             if (!img.complete || img.naturalWidth === 0) return;
             const iw = img.naturalWidth, ih = img.naturalHeight;
-            const r = Math.min(w / iw, h / ih);
-            let nw = iw * r, nh = ih * r, cx, cy, cw, ch, ar = 1;
-            if (nw < w) ar = w / nw;
-            if (Math.abs(ar - 1) < 1e-14 && nh < h) ar = h / nh;
-            nw *= ar; nh *= ar;
+            const r = Math.max(w / iw, h / ih);
+            let nw = iw * r, nh = ih * r, cx, cy, cw, ch;
             cw = iw / (nw / w); ch = ih / (nh / h);
-            cx = Math.max(0, (iw - cw) * offsetX); cy = Math.max(0, (ih - ch) * offsetY);
+            cx = (iw - cw) * offsetX; cy = (ih - ch) * offsetY;
             ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
         }
 
@@ -543,15 +540,18 @@
             osc.connect(gain); gain.connect(audioCtx.destination);
             osc.start(startTime); osc.stop(startTime+duration);
             activeOscillators.push(osc);
+            osc.onended = () => { activeOscillators = activeOscillators.filter(o => o !== osc); };
         }
 
         function playEpicMusic() {
             if (isMusicPlaying) return;
             isMusicPlaying = true;
-            const step = 60 / 130;
+            const step = 60 / 140;
+            const notes = { A2: 110, E3: 164.81, G3: 196, A3: 220, C4: 261.63, E4: 329.63 };
             const loop = (t) => {
                 if (!isMusicPlaying) return;
-                createOsc(220, 'sawtooth', t, step, 0.05);
+                createOsc(notes.A2, 'sawtooth', t, step, 0.1);
+                createOsc(notes.A3, 'square', t + step*0.5, step*0.2, 0.05);
                 setTimeout(() => loop(audioCtx.currentTime + 0.1), step * 1000);
             };
             loop(audioCtx.currentTime);
@@ -567,7 +567,8 @@
             initAudio();
             if (audioCtx.state === 'suspended') audioCtx.resume();
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+            const target = document.getElementById(screenId);
+            if (target) target.classList.add('active');
             if (screenId === 'ghostgame') playEpicMusic(); else stopAllMusic();
         }
 
@@ -577,15 +578,13 @@
         });
 
         // GHOST GAME CORE
-        let ghostGameActive = false, gamePaused = false, ghosts = [], score = 0, health = 100;
+        let ghostGameActive = false, ghosts = [], score = 0, health = 100;
         let canvas, ctx, offCanvas, offCtx, mouseX = 0, mouseY = 0, isShooting = false, lastTime = 0;
-        let ghostImage = new Image(); ghostImage.src = 'ghost.png';
-        let ghostImage2 = new Image(); ghostImage2.src = 'monstuo2.png';
-        let bgLibrary = new Image(); bgLibrary.src = 'library.png';
-        let bgHell = new Image(); bgHell.src = 'libHell.png';
-        let bgHellUltimate = new Image(); bgHellUltimate.src = 'libHellUltimate.png';
-        let powerUpImg = new Image(); powerUpImg.src = 'powerUp.png';
-        let poisonImg = new Image(); poisonImg.src = 'poison.png';
+        const assets = {
+            ghost: new Image(), ghost2: new Image(), lib: new Image(), hell: new Image(), hellUlt: new Image(), pUp: new Image(), psn: new Image()
+        };
+        assets.ghost.src = 'ghost.jpg'; assets.ghost2.src = 'monstuo2.png'; assets.lib.src = 'library.png';
+        assets.hell.src = 'libHell.png'; assets.hellUlt.src = 'libHellUltimate.png'; assets.pUp.src = 'powerUp.png'; assets.psn.src = 'poison.png';
         
         let powerups = [], poisons = [], particles = [], gamePhase = 0, phaseTimer = 0, gameTimer = 60, gameScale = 1, cachedRect = null;
         const dpr = window.devicePixelRatio || 1, BASE_WIDTH = 800, BASE_HEIGHT = 600;
@@ -597,9 +596,6 @@
             document.getElementById('gameUI').style.display = 'flex';
             document.getElementById('crosshair').style.display = 'block';
             
-            const sign = document.getElementById('creepySign'); sign.style.display = 'block'; sign.style.opacity = '1';
-            setTimeout(() => { sign.style.opacity = '0'; setTimeout(() => sign.style.display = 'none', 1000); }, 3000);
-
             canvas = document.getElementById('gameCanvas'); ctx = canvas.getContext('2d');
             const updateSize = () => {
                 cachedRect = canvas.getBoundingClientRect();
@@ -611,127 +607,89 @@
 
             if (!offCanvas) { offCanvas = document.createElement('canvas'); offCtx = offCanvas.getContext('2d'); }
             offCanvas.width = canvas.width; offCanvas.height = canvas.height;
-            offCtx.setTransform(1, 0, 0, 1, 0, 0); offCtx.scale(dpr, dpr);
             
-            const initOff = () => {
-                if (!offCtx) return;
+            const resetOffCanvas = () => {
                 offCtx.setTransform(1, 0, 0, 1, 0, 0); offCtx.scale(dpr, dpr);
                 offCtx.globalCompositeOperation = 'source-over';
-                offCtx.fillStyle = '#111'; offCtx.fillRect(0,0,cachedRect.width, cachedRect.height);
-                if (bgHell.complete && bgHell.naturalWidth > 0) drawImageCover(offCtx, bgHell, 0, 0, cachedRect.width, cachedRect.height);
+                offCtx.fillStyle = '#000'; offCtx.fillRect(0,0,cachedRect.width, cachedRect.height);
+                drawImageCover(offCtx, assets.hell, 0, 0, cachedRect.width, cachedRect.height);
             };
-            initOff();
-            bgHell.onload = initOff;
+            resetOffCanvas();
 
             score = 0; health = 100; gameTimer = 60; ghosts = []; powerups = []; poisons = []; particles = []; gamePhase = 0; phaseTimer = 0; lastTime = 0; ghostGameActive = true;
             updateUI();
 
             if (!window.ghostListenersAdded) {
-                window.addEventListener('mousemove', (e) => {
-                    if (!ghostGameActive) return;
+                const updatePointer = (e) => {
                     const r = canvas.getBoundingClientRect();
-                    mouseX = e.clientX - r.left; mouseY = e.clientY - r.top;
-                    document.getElementById('crosshair').style.left = mouseX + 'px';
-                    document.getElementById('crosshair').style.top = mouseY + 'px';
-                });
+                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                    const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                    mouseX = x; mouseY = y;
+                    const ch = document.getElementById('crosshair'); ch.style.left = x + 'px'; ch.style.top = y + 'px';
+                };
+                window.addEventListener('mousemove', updatePointer);
                 window.addEventListener('mousedown', () => { if (ghostGameActive) isShooting = true; });
                 window.addEventListener('mouseup', () => isShooting = false);
-                window.addEventListener('touchstart', (e) => { if (ghostGameActive) isShooting = true; }, {passive: false});
+                window.addEventListener('touchstart', (e) => { if (ghostGameActive) { isShooting = true; updatePointer(e); } }, {passive: false});
+                window.addEventListener('touchmove', (e) => { if (ghostGameActive) { updatePointer(e); e.preventDefault(); } }, {passive: false});
                 window.addEventListener('touchend', () => isShooting = false);
                 window.ghostListenersAdded = true;
             }
             window.addEventListener('resize', updateSize);
-
             requestAnimationFrame(gameLoop);
         }
 
         function updateUI() {
             document.getElementById('gameScore').innerText = score;
-            const timerEl = document.getElementById('gameTimerUI');
-            timerEl.innerText = Math.ceil(gameTimer);
-            
-            // DOM Countdown Overlay
+            const timerEl = document.getElementById('gameTimerUI'); timerEl.innerText = Math.ceil(gameTimer);
             const overlay = document.getElementById('countdownOverlay');
             if (gameTimer < 10 && gameTimer > 0) {
-                overlay.style.display = 'block';
-                overlay.innerText = Math.ceil(gameTimer);
-                overlay.style.color = (Math.ceil(gameTimer) % 2 === 0) ? '#FF0000' : '#FFF';
-            } else {
-                overlay.style.display = 'none';
-            }
-
-            if (gameTimer < 10) timerEl.style.color = 'var(--bright-red)'; else timerEl.style.color = 'var(--bright-cyan)';
+                overlay.style.display = 'block'; overlay.innerText = Math.ceil(gameTimer);
+                overlay.style.color = (Math.ceil(gameTimer) % 2 === 0) ? '#F00' : '#FFF';
+            } else overlay.style.display = 'none';
             document.getElementById('healthBar').style.width = health + '%';
         }
 
-        function drawProtonBeam(deltaTime) {
+        function drawProtonBeam(dt) {
             if (!isShooting) return;
             const rect = cachedRect;
-            const startX = rect.width / 2;
-            const startY = rect.height;
-            const gX = (rect.width - BASE_WIDTH * gameScale) / 2;
-            const gY = (rect.height - BASE_HEIGHT * gameScale) / 2;
+            const startX = rect.width / 2, startY = rect.height;
+            const gX = (rect.width - BASE_WIDTH * gameScale) / 2, gY = (rect.height - BASE_HEIGHT * gameScale) / 2;
             const vX = (mouseX - gX) / gameScale, vY = (mouseY - gY) / gameScale;
 
             let hit = false;
             ghosts.forEach(g => {
                 if (vX > g.x-g.size/2 && vX < g.x+g.size/2 && vY > g.y-g.size/2 && vY < g.y+g.size/2) {
-                    g.hp -= 300 * deltaTime; hit = true;
-                    for(let i=0; i<2; i++) particles.push({x: g.x, y: g.y, vx: (Math.random()-0.5)*300, vy: (Math.random()-0.5)*300, life: 0.5, color: '#FFF', virtual: true});
+                    g.hp -= 400 * dt; hit = true;
+                    particles.push({x:g.x, y:g.y, vx:(Math.random()-0.5)*300, vy:(Math.random()-0.5)*300, life:0.4, color:'#FFF', virtual:true});
                 }
             });
             for(let i=powerups.length-1; i>=0; i--) {
-                let p = powerups[i];
-                if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) {
-                    health = Math.min(100, health + 20); powerups.splice(i,1); hit = true;
-                }
+                let p = powerups[i]; if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) { health = Math.min(100, health + 20); powerups.splice(i,1); hit = true; }
             }
             for(let i=poisons.length-1; i>=0; i--) {
-                let p = poisons[i];
-                if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) {
-                    health -= 15; poisons.splice(i,1); hit = true;
-                }
+                let p = poisons[i]; if (vX > p.x-25 && vX < p.x+25 && vY > p.y-25 && vY < p.y+25) { health -= 15; poisons.splice(i,1); hit = true; }
             }
 
             if (!hit && gamePhase === 2) {
-                offCtx.save(); offCtx.globalCompositeOperation = 'destination-out';
-                offCtx.beginPath(); offCtx.arc(mouseX, mouseY, 25 + Math.random()*20, 0, Math.PI*2); offCtx.fill(); offCtx.restore();
-                beamPartAcc += deltaTime;
-                if (beamPartAcc > 0.01) { particles.push({x:mouseX, y:mouseY, vx:(Math.random()-0.5)*200, vy:(Math.random()-0.5)*200, life:1, color:'#FF4500', virtual: false}); beamPartAcc = 0; }
+                offCtx.save(); offCtx.setTransform(1, 0, 0, 1, 0, 0); offCtx.scale(dpr, dpr);
+                offCtx.globalCompositeOperation = 'destination-out';
+                offCtx.beginPath(); offCtx.arc(mouseX, mouseY, 30, 0, Math.PI*2); offCtx.fill(); offCtx.restore();
+                beamPartAcc += dt; if (beamPartAcc > 0.01) { particles.push({x:mouseX, y:mouseY, vx:(Math.random()-0.5)*200, vy:(Math.random()-0.5)*200, life:0.8, color:'#FF4500', virtual:false}); beamPartAcc = 0; }
             }
 
-            // GHOSTBUSTERS STYLE BEAM (Restored & Improved)
-            ctx.save();
-            ctx.shadowBlur = 20; ctx.shadowColor = '#FF0000';
-            
-            // 1. Wavy Core
+            ctx.save(); ctx.shadowBlur = 15; ctx.shadowColor = '#F00';
             ctx.beginPath(); ctx.moveTo(startX, startY);
-            let steps = 15;
+            let steps = 12;
             for (let i = 1; i <= steps; i++) {
                 let tx = startX + (mouseX - startX) * (i / steps);
                 let ty = startY + (mouseY - startY) * (i / steps);
-                if (i < steps) {
-                    tx += (Math.random()-0.5) * 30;
-                    ty += (Math.random()-0.5) * 30;
-                }
+                if (i < steps) { tx += (Math.random()-0.5)*40; ty += (Math.random()-0.5)*40; }
                 ctx.lineTo(tx, ty);
             }
-            ctx.lineWidth = 12; ctx.strokeStyle = 'rgba(255, 69, 0, 0.3)'; ctx.stroke();
-            ctx.lineWidth = 4; ctx.strokeStyle = '#FFD700'; ctx.stroke();
-            ctx.lineWidth = 1.5; ctx.strokeStyle = '#FFF'; ctx.stroke();
-            
-            // 2. Electric Arcs (Cyan Jitter)
-            for (let i = 0; i < 2; i++) {
-                ctx.lineWidth = 1; ctx.strokeStyle = '#0FF';
-                ctx.beginPath(); ctx.moveTo(startX, startY);
-                for (let j = 1; j <= steps; j++) {
-                    let tx = startX + (mouseX - startX) * (j / steps);
-                    let ty = startY + (mouseY - startY) * (j / steps);
-                    if (j < steps) { tx += (Math.random()-0.5)*60; ty += (Math.random()-0.5)*60; }
-                    ctx.lineTo(tx, ty);
-                }
-                ctx.stroke();
-            }
+            ctx.lineWidth = 10; ctx.strokeStyle = 'rgba(255, 69, 0, 0.4)'; ctx.stroke();
+            ctx.lineWidth = 3; ctx.strokeStyle = '#FFD700'; ctx.stroke();
+            ctx.lineWidth = 1; ctx.strokeStyle = '#FFF'; ctx.stroke();
             ctx.restore();
         }
 
@@ -741,22 +699,21 @@
             let dt = (timestamp - lastTime) / 1000; if (dt > 0.1) dt = 0.1; lastTime = timestamp;
 
             gameTimer -= dt; updateUI();
-            if (gameTimer <= 0 || health <= 0) { stopGhostGame(); showScreen('gameover'); return; }
+            if (gameTimer <= 0 || health <= 0) { stopGhostGame(); return; }
 
             phaseTimer += dt;
-            if (gamePhase === 0 && phaseTimer > 2) gamePhase = 1;
-            if (gamePhase === 1 && phaseTimer > 5) gamePhase = 2;
+            if (gamePhase === 0 && phaseTimer > 3) gamePhase = 1;
+            if (gamePhase === 1 && phaseTimer > 6) gamePhase = 2;
 
-            ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.scale(dpr, dpr);
+            ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr); ctx.clearRect(0,0,cachedRect.width, cachedRect.height);
 
-            if (gamePhase === 0) drawImageCover(ctx, bgLibrary, 0, 0, cachedRect.width, cachedRect.height);
+            if (gamePhase === 0) drawImageCover(ctx, assets.lib, 0, 0, cachedRect.width, cachedRect.height);
             else if (gamePhase === 1) {
-                let alpha = (phaseTimer-2)/3; drawImageCover(ctx, bgLibrary, 0, 0, cachedRect.width, cachedRect.height);
-                ctx.save(); ctx.globalAlpha = alpha; drawImageCover(ctx, bgHell, 0, 0, cachedRect.width, cachedRect.height); ctx.restore();
+                let a = (phaseTimer-3)/3; drawImageCover(ctx, assets.lib, 0, 0, cachedRect.width, cachedRect.height);
+                ctx.save(); ctx.globalAlpha = a; drawImageCover(ctx, assets.hell, 0, 0, cachedRect.width, cachedRect.height); ctx.restore();
             } else {
-                drawImageCover(ctx, bgHellUltimate, 0, 0, cachedRect.width, cachedRect.height);
-                ctx.drawImage(offCanvas, 0, 0, cachedRect.width, cachedRect.height);
+                drawImageCover(ctx, assets.hellUlt, 0, 0, cachedRect.width, cachedRect.height);
+                ctx.drawImage(offCanvas, 0, 0, cachedRect.width * dpr, cachedRect.height * dpr, 0, 0, cachedRect.width, cachedRect.height);
             }
 
             const gW = BASE_WIDTH * gameScale, gH = BASE_HEIGHT * gameScale;
@@ -764,126 +721,69 @@
 
             ctx.save(); ctx.translate(oX, oY); ctx.scale(gameScale, gameScale);
             if (gamePhase === 2) {
-                spawnAcc += dt; 
-                if (spawnAcc > 1) { 
-                    ghosts.push({x:BASE_WIDTH/2+(Math.random()-0.5)*400, y:BASE_HEIGHT/2+(Math.random()-0.5)*300, size:10, vx:(Math.random()-0.5)*100, vy:(Math.random()-0.5)*100, hp:100, type: Math.random()>0.5?1:2}); 
-                    spawnAcc = 0; 
+                spawnAcc += dt; if (spawnAcc > 1.2) { 
+                    ghosts.push({x:BASE_WIDTH/2+(Math.random()-0.5)*400, y:BASE_HEIGHT/2+(Math.random()-0.5)*300, size:10, vx:(Math.random()-0.5)*120, vy:(Math.random()-0.5)*120, hp:100, type: Math.random()>0.5?1:2}); spawnAcc = 0; 
                 }
-                itemAcc += dt;
-                if (itemAcc > 3) {
+                itemAcc += dt; if (itemAcc > 4) {
                     if (Math.random() > 0.4) powerups.push({x: Math.random()*BASE_WIDTH, y: Math.random()*BASE_HEIGHT, life: 5});
-                    else poisons.push({x: Math.random()*BASE_WIDTH, y: Math.random()*BASE_HEIGHT, life: 5});
-                    itemAcc = 0;
+                    else poisons.push({x: Math.random()*BASE_WIDTH, y: Math.random()*BASE_HEIGHT, life: 5}); itemAcc = 0;
                 }
-
                 for (let i = ghosts.length-1; i >= 0; i--) {
-                    let g = ghosts[i]; g.x += g.vx * dt; g.y += g.vy * dt; g.size += 15 * dt;
-                    ctx.drawImage(g.type===1?ghostImage:ghostImage2, g.x-g.size/2, g.y-g.size/2, g.size, g.size);
-                    if (g.hp <= 0) { ghosts.splice(i, 1); score += 10; }
-                    else if (g.size > 220) { ghosts.splice(i, 1); health -= 20; }
+                    let g = ghosts[i]; g.x += g.vx * dt; g.y += g.vy * dt; g.size += 18 * dt;
+                    ctx.drawImage(g.type===1?assets.ghost:assets.ghost2, g.x-g.size/2, g.y-g.size/2, g.size, g.size);
+                    if (g.hp <= 0) { ghosts.splice(i, 1); score += 10; } else if (g.size > 240) { ghosts.splice(i, 1); health -= 20; }
                 }
-                for (let i = powerups.length-1; i >= 0; i--) { let p = powerups[i]; p.life -= dt; if (p.life <= 0) powerups.splice(i,1); else ctx.drawImage(powerUpImg, p.x-20, p.y-20, 40, 40); }
-                for (let i = poisons.length-1; i >= 0; i--) { let p = poisons[i]; p.life -= dt; if (p.life <= 0) poisons.splice(i,1); else ctx.drawImage(poisonImg, p.x-20, p.y-20, 40, 40); }
+                powerups.forEach((p, i) => { p.life -= dt; if (p.life <= 0) powerups.splice(i,1); else ctx.drawImage(assets.pUp, p.x-20, p.y-20, 40, 40); });
+                poisons.forEach((p, i) => { p.life -= dt; if (p.life <= 0) poisons.splice(i,1); else ctx.drawImage(assets.psn, p.x-20, p.y-20, 40, 40); });
             }
             particles.forEach((p, i) => { if (!p.virtual) return; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; if (p.life <= 0) particles.splice(i,1); else { ctx.globalAlpha = p.life; ctx.fillStyle=p.color; ctx.fillRect(p.x-1, p.y-1, 2, 2); }});
             ctx.restore();
-
-            ctx.globalAlpha = 1;
             particles.forEach((p, i) => { if (p.virtual) return; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; if (p.life <= 0) particles.splice(i,1); else { ctx.globalAlpha = p.life; ctx.fillStyle=p.color; ctx.fillRect(p.x-1, p.y-1, 2, 2); }});
             drawProtonBeam(dt);
             requestAnimationFrame(gameLoop);
         }
 
         function generateBadge(finalScore) {
-            const bCont = document.getElementById('badgeContainer');
-            const hsText = document.getElementById('highScoreText');
-            const bCanvas = document.getElementById('badgeCanvas');
-            const dBtn = document.getElementById('downloadBadgeBtn');
-            const localMsg = document.getElementById('localDownloadMsg');
-            
+            const bCont = document.getElementById('badgeContainer'), hsText = document.getElementById('highScoreText'), bCanvas = document.getElementById('badgeCanvas'), dBtn = document.getElementById('downloadBadgeBtn'), localMsg = document.getElementById('localDownloadMsg');
             if (!bCont || !hsText || !bCanvas || !dBtn) return;
-            
-            bCont.style.display = 'block';
-            hsText.innerText = "CALCULANDO TU LEYENDA...";
-
-            const bCtx = bCanvas.getContext('2d');
-            bCanvas.width = 600; bCanvas.height = 600;
-
+            bCont.style.display = 'block'; hsText.innerText = "CALCULANDO TU LEYENDA...";
+            const bCtx = bCanvas.getContext('2d'); bCanvas.width = 600; bCanvas.height = 600;
             const icons = ['badge_art_1.png', 'badge_art_2.png', 'badge_art_3.png', 'badge_art_4.png', 'badge_art_5.png', 'badge_art_6.png'];
             const badgeIcon = new Image();
-            
             badgeIcon.onload = () => {
                 bCtx.fillStyle = '#000'; bCtx.fillRect(0, 0, 600, 600);
-                
-                // Dynamic mutation: Random color shift for uniqueness
                 const hueShift = Math.floor(Math.random() * 360);
                 bCtx.filter = `hue-rotate(${hueShift}deg) contrast(1.1) brightness(1.1)`;
-                bCtx.drawImage(badgeIcon, 0, 0, 600, 600);
-                bCtx.filter = 'none'; // Reset filter for text/elements
-
+                bCtx.drawImage(badgeIcon, 0, 0, 600, 600); bCtx.filter = 'none';
                 const grad = bCtx.createRadialGradient(300, 300, 100, 300, 300, 450);
                 grad.addColorStop(0, 'rgba(0,0,0,0)'); grad.addColorStop(1, 'rgba(0,0,0,0.8)');
                 bCtx.fillStyle = grad; bCtx.fillRect(0,0,600,600);
-                
                 bCtx.fillStyle = 'rgba(20, 20, 20, 0.85)'; bCtx.strokeStyle = '#FFD700'; bCtx.lineWidth = 3;
                 bCtx.beginPath(); bCtx.moveTo(50, 480); bCtx.lineTo(550, 480); bCtx.lineTo(570, 500); bCtx.lineTo(570, 560); bCtx.lineTo(550, 580); bCtx.lineTo(50, 580); bCtx.lineTo(30, 560); bCtx.lineTo(30, 500); bCtx.closePath();
                 bCtx.fill(); bCtx.stroke();
-                
-                let rank = 'RECLUTA DEL ABISMO';
-                if (finalScore > 50) rank = 'GUERRERO OBSIDIANA';
-                if (finalScore > 150) rank = 'CAUDILLO DEL CAOS';
-                if (finalScore > 300) rank = 'DIOS DEL METAL';
-
-                const phrases = [
-                    "¡TU ALMA PERTENECE AL METAL!",
-                    "EL ABISMO TIEMBLA ANTE TI.",
-                    "FORJADO EN LAS LLAMAS ETERNAS.",
-                    "¡NI LA MUERTE TE DETIENE!",
-                    "ERES EL AZOTE DE LOS ESPECTROS.",
-                    "¡TU LEYENDA ESTÁ ESCRITA EN SANGRE!",
-                    "EL DESTINO TE HA ELEGIDO."
-                ];
+                let rank = 'RECLUTA DEL ABISMO'; if (finalScore > 50) rank = 'GUERRERO OBSIDIANA'; if (finalScore > 150) rank = 'CAUDILLO DEL CAOS'; if (finalScore > 300) rank = 'DIOS DEL METAL';
+                const phrases = ["¡TU ALMA PERTENECE AL METAL!", "EL ABISMO TIEMBLA ANTE TI.", "FORJADO EN LAS LLAMAS ETERNAS.", "¡NI LA MUERTE TE DETIENE!", "ERES EL AZOTE DE LOS ESPECTROS.", "¡TU LEYENDA ESTÁ ESCRITA EN SANGRE!", "EL DESTINO TE HA ELEGIDO."];
                 const phrase = phrases[Math.floor(Math.random() * phrases.length)];
-
-                bCtx.shadowBlur = 10; bCtx.shadowColor = '#FF00FF'; bCtx.fillStyle = '#0FF'; bCtx.font = '14px "Press Start 2P"'; bCtx.textAlign = 'center'; bCtx.fillText(rank, 300, 515);
+                bCtx.shadowBlur = 10; bCtx.shadowColor = '#F0F'; bCtx.fillStyle = '#0FF'; bCtx.font = '14px "Press Start 2P"'; bCtx.textAlign = 'center'; bCtx.fillText(rank, 300, 515);
                 bCtx.shadowBlur = 5; bCtx.shadowColor = '#000'; bCtx.fillStyle = '#FFD700'; bCtx.font = '9px "Press Start 2P"'; bCtx.fillText(phrase, 300, 535);
                 bCtx.shadowBlur = 10; bCtx.shadowColor = '#FFF';
                 const scoreGrad = bCtx.createLinearGradient(0, 535, 0, 565);
                 scoreGrad.addColorStop(0, '#FFF'); scoreGrad.addColorStop(0.45, '#BBB'); scoreGrad.addColorStop(0.5, '#444'); scoreGrad.addColorStop(1, '#666');
                 bCtx.fillStyle = scoreGrad; bCtx.font = '32px "Press Start 2P"'; bCtx.textBaseline = 'middle'; bCtx.fillText(finalScore, 300, 550);
-                bCtx.shadowBlur = 0; // Reset
-
-                hsText.innerText = "VEREDICTO FINAL";
-
-                // Try to enable download (will work on web server, fail on file://)
-                try {
-                    dBtn.href = bCanvas.toDataURL('image/png');
-                    dBtn.style.display = 'inline-block';
-                    if (localMsg) localMsg.style.display = 'none';
-                } catch (e) {
-                    dBtn.style.display = 'none';
-                    if (localMsg) localMsg.style.display = 'block';
-                    console.log("Local security: Download disabled on file:// origin.");
-                }
+                bCtx.shadowBlur = 0; hsText.innerText = "VEREDICTO FINAL";
+                try { dBtn.href = bCanvas.toDataURL('image/png'); dBtn.style.display = 'inline-block'; if (localMsg) localMsg.style.display = 'none'; } catch (e) { dBtn.style.display = 'none'; if (localMsg) localMsg.style.display = 'block'; }
             };
-            badgeIcon.onerror = () => {
-                bCtx.fillStyle = '#111'; bCtx.fillRect(0, 0, 600, 600); bCtx.fillStyle='#FFF'; bCtx.font = '80px serif'; bCtx.textAlign = 'center'; bCtx.textBaseline = 'middle'; bCtx.fillText('💀', 300, 300);
-                hsText.innerText = "FIN DE PARTIDA";
-            };
+            badgeIcon.onerror = () => { bCtx.fillStyle = '#111'; bCtx.fillRect(0, 0, 600, 600); bCtx.fillStyle='#FFF'; bCtx.font = '80px serif'; bCtx.textAlign = 'center'; bCtx.textBaseline = 'middle'; bCtx.fillText('💀', 300, 300); hsText.innerText = "FIN DE PARTIDA"; };
             badgeIcon.src = icons[Math.floor(Math.random() * icons.length)];
         }
 
         function stopGhostGame() { 
-            ghostGameActive = false; 
-            isShooting = false;
+            ghostGameActive = false; isShooting = false;
             document.getElementById('gameCanvas').style.display = 'none'; 
             document.getElementById('gameUI').style.display = 'none';
             document.getElementById('crosshair').style.display = 'none';
-            
             showScreen('gameover');
-            setTimeout(() => {
-                generateBadge(score);
-            }, 300);
+            setTimeout(() => generateBadge(score), 300);
         }
     </script>
 </body>
