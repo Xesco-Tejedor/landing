@@ -338,10 +338,20 @@
 
         .edgar-style {
             color: var(--bright-green);
-            text-shadow: 0 0 2px var(--bright-green), 0 0 8px rgba(0, 255, 65, 0.6);
+            text-shadow: 2px 0 var(--bright-red), -2px 0 var(--bright-cyan), 0 0 5px rgba(0, 255, 65, 0.4);
             display: inline-block;
             white-space: pre;
             font-family: monospace;
+            animation: logo-glitch 2s infinite alternate;
+        }
+
+        @keyframes logo-glitch {
+            0% { text-shadow: 2px 0 var(--bright-red), -2px 0 var(--bright-cyan); transform: skew(0deg); }
+            20% { text-shadow: -2px 0 var(--bright-red), 2px 0 var(--bright-cyan); transform: skew(1deg); }
+            40% { text-shadow: 2px 0 var(--bright-red), -2px 0 var(--bright-cyan); transform: skew(-1deg); }
+            60% { text-shadow: -3px 0 var(--bright-red), 3px 0 var(--bright-cyan); transform: skew(0deg); }
+            80% { text-shadow: 3px 0 var(--bright-red), -3px 0 var(--bright-cyan); transform: skew(1deg); }
+            100% { text-shadow: 2px 0 var(--bright-red), -2px 0 var(--bright-cyan); transform: skew(0deg); }
         }
 
         #xesco-logo {
@@ -517,12 +527,41 @@
         function typeLogo() {
             const el = document.getElementById('xesco-logo');
             if (!el) return;
+            const fullText = logoText.trim();
             el.textContent = '';
             let i = 0;
-            const typeInterval = setInterval(() => {
-                el.textContent = logoText.trim().substring(0, i) + '█';
-                if (i++ > logoText.length) { clearInterval(typeInterval); el.textContent = logoText.trim(); }
-            }, 10);
+            let blinkCount = 0;
+
+            // Phase 1: Initial Blinking
+            const initialBlink = setInterval(() => {
+                el.textContent = (blinkCount % 2 === 0) ? '█' : '';
+                if (blinkCount++ > 5) {
+                    clearInterval(initialBlink);
+                    startTyping();
+                }
+            }, 250);
+
+            function startTyping() {
+                // Phase 2: Typewriter
+                const typeInterval = setInterval(() => {
+                    el.textContent = fullText.substring(0, i) + '█';
+                    if (i++ >= fullText.length) {
+                        clearInterval(typeInterval);
+                        el.textContent = fullText;
+                        // Phase 3: Wait and Erase
+                        setTimeout(() => {
+                            let eraseIdx = fullText.length;
+                            const eraseInterval = setInterval(() => {
+                                el.textContent = fullText.substring(0, eraseIdx) + '█';
+                                if (eraseIdx-- <= 0) {
+                                    clearInterval(eraseInterval);
+                                    setTimeout(typeLogo, 1000);
+                                }
+                            }, 10);
+                        }, 5000);
+                    }
+                }, 20);
+            }
         }
         window.addEventListener('DOMContentLoaded', typeLogo);
 
