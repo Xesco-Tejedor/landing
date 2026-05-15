@@ -543,22 +543,103 @@
             osc.onended = () => { activeOscillators = activeOscillators.filter(o => o !== osc); };
         }
 
+        let musicTimer;
         function playEpicMusic() {
             if (isMusicPlaying) return;
             isMusicPlaying = true;
-            const step = 60 / 140;
-            const notes = { A2: 110, E3: 164.81, G3: 196, A3: 220, C4: 261.63, E4: 329.63 };
-            const loop = (t) => {
+            
+            const tempo = 130;
+            const beat = 60 / tempo;
+            
+            // Ambient Delay/Echo
+            const delay = audioCtx.createDelay(1.0);
+            delay.delayTime.value = beat * 0.75;
+            const feedback = audioCtx.createGain();
+            feedback.gain.value = 0.35;
+            delay.connect(feedback);
+            feedback.connect(delay);
+            
+            const musicGain = audioCtx.createGain();
+            musicGain.gain.value = 0.45;
+            musicGain.connect(audioCtx.destination);
+            musicGain.connect(delay);
+            delay.connect(audioCtx.destination);
+
+            const notes = [110, 110, 130.81, 146.83, 110, 110, 164.81, 155.56]; // A2, A2, C3, D3, A2, A2, E3, Eb3
+            let stepIndex = 0;
+
+            const schedule = (startTime) => {
                 if (!isMusicPlaying) return;
-                createOsc(notes.A2, 'sawtooth', t, step, 0.1);
-                createOsc(notes.A3, 'square', t + step*0.5, step*0.2, 0.05);
-                setTimeout(() => loop(audioCtx.currentTime + 0.1), step * 1000);
+                
+                const now = startTime;
+                const freq = notes[stepIndex % notes.length];
+                
+                // Heavy Sawtooth Bass
+                const osc = audioCtx.createOscillator();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(freq, now);
+                
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(2000, now);
+                filter.frequency.exponentialRampToValueAtTime(400, now + beat);
+                
+                const g = audioCtx.createGain();
+                g.gain.setValueAtTime(0, now);
+                g.gain.linearRampToValueAtTime(0.25, now + 0.02);
+                g.gain.exponentialRampToValueAtTime(0.001, now + beat - 0.02);
+                
+                osc.connect(filter);
+                filter.connect(g);
+                g.connect(musicGain);
+                
+                osc.start(now);
+                osc.stop(now + beat);
+                activeOscillators.push(osc);
+
+                // Industrial Kick
+                if (stepIndex % 2 === 0) {
+                    const k = audioCtx.createOscillator();
+                    k.frequency.setValueAtTime(150, now);
+                    k.frequency.exponentialRampToValueAtTime(40, now + 0.1);
+                    const kg = audioCtx.createGain();
+                    kg.gain.setValueAtTime(0.6, now);
+                    kg.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    k.connect(kg);
+                    kg.connect(audioCtx.destination);
+                    k.start(now);
+                    k.stop(now + 0.2);
+                    activeOscillators.push(k);
+                }
+
+                // Cyber Snare (using square and noise-like decay)
+                if (stepIndex % 4 === 2) {
+                    const n = audioCtx.createOscillator();
+                    n.type = 'square';
+                    n.frequency.setValueAtTime(600, now);
+                    n.frequency.exponentialRampToValueAtTime(100, now + 0.15);
+                    const ng = audioCtx.createGain();
+                    ng.gain.setValueAtTime(0.12, now);
+                    ng.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    n.connect(ng);
+                    ng.connect(audioCtx.destination);
+                    n.start(now);
+                    n.stop(now + 0.15);
+                    activeOscillators.push(n);
+                }
+
+                stepIndex++;
+                const nextTime = now + beat;
+                const delayUntilNext = (nextTime - audioCtx.currentTime) * 1000;
+                musicTimer = setTimeout(() => schedule(nextTime), Math.max(0, delayUntilNext - 40));
             };
-            loop(audioCtx.currentTime);
+            
+            schedule(audioCtx.currentTime + 0.1);
         }
 
         function stopAllMusic() {
             isMusicPlaying = false;
+            if (musicTimer) clearTimeout(musicTimer);
             activeOscillators.forEach(o => { try{o.stop();}catch(e){} });
             activeOscillators = [];
         }
@@ -776,10 +857,26 @@
                 const phrase = phrases[Math.floor(Math.random() * phrases.length)];
                 bCtx.shadowBlur = 10; bCtx.shadowColor = '#F0F'; bCtx.fillStyle = '#0FF'; bCtx.font = '14px "Press Start 2P"'; bCtx.textAlign = 'center'; bCtx.fillText(rank, 300, 515);
                 bCtx.shadowBlur = 5; bCtx.shadowColor = '#000'; bCtx.fillStyle = '#FFD700'; bCtx.font = '9px "Press Start 2P"'; bCtx.fillText(phrase, 300, 535);
-                bCtx.shadowBlur = 10; bCtx.shadowColor = '#FFF';
-                const scoreGrad = bCtx.createLinearGradient(0, 535, 0, 565);
-                scoreGrad.addColorStop(0, '#FFF'); scoreGrad.addColorStop(0.45, '#BBB'); scoreGrad.addColorStop(0.5, '#444'); scoreGrad.addColorStop(1, '#666');
-                bCtx.fillStyle = scoreGrad; bCtx.font = '32px "Press Start 2P"'; bCtx.textBaseline = 'middle'; bCtx.fillText(finalScore, 300, 550);
+                // Score Display - Ultra Sharp and Epic
+                bCtx.shadowBlur = 15; bCtx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+                const scoreGrad = bCtx.createLinearGradient(0, 520, 0, 580);
+                scoreGrad.addColorStop(0, '#FFFFFF');
+                scoreGrad.addColorStop(0.5, '#FFD700');
+                scoreGrad.addColorStop(1, '#FFA500');
+                
+                bCtx.font = '64px "Press Start 2P"';
+                bCtx.textBaseline = 'middle';
+                bCtx.textAlign = 'center';
+                
+                // Thick Black Stroke for perfect contrast
+                bCtx.strokeStyle = '#000000';
+                bCtx.lineWidth = 8;
+                bCtx.strokeText(finalScore, 300, 550);
+                
+                // Fill with metallic gradient
+                bCtx.fillStyle = scoreGrad;
+                bCtx.fillText(finalScore, 300, 550);
+                
                 bCtx.shadowBlur = 0; hsText.innerText = "VEREDICTO FINAL";
                 try { dBtn.href = bCanvas.toDataURL('image/png'); dBtn.style.display = 'inline-block'; if (localMsg) localMsg.style.display = 'none'; } catch (e) { dBtn.style.display = 'none'; if (localMsg) localMsg.style.display = 'block'; }
             };
