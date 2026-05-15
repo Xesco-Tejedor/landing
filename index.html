@@ -587,84 +587,83 @@
             if (isMusicPlaying) return;
             isMusicPlaying = true;
             
-            const tempo = 130;
+            const tempo = 120;
             const beat = 60 / tempo;
             
-            // Ambient Delay/Echo
+            // Eerie Delay for "Ghostly" atmosphere
             const delay = audioCtx.createDelay(1.0);
-            delay.delayTime.value = beat * 0.75;
+            delay.delayTime.value = beat * 1.5;
             const feedback = audioCtx.createGain();
-            feedback.gain.value = 0.35;
+            feedback.gain.value = 0.4;
             delay.connect(feedback);
             feedback.connect(delay);
             
             const musicGain = audioCtx.createGain();
-            musicGain.gain.value = 0.45;
+            musicGain.gain.value = 0.35;
             musicGain.connect(audioCtx.destination);
             musicGain.connect(delay);
             delay.connect(audioCtx.destination);
 
-            const notes = [110, 110, 130.81, 146.83, 110, 110, 164.81, 155.56]; // A2, A2, C3, D3, A2, A2, E3, Eb3
+            // Spooky Arpeggio: Am -> G#dim
+            const pattern = [
+                220, 261.63, 329.63, 440, // A3, C4, E4, A4
+                207.65, 246.94, 311.13, 415.30 // G#3, B3, D#4, G#4
+            ];
             let stepIndex = 0;
 
             const schedule = (startTime) => {
                 if (!isMusicPlaying) return;
                 
                 const now = startTime;
-                const freq = notes[stepIndex % notes.length];
+                const freq = pattern[stepIndex % pattern.length];
                 
-                // Heavy Sawtooth Bass
+                // Spectral Lead (Theremin-like)
                 const osc = audioCtx.createOscillator();
-                osc.type = 'sawtooth';
+                osc.type = 'triangle';
                 osc.frequency.setValueAtTime(freq, now);
-                
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(2000, now);
-                filter.frequency.exponentialRampToValueAtTime(400, now + beat);
+                // Subtle vibrato
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.02, now + beat * 0.5);
+                osc.frequency.exponentialRampToValueAtTime(freq, now + beat);
                 
                 const g = audioCtx.createGain();
                 g.gain.setValueAtTime(0, now);
-                g.gain.linearRampToValueAtTime(0.25, now + 0.02);
-                g.gain.exponentialRampToValueAtTime(0.001, now + beat - 0.02);
+                g.gain.linearRampToValueAtTime(0.15, now + 0.1);
+                g.gain.exponentialRampToValueAtTime(0.001, now + beat * 2);
                 
-                osc.connect(filter);
-                filter.connect(g);
+                osc.connect(g);
                 g.connect(musicGain);
-                
                 osc.start(now);
-                osc.stop(now + beat);
+                osc.stop(now + beat * 2);
                 activeOscillators.push(osc);
 
-                // Industrial Kick
+                // Deep Pulse Bass
+                if (stepIndex % 4 === 0) {
+                    const bass = audioCtx.createOscillator();
+                    bass.type = 'sine';
+                    bass.frequency.setValueAtTime(freq / 4, now);
+                    const bg = audioCtx.createGain();
+                    bg.gain.setValueAtTime(0.3, now);
+                    bg.gain.exponentialRampToValueAtTime(0.001, now + beat * 4);
+                    bass.connect(bg);
+                    bg.connect(musicGain);
+                    bass.start(now);
+                    bass.stop(now + beat * 4);
+                    activeOscillators.push(bass);
+                }
+
+                // Ghostly Heartbeat
                 if (stepIndex % 2 === 0) {
                     const k = audioCtx.createOscillator();
-                    k.frequency.setValueAtTime(150, now);
-                    k.frequency.exponentialRampToValueAtTime(40, now + 0.1);
+                    k.frequency.setValueAtTime(60, now);
+                    k.frequency.exponentialRampToValueAtTime(30, now + 0.15);
                     const kg = audioCtx.createGain();
-                    kg.gain.setValueAtTime(0.6, now);
-                    kg.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    kg.gain.setValueAtTime(0.4, now);
+                    kg.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
                     k.connect(kg);
                     kg.connect(audioCtx.destination);
                     k.start(now);
-                    k.stop(now + 0.2);
+                    k.stop(now + 0.3);
                     activeOscillators.push(k);
-                }
-
-                // Cyber Snare (using square and noise-like decay)
-                if (stepIndex % 4 === 2) {
-                    const n = audioCtx.createOscillator();
-                    n.type = 'square';
-                    n.frequency.setValueAtTime(600, now);
-                    n.frequency.exponentialRampToValueAtTime(100, now + 0.15);
-                    const ng = audioCtx.createGain();
-                    ng.gain.setValueAtTime(0.12, now);
-                    ng.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-                    n.connect(ng);
-                    ng.connect(audioCtx.destination);
-                    n.start(now);
-                    n.stop(now + 0.15);
-                    activeOscillators.push(n);
                 }
 
                 stepIndex++;
