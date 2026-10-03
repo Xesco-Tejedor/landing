@@ -46,7 +46,7 @@ if('IntersectionObserver' in window&&!reduce){var io=new IntersectionObserver(fu
 else{els.forEach(function(el){el.classList.add('in')});}
 /* nav active */
 var links=[].slice.call(document.querySelectorAll('.portfolio-nav a'));
-var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+var secs=links.map(function(a){return a.getAttribute('href').charAt(0)==='#'?document.querySelector(a.getAttribute('href')):null});
 function act(){var y=scrollY+120,cur=-1;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});links.forEach(function(a,i){a.classList.toggle('active',i===cur)});}
 addEventListener('scroll',act,{passive:true});act();
 /* service spotlight */
