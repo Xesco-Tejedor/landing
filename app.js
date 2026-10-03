@@ -59,3 +59,15 @@ document.querySelectorAll('.chip').forEach(function(c){c.addEventListener('click
  });
 });});
 })();
+
+/* demo modal */
+(function(){
+var m=document.getElementById('demo-modal');if(!m)return;
+var f=document.getElementById('demo-frame'),t=document.getElementById('demo-title'),x=document.getElementById('demo-ext'),last=null;
+function open(b){last=b;t.textContent=b.dataset.title;f.title='Demo de '+b.dataset.title;f.src=b.dataset.demo;x.href=b.dataset.demo;m.hidden=false;document.body.style.overflow='hidden';document.getElementById('demo-close').focus();}
+function close(){m.hidden=true;f.src='about:blank';document.body.style.overflow='';if(last)last.focus();}
+document.querySelectorAll('.demo-open').forEach(function(b){b.addEventListener('click',function(){open(b)});});
+document.getElementById('demo-close').addEventListener('click',close);
+m.addEventListener('click',function(e){if(e.target===m)close()});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&!m.hidden)close()});
+})();
