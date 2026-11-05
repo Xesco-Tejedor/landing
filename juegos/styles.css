@@ -1,0 +1,57 @@
+/* Juegos · Xesco Tejedor · Identidad ámbar (misma que la web principal) */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{
+  --carbon:#161215; --burgundy:#1f1a1d; --amber:#ffb800; --cyan:#65d8e6;
+  --white:#f4eee5; --muted:#c4b9bd; --line:#4b3e45; --r-card:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--carbon);color:var(--white);font:400 16px/1.6 'Space Grotesk',sans-serif;letter-spacing:-.01em}
+.page{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+
+.top{padding:18px 0 6px}
+.brand{margin:0;font-size:22px;font-weight:700;color:var(--amber);letter-spacing:.02em}
+.fact{margin:2px 0 0;color:var(--muted);font-size:13px}
+
+.portfolio-nav{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+.portfolio-nav a{color:var(--white);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:13px;min-height:44px;display:inline-flex;align-items:center}
+.portfolio-nav a:hover{border-color:var(--amber);color:var(--amber)}
+
+.hero{padding:34px 0 10px}
+.eyebrow{display:inline-block;color:var(--amber);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.hero-title{margin:0 0 12px;font-size:clamp(30px,5.4vw,52px);line-height:1.06;font-weight:700}
+.lead{margin:0;max-width:640px;color:var(--muted);font-size:17px}
+
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 6px}
+.chip{min-height:44px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--white);font:500 13px/1 'Space Grotesk',sans-serif;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.chip:hover{border-color:var(--amber);color:var(--amber)}
+.chip.active{background:var(--amber);border-color:var(--amber);color:var(--carbon)}
+.count{margin:0 0 14px;color:var(--muted);font-size:13px;min-height:20px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--burgundy);border:1px solid var(--line);border-radius:var(--r-card);padding:22px;display:flex;flex-direction:column;gap:10px;transition:border-color .25s,transform .25s}
+.card:hover{border-color:var(--amber);transform:translateY(-2px)}
+.card h3{margin:0;font-size:20px;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.tag{display:inline-block;width:max-content;color:var(--amber);border:1px solid var(--amber);border-radius:999px;padding:3px 10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.badge{display:inline-block;width:max-content;margin-left:6px;color:var(--cyan);border:1px solid var(--cyan);border-radius:999px;padding:3px 10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.card.hidden{display:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 17px;border-radius:8px;cursor:pointer;text-decoration:none;font:500 14px/1.4 'Space Grotesk',sans-serif;border:1px solid var(--line);background:transparent;color:var(--white);transition:transform .25s,border-color .25s,background .25s}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--carbon);font-weight:600}
+.btn.primary:hover{transform:translateY(-1px)}
+.btn{align-self:flex-start}
+
+.panel.dark{padding:32px;border:1px solid var(--line);border-radius:24px;background:var(--burgundy);margin-top:44px}
+.panel.dark h2{margin:0 0 10px;font-size:22px;color:var(--amber)}
+.panel.dark p{margin:0;color:var(--muted);font-size:15px}
+
+.foot{border-top:1px solid var(--line);padding-top:24px;margin-top:44px;color:var(--muted);font-size:12px;line-height:2}
+.plain-link{color:var(--amber);text-decoration:none}
+.plain-link:hover{text-decoration:underline}
+
+@media (max-width:640px){
+  .page{padding:20px 14px 48px}
+  .grid{grid-template-columns:1fr}
+  .btn{align-self:stretch}
+  .panel.dark{padding:24px}
+}
