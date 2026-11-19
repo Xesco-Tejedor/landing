@@ -1,0 +1,23 @@
+# Xesco Tejedor (Francesc Adrià Perelló)
+
+> Banco de pruebas abierto sobre bibliotecas, archivos, continuidad digital y desarrollo web.
+
+Sitio personal, no consultora ni tienda. Prototipos experimentales de uso gratuito, desarrollados con herramientas de IA y revisión humana. El máster MUBACD y el TFM de UC3M están en curso; no se implica aval de UC3M ni del MNAC.
+
+## Identidad y contexto
+- [Perfil](https://xescotejedor.es/#perfil): Francesc Adrià Perelló usa Xesco Tejedor como nombre profesional. Formación en Filosofía (UB), Formación del Profesorado (UNED) y desarrollo Fullstack (The Bridge).
+- [Contacto](https://xescotejedor.es/#contacto): xesco@xescotejedor.es y LinkedIn.
+
+## Investigación y prototipos
+- [Depósito de Entorno](https://xesco-tejedor.github.io/deposito-de-entorno/): Preservación forense y continuidad digital del software español de 8 bits (1983–1992). El objeto no es solo el archivo: también su entorno de ejecución y su procedencia.
+- [MNAC-cruïlla](https://xesco-tejedor.github.io/MNAC-cruce/): Busca una obra de la colección del MNAC y genera, a partir de su artista y título, las búsquedas de libros y publicaciones relacionados en la biblioteca del museo, el CCUC y la Memòria Digital de Catalunya.
+- [Adjudicaciones](https://xesco-tejedor.github.io/Adjudicaciones/): Rastrea adjudicaciones recientes de la contratación pública de Catalunya en cultura, archivos y gestión documental: qué empresa ganó cada contrato, por qué importe y el enlace a la publicación oficial.
+- [Book-Lens](https://xesco-tejedor.github.io/Book-Lens/): Una propuesta para consultar información bibliográfica a partir de la cubierta de un libro, o de los lomos de una estantería, capturados con la cámara.
+- [Caboira](https://xesco-tejedor.github.io/Caboira/): De lo que se busca hoy a una nueva lectura de arte: elige una tendencia, ajusta el enfoque cultural y abre la búsqueda en la biblioteca del MNAC. Una nueva ruta desde cruïlla.
+
+## Juegos
+- [Catálogo de juegos](https://xescotejedor.es/juegos/): prototipos de navegador de uso gratuito, incluidos CHRONODECK, Biblio Rush y Panthokrator.
+
+## Publicaciones
+- [El archivo no es el juego](https://xescotejedor.es/articulos/el-archivo-no-es-el-juego/): ensayo de octubre de 2026 sobre preservación de software, entorno de ejecución y contexto.
+- [Publicaciones](https://xescotejedor.es/#publicaciones): artículos y carruseles enlazados desde la web.
